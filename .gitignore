@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Uploads (keep directory structure)
+uploads/*
+!uploads/.gitkeep
+!uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# Model files (if too large, use Git LFS)
+# results/model.hdf5
+
+# Temporary files
+*.tmp
+*.temp
+

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="AI-powered paddy disease detection and treatment recommendations for farmers">
+    <meta name="theme-color" content="#2ECC71">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MyPadiCare">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <title>🌾 MyPadiCare - AI Disease Detection & Treatment</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="static/icons/icon-192x192.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS - MyPadiCare Unified Design System -->
+    <link rel="stylesheet" href="static/css/main.css?v=3.1.0">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="static/manifest.json">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-logo">🌾</div>
+        <div class="splash-title">MyPadiCare</div>
+        <div class="splash-subtitle">AI Disease Detection</div>
+        <div class="splash-loader"></div>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="logo">
+                <span class="logo-icon">🌾</span>
+                <h1 data-translate="appName">MyPadiCare</h1>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="langBtn" title="Select Language">
+                    <i class="fas fa-globe"></i>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Language Selector Dropdown -->
+        <div class="language-dropdown" id="languageDropdown" style="display: none;">
+            <button class="language-option" data-lang="en">
+                <span class="flag">🇬🇧</span>
+                <span>English</span>
+            </button>
+            <button class="language-option" data-lang="ms">
+                <span class="flag">🇲🇾</span>
+                <span>Bahasa Malaysia</span>
+            </button>
+            <button class="language-option" data-lang="ja">
+                <span class="flag">🇯🇵</span>
+                <span>日本語</span>
+            </button>
+        </div>
+
+        <!-- App Content -->
+        <div class="app-content">
+            <!-- Home Screen -->
+            <div id="homeScreen" class="screen active">
+                <div class="app-card">
+                    <div class="card-header">
+                        <i class="fas fa-leaf"></i>
+                        <h3 data-translate="diseaseDetection">Disease Detection</h3>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6;" data-translate="uploadDescription">
+                        Upload a photo of your paddy leaf and get instant AI-powered disease detection with treatment recommendations.
+                    </p>
+                    
+                    <!-- Stats Cards -->
+                    <div class="stats-mini-grid">
+                        <div class="stat-mini-card">
+                            <div class="stat-mini-value">90%</div>
+                            <div class="stat-mini-label" data-translate="accuracy">Accuracy</div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-mini-value">10</div>
+                            <div class="stat-mini-label" data-translate="diseases">Diseases</div>
+                        </div>
+                        <div class="stat-mini-card">
+                            <div class="stat-mini-value">100%</div>
+                            <div class="stat-mini-label" data-translate="private">Private</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadBox">
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-title" data-translate="uploadLeafImage">Upload Leaf Image</div>
+                    <div class="upload-subtitle" data-translate="tapToSelect">Tap to select or take a photo</div>
+                    <button class="app-btn" id="selectFileBtn">
+                        <i class="fas fa-image"></i> <span data-translate="selectFromGallery">Select from Gallery</span>
+                    </button>
+                    <button class="app-btn secondary" id="captureBtn">
+                        <i class="fas fa-camera"></i> <span data-translate="takePhoto">Take Photo</span>
+                    </button>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="image-preview-container" id="imagePreview" style="display: none;">
+                    <img id="previewImg" src="" alt="Preview" class="preview-image">
+                    <button class="app-btn" id="analyzeBtn">
+                        <i class="fas fa-search"></i> <span data-translate="analyzeImage">Analyze Image</span>
+                    </button>
+                    <button class="app-btn secondary" id="changeImageBtn">
+                        <i class="fas fa-sync-alt"></i> <span data-translate="changeImage">Change Image</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="screen">
+                <div class="result-header">
+                    <div class="result-title" id="diseaseName"><span data-translate="analyzing">Analyzing...</span></div>
+                    <div class="confidence-badge" id="confidenceValue">0%</div>
+                </div>
+
+                <!-- Analyzed Image -->
+                <div class="app-card">
+                    <div class="card-header">
+                        <i class="fas fa-image"></i>
+                        <h3 data-translate="analyzedImage">Analyzed Image</h3>
+                    </div>
+                    <img id="analyzedImage" src="" alt="Analyzed paddy leaf" style="width: 100%; border-radius: 12px;">
+                </div>
+
+                <!-- Detection Results -->
+                <div class="app-card">
+                    <div class="card-header">
+                        <i class="fas fa-microscope"></i>
+                        <h3 data-translate="detectionResults">Detection Results</h3>
+                    </div>
+                    
+                    <!-- Confidence Chart -->
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div class="pie-chart" id="confidencePieChart" style="width: 140px; height: 140px; margin: 0 auto 16px; position: relative; border-radius: 50%; background: conic-gradient(var(--primary-green) 0deg, rgba(46, 204, 113, 0.2) 0deg);">
+                            <div class="pie-chart-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; width: 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary-green);">
+                                <span id="pieChartValue">0%</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                            <span style="color: var(--text-secondary);" data-translate="confidenceLevel">Confidence Level</span>
+                            <span class="severity-badge" id="severityBadge">Unknown</span>
+                        </div>
+                    </div>
+
+                    <!-- Disease Description -->
+                    <div class="disease-description">
+                        <h4><i class="fas fa-info-circle"></i> <span data-translate="whyThisHappens">Why This Happens</span></h4>
+                        <p id="diseaseDescriptionText" style="margin: 0;" data-translate="analyzing">Analyzing...</p>
+                    </div>
+
+                    <!-- Feedback -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--bg-light); margin-top: 1rem;">
+                        <span style="color: var(--text-secondary); font-size: 14px;" data-translate="wasThisHelpful">Was this helpful?</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-feedback thumbs-up" onclick="submitFeedback(true)">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <button class="btn-feedback thumbs-down" onclick="submitFeedback(false)">
+                                <i class="fas fa-thumbs-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <button class="app-btn" onclick="showScreen('treatmentScreen')">
+                    <i class="fas fa-prescription"></i> <span data-translate="viewTreatment">View Treatment</span>
+                </button>
+                <button class="app-btn secondary" onclick="showScreen('homeScreen'); resetUpload();">
+                    <i class="fas fa-plus"></i> <span data-translate="analyzeAnother">Analyze Another Image</span>
+                </button>
+            </div>
+
+            <!-- Treatment Screen -->
+            <div id="treatmentScreen" class="screen">
+                <!-- AI Expert Advice -->
+                <div class="app-card expert-advice">
+                    <div class="card-header">
+                        <i class="fas fa-brain"></i>
+                        <h3 data-translate="aiExpertAdvice">AI Expert Advice</h3>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <span style="font-size: 32px;">🤖</span>
+                        <span style="font-weight: 600; color: #1A2F1A;" data-translate="poweredBy">Powered by Google Gemini</span>
+                    </div>
+                    <p id="expertAdviceText" style="margin: 0; color: #1A2F1A; line-height: 1.6;" data-translate="loadingAI">Loading AI recommendations...</p>
+                </div>
+
+                <!-- Treatment Tabs -->
+                <div class="app-card">
+                    <div style="display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 8px;">
+                        <button class="tab-btn active" data-tab="immediate">
+                            <i class="fas fa-bolt"></i> <span data-translate="immediate">Immediate</span>
+                        </button>
+                        <button class="tab-btn" data-tab="short-term">
+                            <i class="fas fa-calendar-week"></i> <span data-translate="shortTerm">Short-term</span>
+                        </button>
+                        <button class="tab-btn" data-tab="long-term">
+                            <i class="fas fa-calendar-alt"></i> <span data-translate="longTerm">Long-term</span>
+                        </button>
+                        <button class="tab-btn" data-tab="materials">
+                            <i class="fas fa-box"></i> <span data-translate="materials">Materials</span>
+                        </button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Immediate Actions -->
+                        <div class="tab-pane active" id="tab-immediate">
+                            <div class="treatment-card">
+                                <h4 style="color: var(--danger);"><i class="fas fa-exclamation-triangle"></i> <span data-translate="immediateActions">Immediate Actions</span></h4>
+                                <ul id="immediateActions" class="action-list"></ul>
+                            </div>
+                            <div class="treatment-card">
+                                <h4 style="color: var(--warning);"><i class="fas fa-eye"></i> <span data-translate="warningSigns">Warning Signs</span></h4>
+                                <ul id="warningSigns" class="action-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Short-term -->
+                        <div class="tab-pane" id="tab-short-term">
+                            <div class="treatment-card">
+                                <h4 style="color: var(--info);"><i class="fas fa-tasks"></i> Short-term Management</h4>
+                                <ul id="shortTermActions" class="action-list"></ul>
+                            </div>
+                            <div class="treatment-card">
+                                <h4 style="color: var(--success);"><i class="fas fa-leaf"></i> Organic Options</h4>
+                                <ul id="organicOptions" class="action-list"></ul>
+                            </div>
+                            <div class="treatment-card">
+                                <h4 style="color: #9c27b0;"><i class="fas fa-flask"></i> Chemical Options</h4>
+                                <ul id="chemicalOptions" class="action-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Long-term -->
+                        <div class="tab-pane" id="tab-long-term">
+                            <div class="treatment-card">
+                                <h4 style="color: #607d8b;"><i class="fas fa-shield-alt"></i> Long-term Prevention</h4>
+                                <ul id="longTermPrevention" class="action-list"></ul>
+                            </div>
+                            <div class="treatment-card">
+                                <h4 style="color: #795548;"><i class="fas fa-tractor"></i> Cultural Practices</h4>
+                                <ul id="culturalPractices" class="action-list"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Materials -->
+                        <div class="tab-pane" id="tab-materials">
+                            <div class="treatment-card">
+                                <h4 style="color: #ff5722;"><i class="fas fa-shopping-cart"></i> Materials Needed</h4>
+                                <ul id="materialsNeeded" class="action-list"></ul>
+                            </div>
+                            <div style="background: var(--bg-light); padding: 16px; border-radius: 12px; margin-top: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: var(--text-secondary);"><i class="fas fa-dollar-sign"></i> Estimated Cost:</span>
+                                    <span id="estimatedCost" style="font-weight: 600; color: var(--text-primary);">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-secondary);"><i class="fas fa-clock"></i> Expected Recovery:</span>
+                                    <span id="expectedRecovery" style="font-weight: 600; color: var(--text-primary);">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back Button -->
+                <button class="app-btn secondary" onclick="showScreen('resultsScreen')">
+                    <i class="fas fa-arrow-left"></i> <span data-translate="backToResults">Back to Results</span>
+                </button>
+            </div>
+
+            <!-- How It Works Screen -->
+            <div id="howItWorksScreen" class="screen">
+                <div class="app-card">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3 data-translate="howItWorks">How It Works</h3>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px;" data-translate="howItWorksDesc">
+                        Our AI-powered system detects paddy diseases in 4 simple steps:
+                    </p>
+                </div>
+
+                <!-- Steps -->
+                <div class="app-card" style="background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(243, 156, 18, 0.05)); border: none;">
+                    <div class="step-item">
+                        <div class="step-number-mobile">1</div>
+                        <div>
+                            <h4 class="step-title-mobile"><i class="fas fa-camera"></i> <span data-translate="step1Title">Capture Image</span></h4>
+                            <p class="step-desc-mobile" data-translate="step1Desc">Take a clear photo of the affected paddy leaf</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number-mobile">2</div>
+                        <div>
+                            <h4 class="step-title-mobile"><i class="fas fa-brain"></i> <span data-translate="step2Title">AI Analysis</span></h4>
+                            <p class="step-desc-mobile" data-translate="step2Desc">TensorFlow.js analyzes the image with 90% accuracy</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number-mobile">3</div>
+                        <div>
+                            <h4 class="step-title-mobile"><i class="fas fa-clipboard-list"></i> <span data-translate="step3Title">Get Results</span></h4>
+                            <p class="step-desc-mobile" data-translate="step3Desc">Instant disease detection with confidence score</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number-mobile">4</div>
+                        <div>
+                            <h4 class="step-title-mobile"><i class="fas fa-robot"></i> <span data-translate="step4Title">AI Recommendations</span></h4>
+                            <p class="step-desc-mobile" data-translate="step4Desc">Google Gemini AI provides treatment advice</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="app-card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i>
+                        <h3 data-translate="keyFeatures">Key Features</h3>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <div class="feature-title" data-translate="feature1Title">100% Private</div>
+                            <div class="feature-desc" data-translate="feature1Desc">No data uploaded</div>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-wifi-slash"></i>
+                            <div class="feature-title" data-translate="feature2Title">Works Offline</div>
+                            <div class="feature-desc" data-translate="feature2Desc">No internet needed</div>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <div class="feature-title" data-translate="feature3Title">Mobile First</div>
+                            <div class="feature-desc" data-translate="feature3Desc">Optimized for phones</div>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-bolt"></i>
+                            <div class="feature-title" data-translate="feature4Title">Instant Results</div>
+                            <div class="feature-desc" data-translate="feature4Desc">Real-time analysis</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Screen -->
+            <div id="aboutScreen" class="screen">
+                <div class="app-card">
+                    <div class="card-header">
+                        <i class="fas fa-leaf"></i>
+                        <h3 data-translate="aboutMyPadiCare">About MyPadiCare</h3>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;" data-translate="aboutDescription">
+                        MyPadiCare is a 100% client-side AI disease detection system that runs entirely in your browser. 
+                        Using TensorFlow.js and Google Gemini AI, we achieve 90% accuracy in detecting 10 common paddy diseases. 
+                        Your images never leave your device.
+                    </p>
+                    
+                    <div class="privacy-badge">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span style="font-size: 24px;">🔒</span>
+                            <span style="font-weight: 600; color: var(--text-primary);" data-translate="privacyFirst">Privacy First</span>
+                        </div>
+                        <p style="margin: 0; color: var(--text-secondary); font-size: 14px;" data-translate="privacyDescription">All processing happens in your browser. Your images are never uploaded to any server.</p>
+                    </div>
+                </div>
+
+                <!-- Detected Diseases -->
+                <div class="app-card">
+                    <div class="card-header">
+                        <i class="fas fa-bug"></i>
+                        <h3 data-translate="detectedDiseases">Detected Diseases</h3>
+                    </div>
+                    <div class="disease-list">
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="bacterial_leaf_blight">Bacterial Leaf Blight</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="bacterial_leaf_streak">Bacterial Leaf Streak</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="bacterial_panicle_blight">Bacterial Panicle Blight</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="blast">Blast</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="brown_spot">Brown Spot</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="dead_heart">Dead Heart</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="downy_mildew">Downy Mildew</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="hispa">Hispa</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="tungro">Tungro</span>
+                        </div>
+                        <div class="disease-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span data-translate="healthyLeafDetection">Healthy Leaf Detection</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technology -->
+                <div class="app-card">
+                    <div class="card-header">
+                        <i class="fas fa-cog"></i>
+                        <h3 data-translate="technologyStack">Technology Stack</h3>
+                    </div>
+                    <div class="tech-grid">
+                        <div class="tech-card">
+                            <i class="fas fa-brain" style="font-size: 32px; color: #FF6B35;"></i>
+                            <div class="tech-title">TensorFlow.js</div>
+                            <div class="tech-desc" data-translate="tensorFlowDesc">Client-side ML</div>
+                        </div>
+                        <div class="tech-card">
+                            <i class="fas fa-robot" style="font-size: 32px; color: #4285F4;"></i>
+                            <div class="tech-title">Google Gemini</div>
+                            <div class="tech-desc" data-translate="geminiDesc">AI Recommendations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" data-screen="homeScreen">
+                <i class="fas fa-home"></i>
+                <span data-translate="home">Home</span>
+            </a>
+            <a href="#" class="nav-item" data-screen="howItWorksScreen">
+                <i class="fas fa-info-circle"></i>
+                <span data-translate="howItWorks">How It Works</span>
+            </a>
+            <a href="#" class="nav-item" data-screen="aboutScreen">
+                <i class="fas fa-leaf"></i>
+                <span data-translate="about">About</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- Loading Screen -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" data-translate="loadingAI">Loading AI recommendations...</div>
+        </div>
+    </div>
+    
+    <!-- Tutorial Modal -->
+    <div class="tutorial-modal" id="tutorialModal" style="display: none;">
+        <div class="tutorial-content">
+            <button class="tutorial-close" id="tutorialClose">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <!-- Welcome Step -->
+            <div class="tutorial-step active" data-step="welcome">
+                <div class="tutorial-icon">🌾</div>
+                <h2 data-translate="tutorialWelcome">Welcome to MyPadiCare!</h2>
+                <p data-translate="tutorialQuestion">Is this your first time using this app?</p>
+                <div class="tutorial-buttons">
+                    <button class="app-btn" id="tutorialYes">
+                        <span data-translate="tutorialYes">Yes, show me how</span>
+                    </button>
+                    <button class="app-btn secondary" id="tutorialNo">
+                        <span data-translate="tutorialNo">No, let me start</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 1: Language -->
+            <div class="tutorial-step" data-step="1">
+                <div class="tutorial-step-number">1/4</div>
+                <div class="tutorial-icon">🌐</div>
+                <h3 data-translate="tutorialStep1Title">Choose Your Language</h3>
+                <p data-translate="tutorialStep1Desc">Select your preferred language from the language button in the top right corner. MyPadiCare supports English, Bahasa Malaysia, and Japanese.</p>
+                <div class="tutorial-image">
+                    <i class="fas fa-globe" style="font-size: 80px; color: var(--primary-green);"></i>
+                </div>
+                <div class="tutorial-buttons">
+                    <button class="app-btn secondary" id="tutorialPrev1">
+                        <span data-translate="tutorialPrevious">Previous</span>
+                    </button>
+                    <button class="app-btn" id="tutorialNext1">
+                        <span data-translate="tutorialNext">Next</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Upload -->
+            <div class="tutorial-step" data-step="2">
+                <div class="tutorial-step-number">2/4</div>
+                <div class="tutorial-icon">📷</div>
+                <h3 data-translate="tutorialStep2Title">Upload a Photo</h3>
+                <p data-translate="tutorialStep2Desc">Take a clear photo of your paddy leaf or select one from your gallery. Make sure the leaf is well-lit and the symptoms are visible.</p>
+                <div class="tutorial-image">
+                    <i class="fas fa-camera" style="font-size: 80px; color: var(--primary-green);"></i>
+                </div>
+                <div class="tutorial-buttons">
+                    <button class="app-btn secondary" id="tutorialPrev2">
+                        <span data-translate="tutorialPrevious">Previous</span>
+                    </button>
+                    <button class="app-btn" id="tutorialNext2">
+                        <span data-translate="tutorialNext">Next</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Results -->
+            <div class="tutorial-step" data-step="3">
+                <div class="tutorial-step-number">3/4</div>
+                <div class="tutorial-icon">📊</div>
+                <h3 data-translate="tutorialStep3Title">Get Instant Results</h3>
+                <p data-translate="tutorialStep3Desc">Our AI will analyze your photo and identify any diseases. You'll see the disease name, confidence level, and detailed treatment recommendations powered by Google Gemini AI.</p>
+                <div class="tutorial-image">
+                    <i class="fas fa-chart-pie" style="font-size: 80px; color: var(--primary-green);"></i>
+                </div>
+                <div class="tutorial-buttons">
+                    <button class="app-btn secondary" id="tutorialPrev3">
+                        <span data-translate="tutorialPrevious">Previous</span>
+                    </button>
+                    <button class="app-btn" id="tutorialNext3">
+                        <span data-translate="tutorialNext">Next</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 4: Treatment -->
+            <div class="tutorial-step" data-step="4">
+                <div class="tutorial-step-number">4/4</div>
+                <div class="tutorial-icon">💊</div>
+                <h3 data-translate="tutorialStep4Title">View Treatment Plans</h3>
+                <p data-translate="tutorialStep4Desc">Browse through immediate actions, short-term and long-term treatments. All recommendations are tailored to help you save your crops!</p>
+                <div class="tutorial-image">
+                    <i class="fas fa-prescription" style="font-size: 80px; color: var(--primary-green);"></i>
+                </div>
+                <div class="tutorial-buttons">
+                    <button class="app-btn secondary" id="tutorialPrev4">
+                        <span data-translate="tutorialPrevious">Previous</span>
+                    </button>
+                    <button class="app-btn" id="tutorialFinish">
+                        <span data-translate="tutorialFinish">Get Started</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Modal -->
+    <div id="cameraModal" class="camera-modal" style="display: none;">
+        <div class="camera-modal-content">
+            <div class="camera-modal-header">
+                <h3><i class="fas fa-camera"></i> Take Photo</h3>
+                <button class="camera-close-btn" id="closeCameraBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="camera-modal-body">
+                <video id="cameraVideo" autoplay playsinline></video>
+                <canvas id="cameraCanvas" style="display: none;"></canvas>
+                <div class="camera-controls">
+                    <button class="btn btn-primary" id="capturePhotoBtn">
+                        <i class="fas fa-camera"></i> Capture
+                    </button>
+                    <button class="btn btn-secondary" id="switchCameraBtn">
+                        <i class="fas fa-sync-alt"></i> Switch Camera
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Configuration -->
+    <script src="static/js/config.js?v=4"></script>
+    
+    <!-- JavaScript Modules -->
+    <script src="static/js/translations.js?v=4"></script>
+    <script src="static/js/gemini.js?v=4"></script>
+    <script src="static/js/app_xampp.js?v=4"></script>
+
+    <!-- Mobile App JavaScript -->
+    <script>
+        // Mobile App Functionality
+        let currentScreen = 'homeScreen';
+        
+        // Show splash screen and initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show splash screen
+            const splashScreen = document.getElementById('splashScreen');
+            
+            // Hide splash screen after 2 seconds
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                }, 300);
+            }, 2000);
+            
+            // Initialize navigation
+            initializeNavigation();
+            
+            // Initialize treatment tabs
+            initializeTreatmentTabs();
+            
+            // Add mobile-specific event listeners
+            initializeMobileFeatures();
+        });
+        
+        // Screen navigation function
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show target screen
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+                currentScreen = screenId;
+                
+                // Update navigation
+                updateNavigation(screenId);
+            }
+        }
+        
+        // Initialize navigation
+        function initializeNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const screenId = this.getAttribute('data-screen');
+                    if (screenId) {
+                        showScreen(screenId);
+                    }
+                });
+            });
+        }
+        
+        // Update navigation active state
+        function updateNavigation(activeScreenId) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-screen') === activeScreenId) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        // Initialize treatment tabs
+        function initializeTreatmentTabs() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    if (tabName) {
+                        switchTreatmentTab(tabName);
+                    }
+                });
+            });
+        }
+        
+        // Switch treatment tabs
+        function switchTreatmentTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+            
+            // Update tab content
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+                pane.style.display = 'none';
+            });
+            
+            const activePane = document.getElementById(`tab-${tabName}`);
+            if (activePane) {
+                activePane.classList.add('active');
+                activePane.style.display = 'block';
+            }
+        }
+        
+        // Initialize mobile-specific features
+        function initializeMobileFeatures() {
+            // Add haptic feedback for buttons (if supported)
+            document.querySelectorAll('.app-btn, .nav-item, .header-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (navigator.vibrate) {
+                        navigator.vibrate(50); // Short vibration
+                    }
+                });
+            });
+            
+            // Prevent zoom on double tap
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        }
+        
+        // Reset upload
+        function resetUpload() {
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('uploadBox').style.display = 'block';
+            document.getElementById('imageInput').value = '';
+        }
+        
+        // Feedback submission
+        function submitFeedback(isPositive) {
+            const buttons = document.querySelectorAll('.btn-feedback');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            
+            if (isPositive) {
+                document.querySelector('.thumbs-up').classList.add('selected');
+                showToast('Thank you for your feedback!', 'success');
+            } else {
+                document.querySelector('.thumbs-down').classList.add('selected');
+                showToast('We appreciate your feedback', 'info');
+            }
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('static/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

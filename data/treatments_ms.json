@@ -1,0 +1,472 @@
+{
+  "bacterial_leaf_blight": {
+    "disease_name": "Hawar Daun Bakteria",
+    "immediate_actions": [
+      "Buang dan musnahkan bahagian tanaman yang dijangkiti dalam masa 24 jam",
+      "Sapukan bakterisid berasaskan kuprum (Kuprum hidroksida pada 2g/L)",
+      "Salirkan air berlebihan dari ladang",
+      "Hentikan penggunaan baja nitrogen buat sementara waktu"
+    ],
+    "short_term_management": [
+      "Sembur bakterisid pada selang 7 hari selama 2-3 minggu",
+      "Kekalkan saliran ladang yang baik",
+      "Sapukan baja seimbang (kurangkan nitrogen, tingkatkan kalium)",
+      "Pantau ladang setiap hari untuk jangkitan baru"
+    ],
+    "long_term_prevention": [
+      "Gunakan varieti tahan (contohnya, IR20, TN1)",
+      "Amalkan putaran tanaman dengan tanaman bukan hos",
+      "Gunakan benih dan anak benih bebas penyakit",
+      "Kekalkan jarak tanaman yang sesuai (20cm x 20cm)"
+    ],
+    "organic_options": [
+      "Semburan minyak neem (5ml/L air)",
+      "Aplikasi Pseudomonas fluorescens",
+      "Ekstrak bawang putih (50g bawang putih yang dihancurkan dalam 1L air)"
+    ],
+    "chemical_options": [
+      "Kuprum hidroksida (2g/L) - sembur setiap 7 hari",
+      "Streptocycline (0.5g/L) + Kuprum oxychloride (2.5g/L)"
+    ],
+    "cultural_practices": [
+      "Pastikan perataan ladang yang sesuai",
+      "Amalkan pengairan berselang-seli",
+      "Buang rumpai hos",
+      "Kekalkan paras air 2-3 cm"
+    ],
+    "materials_needed": [
+      "Bakterisid berasaskan kuprum (500g setiap ekar)",
+      "Penyembur knapsack",
+      "Sarung tangan dan pelitup pelindung"
+    ],
+    "estimated_cost": "$25-40 setiap ekar",
+    "expected_recovery": "7-14 hari dengan rawatan yang betul",
+    "warning_signs": [
+      "Lesi berair pada daun",
+      "Margin daun kuning hingga putih",
+      "Layu daun yang dijangkiti"
+    ]
+  },
+  "bacterial_leaf_streak": {
+    "disease_name": "Jalur Daun Bakteria",
+    "immediate_actions": [
+      "Buang daun yang dijangkiti dengan segera",
+      "Sapukan semburan bakterisid berasaskan kuprum",
+      "Tingkatkan pengudaraan ladang",
+      "Kurangkan kelembapan relatif di ladang"
+    ],
+    "short_term_management": [
+      "Sembur bakterisid dua kali pada selang 10 hari",
+      "Salirkan ladang untuk mengurangkan kelembapan",
+      "Sapukan baja kaya kalium",
+      "Elakkan pengairan atas"
+    ],
+    "long_term_prevention": [
+      "Tanam varieti tahan",
+      "Gunakan benih bebas penyakit yang diperakui",
+      "Amalkan sanitasi ladang",
+      "Elakkan penanaman padat"
+    ],
+    "organic_options": [
+      "Campuran Bordeaux (larutan 1%)",
+      "Aplikasi kek neem (250kg/ha)",
+      "Semburan ekstrak bawang dan bawang putih"
+    ],
+    "chemical_options": [
+      "Kuprum oxychloride (2.5g/L)",
+      "Streptocycline sulfate (100ppm)"
+    ],
+    "cultural_practices": [
+      "Kekalkan jarak baris yang sesuai (minimum 20cm)",
+      "Pastikan peredaran udara yang baik",
+      "Pembajaan seimbang (NPK 100:50:50 kg/ha)"
+    ],
+    "materials_needed": [
+      "Bakterisid (300g setiap ekar)",
+      "Peralatan penyembur",
+      "Baja kalium"
+    ],
+    "estimated_cost": "$20-35 setiap ekar",
+    "expected_recovery": "10-21 hari",
+    "warning_signs": [
+      "Jalur lut halus pada daun",
+      "Jalur bertukar menjadi oren-coklat",
+      "Eksudat bakteria pada permukaan daun"
+    ]
+  },
+  "bacterial_panicle_blight": {
+    "disease_name": "Hawar Malai Bakteria",
+    "immediate_actions": [
+      "Buang dan bakar malai yang dijangkiti",
+      "Sapukan bakterisid pada peringkat booting",
+      "Tingkatkan saliran ladang",
+      "Elakkan penggunaan nitrogen yang tinggi"
+    ],
+    "short_term_management": [
+      "Sembur pada peringkat booting, heading, dan berbunga",
+      "Kekalkan paras air cetek (2-3cm)",
+      "Sapukan baja silikon"
+    ],
+    "long_term_prevention": [
+      "Gunakan varieti tahan",
+      "Rawatan benih air panas (53-54°C selama 15 minit)",
+      "Optimumkan masa berbunga",
+      "Pembajaan seimbang"
+    ],
+    "organic_options": [
+      "Aplikasi Bacillus subtilis",
+      "Bakterisid organik berasaskan kuprum",
+      "Suplementasi silikon"
+    ],
+    "chemical_options": [
+      "Asid oxolinic (100-150g/ha)",
+      "Semburan kuprum hidroksida"
+    ],
+    "cultural_practices": [
+      "Rawatan benih air panas sebelum menyemai",
+      "Kekalkan kedalaman air 2-3cm",
+      "Sapukan silikon (80-100kg/ha)"
+    ],
+    "materials_needed": [
+      "Bakterisid untuk rawatan malai",
+      "Baja silikon",
+      "Termometer untuk rawatan benih"
+    ],
+    "estimated_cost": "$30-50 setiap ekar",
+    "expected_recovery": "Pencegahan adalah kunci; rawatan melindungi tanaman yang tinggal",
+    "warning_signs": [
+      "Biji steril dalam malai",
+      "Perubahan warna biji (coklat hingga hitam)",
+      "Malai tegak (steril)"
+    ]
+  },
+  "blast": {
+    "disease_name": "Penyakit Blast",
+    "immediate_actions": [
+      "Sapukan fungisid sistemik (Tricyclazole) dengan segera",
+      "Buang tanaman yang dijangkiti teruk",
+      "Salirkan ladang untuk mengurangkan kelembapan",
+      "Kurangkan baja nitrogen"
+    ],
+    "short_term_management": [
+      "Sembur fungisid pada selang 7 hari (2-3 aplikasi)",
+      "Sapukan baja kalium dan silikon",
+      "Kekalkan keadaan aerobik secara berkala",
+      "Pantau pengembangan lesi"
+    ],
+    "long_term_prevention": [
+      "Gunakan varieti tahan",
+      "Elakkan pembajaan nitrogen yang berlebihan",
+      "Amalkan pembajaan seimbang (NPK + Si)",
+      "Kekalkan pengurusan air yang sesuai"
+    ],
+    "organic_options": [
+      "Aplikasi Trichocompost (2.5kg/ha)",
+      "Semburan Pseudomonas fluorescens",
+      "Suplementasi silikon"
+    ],
+    "chemical_options": [
+      "Tricyclazole (300g/ha) - fungisid sistemik",
+      "Isoprothiolane (1000ml/ha)",
+      "Azoxystrobin (1ml/L)"
+    ],
+    "cultural_practices": [
+      "Aplikasi nitrogen berpecah",
+      "Tingkatkan kalium (60kg K2O/ha)",
+      "Sapukan silikon (100kg/ha)",
+      "Jarak yang sesuai (20x15cm)"
+    ],
+    "materials_needed": [
+      "Fungisid sistemik (500ml setiap ekar)",
+      "Baja kalium (25kg setiap ekar)",
+      "Baja silikon"
+    ],
+    "estimated_cost": "$35-60 setiap ekar",
+    "expected_recovery": "14-21 hari; boleh menyebabkan kerugian hasil 50-70% jika tidak dirawat",
+    "warning_signs": [
+      "Lesi berbentuk berlian dengan pusat kelabu",
+      "Margin coklat pada lesi",
+      "Pengembangan lesi pesat dalam keadaan lembap"
+    ]
+  },
+  "brown_spot": {
+    "disease_name": "Bintik Coklat",
+    "immediate_actions": [
+      "Sapukan fungisid (Mancozeb atau Carbendazim)",
+      "Sapukan baja NPK seimbang",
+      "Pastikan kelembapan tanah yang mencukupi",
+      "Buang daun bawah yang dijangkiti teruk"
+    ],
+    "short_term_management": [
+      "Sembur fungisid dua kali pada selang 10 hari",
+      "Sapukan baja kaya kalium",
+      "Pastikan pengairan yang mencukupi",
+      "Sapukan mikronutrien (zink, besi)"
+    ],
+    "long_term_prevention": [
+      "Ujian tanah dan pembajaan seimbang",
+      "Gunakan benih sihat yang diperakui",
+      "Rawatan benih dengan fungisid",
+      "Tingkatkan bahan organik tanah"
+    ],
+    "organic_options": [
+      "Baja kandang (10 tan/ha)",
+      "Vermicompost (5 tan/ha)",
+      "Kek neem (250kg/ha)"
+    ],
+    "chemical_options": [
+      "Mancozeb (2g/L) - fungisid pelindung",
+      "Carbendazim (1g/L) - fungisid sistemik",
+      "Rawatan benih dengan Carbendazim (2g/kg benih)"
+    ],
+    "cultural_practices": [
+      "Aplikasi NPK seimbang (120:60:40 kg/ha)",
+      "Tambah zink sulfat (25kg/ha) dalam tanah yang kekurangan",
+      "Kekalkan kedalaman air 5-7cm"
+    ],
+    "materials_needed": [
+      "Fungisid Mancozeb (400g setiap ekar)",
+      "Baja NPK",
+      "Zink sulfat (jika kekurangan)"
+    ],
+    "estimated_cost": "$25-40 setiap ekar",
+    "expected_recovery": "7-14 hari",
+    "warning_signs": [
+      "Bintik coklat bulat hingga bujur pada daun",
+      "Bintik dengan pusat kelabu atau putih",
+      "Bintik pada anak benih boleh menjadi teruk"
+    ]
+  },
+  "dead_heart": {
+    "disease_name": "Jantung Mati (Kerosakan Penggerek Batang)",
+    "immediate_actions": [
+      "Sapukan racun serangga yang disyorkan",
+      "Buang dan musnahkan jantung mati",
+      "Pasang perangkap lampu untuk rama-rama dewasa",
+      "Salirkan air ladang buat sementara waktu"
+    ],
+    "short_term_management": [
+      "Sapukan racun serangga granular dalam whorl",
+      "Gunakan perangkap feromon (20/ha)",
+      "Lepaskan parasitoid telur (Trichogramma)",
+      "Pantau setiap minggu untuk jantung mati baru"
+    ],
+    "long_term_prevention": [
+      "Elakkan tanaman bertindih",
+      "Gunakan varieti tahan",
+      "Penanaman serentak di kawasan",
+      "Musnahkan tunggul selepas tuai"
+    ],
+    "organic_options": [
+      "Lepaskan Trichogramma japonicum (50,000/ha)",
+      "Ekstrak kernel benih neem (5%)",
+      "Tenggeran burung di ladang (10-12/ekar)"
+    ],
+    "chemical_options": [
+      "Cartap hydrochloride (1kg/ha) - granular",
+      "Chlorantraniliprole (60ml/ha) - sembur",
+      "Fipronil (2ml/L) - sembur"
+    ],
+    "cultural_practices": [
+      "Penanaman serentak dalam tetingkap 2 minggu",
+      "Potong hujung daun 21 hari selepas pemindahan",
+      "Buang hos alternatif (rumput)"
+    ],
+    "materials_needed": [
+      "Racun serangga (granular atau sembur)",
+      "Perangkap feromon",
+      "Perangkap lampu"
+    ],
+    "estimated_cost": "$30-50 setiap ekar",
+    "expected_recovery": "Tanaman tidak akan pulih tetapi rawatan mencegah kerosakan selanjutnya",
+    "warning_signs": [
+      "Pucuk pusat kering dan mati",
+      "Mudah ditarik keluar daun pusat yang mati",
+      "Lubang masuk bersaiz pin pada batang"
+    ]
+  },
+  "downy_mildew": {
+    "disease_name": "Kudis Bulu",
+    "immediate_actions": [
+      "Sapukan fungisid sistemik dengan segera",
+      "Tingkatkan saliran ladang dengan segera",
+      "Buang dan musnahkan tanaman yang dijangkiti",
+      "Kurangkan kedalaman air di ladang"
+    ],
+    "short_term_management": [
+      "Sembur fungisid dua kali pada selang 10 hari",
+      "Kekalkan saliran yang sesuai",
+      "Elakkan air terlalu banyak"
+    ],
+    "long_term_prevention": [
+      "Pastikan perataan tanah yang sesuai",
+      "Pasang sistem saliran yang mencukupi",
+      "Gunakan varieti tahan",
+      "Elakkan pengairan berlebihan"
+    ],
+    "organic_options": [
+      "Semburan campuran Bordeaux (1%)",
+      "Aplikasi Trichoderma viride",
+      "Tingkatkan saliran tanah dengan bahan organik"
+    ],
+    "chemical_options": [
+      "Metalaxyl (2g/L) - fungisid sistemik",
+      "Kuprum oxychloride (3g/L)",
+      "Rawatan benih dengan Metalaxyl-M (2g/kg)"
+    ],
+    "cultural_practices": [
+      "Perataan ladang yang sesuai",
+      "Pasang saluran saliran",
+      "Elakkan kedalaman air berlebihan (maksimum 5cm)"
+    ],
+    "materials_needed": [
+      "Fungisid sistemik (300ml setiap ekar)",
+      "Alat/peralatan saliran"
+    ],
+    "estimated_cost": "$35-55 setiap ekar",
+    "expected_recovery": "14-21 hari",
+    "warning_signs": [
+      "Daun klorotik (kuning-hijau)",
+      "Pertumbuhan terbantut",
+      "Penjanaan berlebihan"
+    ]
+  },
+  "hispa": {
+    "disease_name": "Hispa (Kumbang Hispa Padi)",
+    "immediate_actions": [
+      "Sapukan semburan racun serangga sentuh",
+      "Kutipan tangan kumbang pada awal pagi",
+      "Salirkan air ladang sebelum menyembur",
+      "Buang daun yang rosak teruk"
+    ],
+    "short_term_management": [
+      "Sembur racun serangga pada selang 7 hari jika perlu",
+      "Gunakan perangkap melekit atau jaring sapu",
+      "Galakkan pemangsa semula jadi"
+    ],
+    "long_term_prevention": [
+      "Elakkan penanaman rapat",
+      "Pengurusan rumpai yang sesuai",
+      "Gunakan baja seimbang (elakkan N berlebihan)",
+      "Pelihara musuh semula jadi"
+    ],
+    "organic_options": [
+      "Ekstrak kernel benih neem (5%)",
+      "Kutipan tangan dewasa dan grub",
+      "Tenggeran burung di ladang"
+    ],
+    "chemical_options": [
+      "Chlorpyrifos (2ml/L) - tindakan sentuh",
+      "Quinalphos (2ml/L)",
+      "Fipronil (2ml/L)"
+    ],
+    "cultural_practices": [
+      "Kekalkan jarak yang sesuai (20x15cm)",
+      "Buang rumpai secara berkala",
+      "Elakkan baja nitrogen berlebihan"
+    ],
+    "materials_needed": [
+      "Racun serangga sentuh (400ml setiap ekar)",
+      "Penyembur",
+      "Perangkap melekit"
+    ],
+    "estimated_cost": "$20-35 setiap ekar",
+    "expected_recovery": "7-10 hari",
+    "warning_signs": [
+      "Jalur selari putih pada daun",
+      "Daun kelihatan pudar",
+      "Kumbang dewasa kelihatan pada daun"
+    ]
+  },
+  "tungro": {
+    "disease_name": "Penyakit Tungro",
+    "immediate_actions": [
+      "Buang dan musnahkan tanaman yang dijangkiti (roguing)",
+      "Kawal vektor (wereng hijau) dengan racun serangga",
+      "Asingkan ladang dari kawasan yang dijangkiti",
+      "Hentikan aplikasi nitrogen buat sementara waktu"
+    ],
+    "short_term_management": [
+      "Semburan racun serangga mingguan untuk kawalan wereng",
+      "Teruskan roguing tanaman yang dijangkiti",
+      "Pantau populasi wereng"
+    ],
+    "long_term_prevention": [
+      "Gunakan varieti tahan/toleran",
+      "Penanaman serentak dalam tetingkap 2 minggu",
+      "Buang hos alternatif dan ratoon",
+      "Musnahkan tunggul selepas tuai"
+    ],
+    "organic_options": [
+      "Semburan minyak neem (3%) untuk kawalan vektor",
+      "Perangkap melekit kuning untuk pemantauan",
+      "Galakkan pemangsa semula jadi"
+    ],
+    "chemical_options": [
+      "Imidacloprid (0.3ml/L) - untuk wereng",
+      "Buprofezin (1ml/L) - kawalan nimfa",
+      "Rawatan benih dengan Imidacloprid (5g/kg)"
+    ],
+    "cultural_practices": [
+      "Penanaman serentak (pendekatan komuniti)",
+      "Pembajaan seimbang (NPK 100:50:50)",
+      "Buang tanaman berpenyakit setiap minggu"
+    ],
+    "materials_needed": [
+      "Racun serangga sistemik (400ml setiap ekar)",
+      "Perangkap melekit kuning",
+      "Beg untuk pelupusan tanaman yang dijangkiti"
+    ],
+    "estimated_cost": "$40-70 setiap ekar",
+    "expected_recovery": "Tiada penawar untuk tanaman yang dijangkiti - fokus pada kawalan vektor",
+    "warning_signs": [
+      "Perubahan warna daun kuning atau oren-kuning",
+      "Pertumbuhan terbantut",
+      "Pengurangan penjanaan"
+    ]
+  },
+  "normal": {
+    "disease_name": "Tanaman Padi Sihat",
+    "immediate_actions": [
+      "Teruskan amalan pengurusan tanaman semasa",
+      "Kekalkan jadual pemantauan berkala",
+      "Pastikan pemakanan seimbang"
+    ],
+    "short_term_management": [
+      "Pantau ladang setiap minggu",
+      "Kekalkan paras air optimum",
+      "Sapukan baja mengikut peringkat tanaman"
+    ],
+    "long_term_prevention": [
+      "Teruskan pengurusan perosak bersepadu (IPM)",
+      "Amalkan putaran tanaman",
+      "Kekalkan kesihatan tanah dengan bahan organik"
+    ],
+    "organic_options": [
+      "Aplikasi vermicompost (2-3 tan/ha)",
+      "Baja hijau pada musim luar",
+      "Aplikasi kek neem (200kg/ha)"
+    ],
+    "chemical_options": [
+      "NPK seimbang mengikut ujian tanah",
+      "Semburan mikronutrien jika perlu"
+    ],
+    "cultural_practices": [
+      "Kekalkan kedalaman air 5-7cm semasa peringkat vegetatif",
+      "Pemeriksaan ladang berkala",
+      "Penyelenggaraan jarak yang sesuai"
+    ],
+    "materials_needed": [
+      "Baja NPK mengikut jadual",
+      "Alat penyiangan"
+    ],
+    "estimated_cost": "$50-80 setiap ekar untuk musim lengkap",
+    "expected_recovery": "T/A - Kekalkan status sihat",
+    "warning_signs": [
+      "Perhatikan sebarang bintik daun luar biasa",
+      "Pantau aktiviti perosak",
+      "Periksa gejala kekurangan nutrien"
+    ]
+  }
+}
+

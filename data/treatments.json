@@ -1,0 +1,507 @@
+{
+  "bacterial_leaf_blight": {
+    "disease_name": "Bacterial Leaf Blight",
+    "immediate_actions": [
+      "Remove and destroy infected plant parts within 24 hours",
+      "Apply copper-based bactericide (Copper hydroxide at 2g/L)",
+      "Drain excess water from the field",
+      "Stop nitrogen fertilizer application temporarily"
+    ],
+    "short_term_management": [
+      "Spray bactericide at 7-day intervals for 2-3 weeks",
+      "Maintain proper field drainage",
+      "Apply balanced fertilizer (reduce nitrogen, increase potassium)",
+      "Monitor field daily for new infections"
+    ],
+    "long_term_prevention": [
+      "Use resistant varieties (e.g., IR20, TN1)",
+      "Practice crop rotation with non-host crops",
+      "Use disease-free seeds and seedlings",
+      "Maintain proper plant spacing (20cm x 20cm)"
+    ],
+    "organic_options": [
+      "Neem oil spray (5ml/L water)",
+      "Pseudomonas fluorescens application",
+      "Garlic extract (50g crushed garlic in 1L water)"
+    ],
+    "chemical_options": [
+      "Copper hydroxide (2g/L) - spray every 7 days",
+      "Streptocycline (0.5g/L) + Copper oxychloride (2.5g/L)"
+    ],
+    "cultural_practices": [
+      "Ensure proper field leveling",
+      "Practice alternate wetting and drying",
+      "Remove weed hosts",
+      "Maintain 2-3 cm water level"
+    ],
+    "materials_needed": [
+      "Copper-based bactericide (500g per acre)",
+      "Knapsack sprayer",
+      "Protective gloves and mask"
+    ],
+    "estimated_cost": "$25-40 per acre",
+    "expected_recovery": "7-14 days with proper treatment",
+    "warning_signs": [
+      "Water-soaked lesions on leaves",
+      "Yellow to white leaf margins",
+      "Wilting of infected leaves"
+    ]
+  },
+  "bacterial_leaf_streak": {
+    "disease_name": "Bacterial Leaf Streak",
+    "immediate_actions": [
+      "Remove infected leaves immediately",
+      "Apply copper-based bactericide spray",
+      "Improve field ventilation",
+      "Reduce relative humidity in field"
+    ],
+    "short_term_management": [
+      "Spray bactericide twice at 10-day intervals",
+      "Drain field to reduce humidity",
+      "Apply potassium-rich fertilizer",
+      "Avoid overhead irrigation"
+    ],
+    "long_term_prevention": [
+      "Plant resistant varieties",
+      "Use certified disease-free seeds",
+      "Practice field sanitation",
+      "Avoid dense planting"
+    ],
+    "organic_options": [
+      "Bordeaux mixture (1% solution)",
+      "Neem cake application (250kg/ha)",
+      "Onion and garlic extract spray"
+    ],
+    "chemical_options": [
+      "Copper oxychloride (2.5g/L)",
+      "Streptocycline sulfate (100ppm)"
+    ],
+    "cultural_practices": [
+      "Maintain proper row spacing (20cm minimum)",
+      "Ensure good air circulation",
+      "Balanced fertilization (NPK 100:50:50 kg/ha)"
+    ],
+    "materials_needed": [
+      "Bactericide (300g per acre)",
+      "Sprayer equipment",
+      "Potassium fertilizer"
+    ],
+    "estimated_cost": "$20-35 per acre",
+    "expected_recovery": "10-21 days",
+    "warning_signs": [
+      "Narrow translucent streaks on leaves",
+      "Streaks turn orange-brown",
+      "Bacterial exudate on leaf surface"
+    ]
+  },
+  "bacterial_panicle_blight": {
+    "disease_name": "Bacterial Panicle Blight",
+    "immediate_actions": [
+      "Remove and burn infected panicles",
+      "Apply bactericide at booting stage",
+      "Improve field drainage",
+      "Avoid high nitrogen application"
+    ],
+    "short_term_management": [
+      "Spray at booting, heading, and flowering stages",
+      "Maintain shallow water level (2-3cm)",
+      "Apply silicon fertilizer"
+    ],
+    "long_term_prevention": [
+      "Use resistant varieties",
+      "Hot water seed treatment (53-54°C for 15 min)",
+      "Optimize flowering time",
+      "Balanced fertilization"
+    ],
+    "organic_options": [
+      "Bacillus subtilis application",
+      "Copper-based organic bactericides",
+      "Silicon supplementation"
+    ],
+    "chemical_options": [
+      "Oxolinic acid (100-150g/ha)",
+      "Copper hydroxide spray"
+    ],
+    "cultural_practices": [
+      "Hot water seed treatment before sowing",
+      "Maintain 2-3cm water depth",
+      "Apply silicon (80-100kg/ha)"
+    ],
+    "materials_needed": [
+      "Bactericide for panicle treatment",
+      "Silicon fertilizer",
+      "Thermometer for seed treatment"
+    ],
+    "estimated_cost": "$30-50 per acre",
+    "expected_recovery": "Prevention is key; treatment protects remaining crop",
+    "warning_signs": [
+      "Sterile grains in panicle",
+      "Grain discoloration (brown to black)",
+      "Upright panicles (sterile)"
+    ]
+  },
+  "blast": {
+    "disease_name": "Rice Blast",
+    "immediate_actions": [
+      "Apply systemic fungicide (Tricyclazole) immediately",
+      "Remove severely infected plants",
+      "Drain field to reduce humidity",
+      "Reduce nitrogen fertilizer"
+    ],
+    "short_term_management": [
+      "Spray fungicide at 7-day intervals (2-3 applications)",
+      "Apply potassium and silicon fertilizers",
+      "Maintain aerobic conditions periodically",
+      "Monitor for lesion expansion"
+    ],
+    "long_term_prevention": [
+      "Use resistant varieties",
+      "Avoid excessive nitrogen fertilization",
+      "Practice balanced fertilization (NPK + Si)",
+      "Maintain proper water management"
+    ],
+    "organic_options": [
+      "Trichocompost application (2.5kg/ha)",
+      "Pseudomonas fluorescens spray",
+      "Silicon supplementation"
+    ],
+    "chemical_options": [
+      "Tricyclazole (300g/ha) - systemic fungicide",
+      "Isoprothiolane (1000ml/ha)",
+      "Azoxystrobin (1ml/L)"
+    ],
+    "cultural_practices": [
+      "Split nitrogen application",
+      "Increase potassium (60kg K2O/ha)",
+      "Apply silicon (100kg/ha)",
+      "Proper spacing (20x15cm)"
+    ],
+    "materials_needed": [
+      "Systemic fungicide (500ml per acre)",
+      "Potassium fertilizer (25kg per acre)",
+      "Silicon fertilizer"
+    ],
+    "estimated_cost": "$35-60 per acre",
+    "expected_recovery": "14-21 days; can cause 50-70% yield loss if untreated",
+    "warning_signs": [
+      "Diamond-shaped lesions with gray centers",
+      "Brown margins on lesions",
+      "Rapid lesion expansion in humid conditions"
+    ]
+  },
+  "brown_spot": {
+    "disease_name": "Brown Spot",
+    "immediate_actions": [
+      "Apply fungicide (Mancozeb or Carbendazim)",
+      "Apply balanced NPK fertilizer",
+      "Ensure adequate soil moisture",
+      "Remove heavily infected lower leaves"
+    ],
+    "short_term_management": [
+      "Spray fungicide twice at 10-day intervals",
+      "Apply potassium-rich fertilizer",
+      "Ensure adequate irrigation",
+      "Apply micronutrients (zinc, iron)"
+    ],
+    "long_term_prevention": [
+      "Soil testing and balanced fertilization",
+      "Use healthy, certified seeds",
+      "Seed treatment with fungicide",
+      "Improve soil organic matter"
+    ],
+    "organic_options": [
+      "Farmyard manure (10 tons/ha)",
+      "Vermicompost (5 tons/ha)",
+      "Neem cake (250kg/ha)"
+    ],
+    "chemical_options": [
+      "Mancozeb (2g/L) - protective fungicide",
+      "Carbendazim (1g/L) - systemic fungicide",
+      "Seed treatment with Carbendazim (2g/kg seed)"
+    ],
+    "cultural_practices": [
+      "Balanced NPK application (120:60:40 kg/ha)",
+      "Add zinc sulfate (25kg/ha) in deficient soils",
+      "Maintain 5-7cm water depth"
+    ],
+    "materials_needed": [
+      "Mancozeb fungicide (400g per acre)",
+      "NPK fertilizer",
+      "Zinc sulfate (if deficient)"
+    ],
+    "estimated_cost": "$25-40 per acre",
+    "expected_recovery": "7-14 days",
+    "warning_signs": [
+      "Circular to oval brown spots on leaves",
+      "Spots with gray or white centers",
+      "Spots on seedlings can be severe"
+    ]
+  },
+  "dead_heart": {
+    "disease_name": "Dead Heart (Stem Borer Damage)",
+    "immediate_actions": [
+      "Apply recommended insecticide",
+      "Remove and destroy dead hearts",
+      "Set up light traps for adult moths",
+      "Drain field water temporarily"
+    ],
+    "short_term_management": [
+      "Apply granular insecticide in whorl",
+      "Use pheromone traps (20/ha)",
+      "Release egg parasitoids (Trichogramma)",
+      "Monitor weekly for new dead hearts"
+    ],
+    "long_term_prevention": [
+      "Avoid overlapping crops",
+      "Use resistant varieties",
+      "Synchronous planting in area",
+      "Destroy stubbles after harvest"
+    ],
+    "organic_options": [
+      "Release Trichogramma japonicum (50,000/ha)",
+      "Neem seed kernel extract (5%)",
+      "Bird perches in field (10-12/acre)"
+    ],
+    "chemical_options": [
+      "Cartap hydrochloride (1kg/ha) - granular",
+      "Chlorantraniliprole (60ml/ha) - spray",
+      "Fipronil (2ml/L) - spray"
+    ],
+    "cultural_practices": [
+      "Synchronized planting within 2-week window",
+      "Clip leaf tips 21 days after transplanting",
+      "Remove alternate hosts (grasses)"
+    ],
+    "materials_needed": [
+      "Insecticide (granular or spray)",
+      "Pheromone traps",
+      "Light traps"
+    ],
+    "estimated_cost": "$30-50 per acre",
+    "expected_recovery": "Plant won't recover but treatment prevents further damage",
+    "warning_signs": [
+      "Central shoot dries and dies",
+      "Easy to pull out dead central leaf",
+      "Pin-hole sized entrance on stem"
+    ]
+  },
+  "downy_mildew": {
+    "disease_name": "Downy Mildew",
+    "immediate_actions": [
+      "Apply systemic fungicide immediately",
+      "Improve field drainage urgently",
+      "Remove and destroy infected plants",
+      "Reduce water depth in field"
+    ],
+    "short_term_management": [
+      "Spray fungicide twice at 10-day intervals",
+      "Maintain proper drainage",
+      "Avoid waterlogging"
+    ],
+    "long_term_prevention": [
+      "Ensure proper land leveling",
+      "Install adequate drainage system",
+      "Use resistant varieties",
+      "Avoid over-irrigation"
+    ],
+    "organic_options": [
+      "Bordeaux mixture (1%) spray",
+      "Trichoderma viride application",
+      "Improve soil drainage with organic matter"
+    ],
+    "chemical_options": [
+      "Metalaxyl (2g/L) - systemic fungicide",
+      "Copper oxychloride (3g/L)",
+      "Seed treatment with Metalaxyl-M (2g/kg)"
+    ],
+    "cultural_practices": [
+      "Proper field leveling",
+      "Install drainage channels",
+      "Avoid excessive water depth (max 5cm)"
+    ],
+    "materials_needed": [
+      "Systemic fungicide (300ml per acre)",
+      "Drainage tools/equipment"
+    ],
+    "estimated_cost": "$35-55 per acre",
+    "expected_recovery": "14-21 days",
+    "warning_signs": [
+      "Chlorotic (yellow-green) leaves",
+      "Stunted growth",
+      "Excessive tillering"
+    ]
+  },
+  "hispa": {
+    "disease_name": "Hispa (Rice Hispa Beetle)",
+    "immediate_actions": [
+      "Apply contact insecticide spray",
+      "Hand collection of beetles in early morning",
+      "Drain field water before spraying",
+      "Remove heavily damaged leaves"
+    ],
+    "short_term_management": [
+      "Spray insecticide at 7-day intervals if needed",
+      "Use sticky traps or sweep net",
+      "Encourage natural predators"
+    ],
+    "long_term_prevention": [
+      "Avoid close planting",
+      "Proper weed management",
+      "Use balanced fertilizer (avoid excess N)",
+      "Conserve natural enemies"
+    ],
+    "organic_options": [
+      "Neem seed kernel extract (5%)",
+      "Hand collection of adults and grubs",
+      "Bird perches in field"
+    ],
+    "chemical_options": [
+      "Chlorpyrifos (2ml/L) - contact action",
+      "Quinalphos (2ml/L)",
+      "Fipronil (2ml/L)"
+    ],
+    "cultural_practices": [
+      "Maintain proper spacing (20x15cm)",
+      "Remove weeds regularly",
+      "Avoid excessive nitrogen fertilizer"
+    ],
+    "materials_needed": [
+      "Contact insecticide (400ml per acre)",
+      "Sprayer",
+      "Sticky traps"
+    ],
+    "estimated_cost": "$20-35 per acre",
+    "expected_recovery": "7-10 days",
+    "warning_signs": [
+      "White parallel streaks on leaves",
+      "Leaves appear bleached",
+      "Adult beetles visible on leaves"
+    ]
+  },
+  "tungro": {
+    "disease_name": "Tungro Disease",
+    "immediate_actions": [
+      "Remove and destroy infected plants (roguing)",
+      "Control vector (green leafhopper) with insecticide",
+      "Isolate field from infected areas",
+      "Stop nitrogen application temporarily"
+    ],
+    "short_term_management": [
+      "Weekly insecticide spray for leafhopper control",
+      "Continue roguing infected plants",
+      "Monitor leafhopper population"
+    ],
+    "long_term_prevention": [
+      "Use resistant/tolerant varieties",
+      "Synchronous planting within 2-week window",
+      "Remove alternate hosts and ratoons",
+      "Destroy stubbles after harvest"
+    ],
+    "organic_options": [
+      "Neem oil spray (3%) for vector control",
+      "Yellow sticky traps for monitoring",
+      "Encourage natural predators"
+    ],
+    "chemical_options": [
+      "Imidacloprid (0.3ml/L) - for leafhopper",
+      "Buprofezin (1ml/L) - nymph control",
+      "Seed treatment with Imidacloprid (5g/kg)"
+    ],
+    "cultural_practices": [
+      "Synchronous planting (community approach)",
+      "Balanced fertilization (NPK 100:50:50)",
+      "Remove diseased plants weekly"
+    ],
+    "materials_needed": [
+      "Systemic insecticide (400ml per acre)",
+      "Yellow sticky traps",
+      "Bags for infected plant disposal"
+    ],
+    "estimated_cost": "$40-70 per acre",
+    "expected_recovery": "No cure for infected plants - focus on vector control",
+    "warning_signs": [
+      "Yellow or orange-yellow leaf discoloration",
+      "Stunted growth",
+      "Reduced tillering"
+    ]
+  },
+  "normal": {
+    "disease_name": "Healthy Rice Plant",
+    "immediate_actions": [
+      "Continue current crop management practices",
+      "Maintain regular monitoring schedule",
+      "Ensure balanced nutrition"
+    ],
+    "short_term_management": [
+      "Monitor field weekly",
+      "Maintain optimal water levels",
+      "Apply fertilizers as per crop stage"
+    ],
+    "long_term_prevention": [
+      "Continue integrated pest management (IPM)",
+      "Practice crop rotation",
+      "Maintain soil health with organic matter"
+    ],
+    "organic_options": [
+      "Vermicompost application (2-3 tons/ha)",
+      "Green manuring in off-season",
+      "Neem cake application (200kg/ha)"
+    ],
+    "chemical_options": [
+      "Balanced NPK as per soil test",
+      "Micronutrient spray if needed"
+    ],
+    "cultural_practices": [
+      "Maintain 5-7cm water depth during vegetative stage",
+      "Regular field inspection",
+      "Proper spacing maintenance"
+    ],
+    "materials_needed": [
+      "NPK fertilizer as per schedule",
+      "Weeding tools"
+    ],
+    "estimated_cost": "$50-80 per acre for complete season",
+    "expected_recovery": "N/A - Maintain healthy status",
+    "warning_signs": [
+      "Watch for any unusual leaf spots",
+      "Monitor for pest activity",
+      "Check for nutrient deficiency symptoms"
+    ]
+  },
+  "default": {
+    "disease_name": "Unknown Condition",
+    "immediate_actions": [
+      "Take clear photos of symptoms",
+      "Consult local agricultural extension officer",
+      "Isolate affected area"
+    ],
+    "short_term_management": [
+      "Monitor affected plants daily",
+      "Maintain field hygiene",
+      "Apply balanced nutrition"
+    ],
+    "long_term_prevention": [
+      "Practice crop rotation",
+      "Use certified seeds",
+      "Regular soil testing"
+    ],
+    "organic_options": [
+      "General plant health tonic"
+    ],
+    "chemical_options": [
+      "Consult expert before applying chemicals"
+    ],
+    "cultural_practices": [
+      "Follow good agricultural practices"
+    ],
+    "materials_needed": [
+      "Camera for documentation"
+    ],
+    "estimated_cost": "Consult local expert",
+    "expected_recovery": "Depends on actual condition",
+    "warning_signs": [
+      "Monitor for symptom changes"
+    ]
+  }
+}
+
