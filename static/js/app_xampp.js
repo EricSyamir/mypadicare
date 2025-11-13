@@ -976,10 +976,8 @@ function setupLanguageSelector() {
             setLanguage(lang);
             languageDropdown.style.display = 'none';
             
-            // Reload treatments if any are displayed
-            if (currentTreatments) {
-                loadTreatments(currentTreatments.disease, lang);
-            }
+            // Refresh the page to ensure all translations are applied
+            window.location.reload();
         });
     });
     

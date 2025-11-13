@@ -1414,7 +1414,7 @@ section {
 .app-content {
     flex: 1;
     margin-top: 80px;
-    padding-bottom: 100px; /* Space for bottom navigation bar */
+    padding-bottom: calc(75px + env(safe-area-inset-bottom, 0px) + 20px); /* Space for bottom navigation bar + safe area + extra padding */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -1422,7 +1422,7 @@ section {
 .screen {
     display: none;
     padding: var(--spacing-lg);
-    padding-bottom: calc(var(--spacing-lg) + 20px); /* Extra bottom padding for buttons */
+    padding-bottom: calc(var(--spacing-lg) + 100px); /* Extra bottom padding for buttons and navbar */
     animation: slideIn 0.3s ease-out;
 }
 
@@ -1455,9 +1455,15 @@ section {
     background: white;
     border-top: 1px solid rgba(46, 204, 113, 0.1);
     display: flex;
-    height: 75px;
+    height: calc(75px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     z-index: 1000;
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+    /* Ensure navbar stays at bottom even when scrolling */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    /* Prevent content from going behind navbar */
+    will-change: transform;
 }
 
 .nav-item {
