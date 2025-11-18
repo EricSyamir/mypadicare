@@ -808,10 +808,199 @@ function showError(message) {
 }
 
 /**
- * Camera functionality (placeholder)
+ * Camera functionality
  */
-function openCameraModal() {
-    showError('Camera feature coming soon! Please use file upload for now.');
+let cameraStream = null;
+let currentFacingMode = 'environment'; // 'environment' for back camera, 'user' for front
+
+async function openCameraModal() {
+    const cameraModal = document.getElementById('cameraModal');
+    const cameraVideo = document.getElementById('cameraVideo');
+    const cameraCanvas = document.getElementById('cameraCanvas');
+    const closeCameraBtn = document.getElementById('closeCameraBtn');
+    const capturePhotoBtn = document.getElementById('capturePhotoBtn');
+    const switchCameraBtn = document.getElementById('switchCameraBtn');
+    
+    if (!cameraModal || !cameraVideo || !cameraCanvas) {
+        showError('Camera elements not found. Please refresh the page.');
+        return;
+    }
+    
+    // Show the modal
+    cameraModal.style.display = 'flex';
+    
+    try {
+        // Request camera access
+        const constraints = {
+            video: {
+                facingMode: currentFacingMode,
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            }
+        };
+        
+        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+        cameraVideo.srcObject = cameraStream;
+        
+        // Setup event listeners
+        if (closeCameraBtn) {
+            closeCameraBtn.onclick = closeCameraModal;
+        }
+        
+        if (capturePhotoBtn) {
+            capturePhotoBtn.onclick = capturePhoto;
+        }
+        
+        if (switchCameraBtn) {
+            switchCameraBtn.onclick = switchCamera;
+        }
+        
+        // Close modal when clicking outside
+        cameraModal.onclick = (e) => {
+            if (e.target === cameraModal) {
+                closeCameraModal();
+            }
+        };
+        
+        console.log('✅ Camera opened successfully');
+    } catch (error) {
+        console.error('❌ Camera access failed:', error);
+        closeCameraModal();
+        
+        let errorMessage = 'Failed to access camera. ';
+        if (error.name === 'NotAllowedError') {
+            errorMessage += 'Please allow camera access in your browser settings.';
+        } else if (error.name === 'NotFoundError') {
+            errorMessage += 'No camera found on this device.';
+        } else if (error.name === 'NotReadableError') {
+            errorMessage += 'Camera is already in use by another application.';
+        } else {
+            errorMessage += error.message;
+        }
+        
+        showError(errorMessage);
+    }
+}
+
+function closeCameraModal() {
+    const cameraModal = document.getElementById('cameraModal');
+    
+    // Stop camera stream
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+    
+    // Hide modal
+    if (cameraModal) {
+        cameraModal.style.display = 'none';
+    }
+    
+    console.log('📷 Camera closed');
+}
+
+async function switchCamera() {
+    // Stop current stream
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+    }
+    
+    // Switch facing mode
+    currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+    
+    const cameraVideo = document.getElementById('cameraVideo');
+    
+    try {
+        const constraints = {
+            video: {
+                facingMode: currentFacingMode,
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            }
+        };
+        
+        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+        cameraVideo.srcObject = cameraStream;
+        
+        console.log(`📷 Switched to ${currentFacingMode === 'environment' ? 'back' : 'front'} camera`);
+    } catch (error) {
+        console.error('❌ Failed to switch camera:', error);
+        showError('Failed to switch camera. Please try again.');
+    }
+}
+
+function capturePhoto() {
+    const cameraVideo = document.getElementById('cameraVideo');
+    const cameraCanvas = document.getElementById('cameraCanvas');
+    
+    if (!cameraVideo || !cameraCanvas) {
+        showError('Camera elements not found.');
+        return;
+    }
+    
+    // Check if video is ready
+    if (cameraVideo.readyState !== cameraVideo.HAVE_ENOUGH_DATA) {
+        showError('Camera is not ready yet. Please wait a moment.');
+        return;
+    }
+    
+    // Check if video has valid dimensions
+    if (!cameraVideo.videoWidth || !cameraVideo.videoHeight) {
+        showError('Camera video is not ready. Please wait a moment.');
+        return;
+    }
+    
+    try {
+        // Set canvas dimensions to match video
+        cameraCanvas.width = cameraVideo.videoWidth;
+        cameraCanvas.height = cameraVideo.videoHeight;
+        
+        // Draw video frame to canvas
+        const ctx = cameraCanvas.getContext('2d');
+        ctx.drawImage(cameraVideo, 0, 0);
+        
+        // Convert canvas to blob
+        cameraCanvas.toBlob((blob) => {
+            if (!blob) {
+                showError('Failed to capture photo. Please try again.');
+                return;
+            }
+            
+            // Create a File object from the blob
+            const fileName = `camera-capture-${Date.now()}.jpg`;
+            const file = new File([blob], fileName, { type: 'image/jpeg' });
+            
+            // Close camera modal
+            closeCameraModal();
+            
+            // Process the captured image
+            uploadedImage = file;
+            console.log('✅ Photo captured:', fileName);
+            
+            // Read and display the file
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                if (previewImg) {
+                    previewImg.src = e.target.result;
+                    showImagePreview();
+                    console.log('✅ Image preview displayed');
+                } else {
+                    showError('Unable to show image preview. Please refresh the page.');
+                }
+            };
+            
+            reader.onerror = () => {
+                showError('Failed to read the captured photo. Please try again.');
+            };
+            
+            reader.readAsDataURL(file);
+            
+        }, 'image/jpeg', 0.95); // 95% quality
+        
+    } catch (error) {
+        console.error('❌ Photo capture failed:', error);
+        showError('Failed to capture photo. Please try again.');
+    }
 }
 
 /**

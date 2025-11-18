@@ -1698,15 +1698,69 @@ section {
 
 #cameraVideo {
     width: 100%;
+    max-width: 100%;
+    height: auto;
     border-radius: var(--radius-md);
     margin-bottom: var(--spacing-lg);
     box-shadow: var(--shadow-lg);
+    background: var(--bg-light);
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
+}
+
+.camera-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .camera-controls {
     display: flex;
     gap: var(--spacing-sm);
     flex-wrap: wrap;
+    justify-content: center;
+}
+
+.camera-controls .btn {
+    flex: 1;
+    min-width: 120px;
+    padding: var(--spacing-md);
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+.camera-controls .btn-primary {
+    background: linear-gradient(135deg, var(--primary-green), var(--primary-green-dark));
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.camera-controls .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.camera-controls .btn-primary:active {
+    transform: translateY(0);
+}
+
+.camera-controls .btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: 2px solid var(--primary-green-light);
+}
+
+.camera-controls .btn-secondary:hover {
+    background: var(--primary-green-light);
+    border-color: var(--primary-green);
 }
 
 /* ===== 16. NOTIFICATIONS ===== */
