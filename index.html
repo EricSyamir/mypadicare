@@ -64,6 +64,14 @@
                 <span class="flag">🇲🇾</span>
                 <span>Bahasa Malaysia</span>
             </button>
+            <button class="language-option" data-lang="ms-kd">
+                <span class="flag">📍</span>
+                <span>Loghat Kedah</span>
+            </button>
+            <button class="language-option" data-lang="ms-kl">
+                <span class="flag">📍</span>
+                <span>Loghat Kelantan</span>
+            </button>
             <button class="language-option" data-lang="ja">
                 <span class="flag">🇯🇵</span>
                 <span>日本語</span>
@@ -183,10 +191,10 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <button class="app-btn" onclick="showScreen('treatmentScreen')">
+                <button class="app-btn" onclick="showScreen('treatmentScreen'); setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 100);">
                     <i class="fas fa-prescription"></i> <span data-translate="viewTreatment">View Treatment</span>
                 </button>
-                <button class="app-btn secondary" onclick="showScreen('homeScreen'); resetUpload();">
+                <button class="app-btn secondary" onclick="showScreen('homeScreen'); resetUpload(); setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 100);">
                     <i class="fas fa-plus"></i> <span data-translate="analyzeAnother">Analyze Another Image</span>
                 </button>
             </div>
@@ -286,7 +294,7 @@
                 </div>
 
                 <!-- Back Button -->
-                <button class="app-btn secondary" onclick="showScreen('resultsScreen')">
+                <button class="app-btn secondary" onclick="showScreen('resultsScreen'); setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 100);">
                     <i class="fas fa-arrow-left"></i> <span data-translate="backToResults">Back to Results</span>
                 </button>
             </div>
@@ -663,6 +671,14 @@
                 
                 // Update navigation
                 updateNavigation(screenId);
+                
+                // Auto-scroll to top after screen change
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 100);
             }
         }
         

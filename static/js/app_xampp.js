@@ -361,6 +361,9 @@ async function analyzeImage() {
         return;
     }
     
+    // Auto-scroll to top when analyze button is clicked
+    scrollToTop();
+    
     // Show loading screen immediately when button is clicked
     showLoadingScreen();
     updateLoadingText(t('analyzingImage') || 'Analyzing image...');
@@ -498,11 +501,26 @@ async function analyzeImage() {
 /**
  * Display analysis results
  */
+/**
+ * Auto-scroll to top of page
+ */
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 function displayResults(results) {
     // Show results screen (mobile app style)
     if (typeof showScreen === 'function') {
         showScreen('resultsScreen');
     }
+    
+    // Auto-scroll to top after successful scan
+    setTimeout(() => {
+        scrollToTop();
+    }, 300);
     
     // Show results section (fallback for non-mobile)
     if (resultsSection) {
@@ -1188,7 +1206,21 @@ async function loadTreatments(disease, language = null) {
     
     try {
         // Determine which treatments file to load
-        const treatmentFile = lang === 'en' ? 'data/treatments.json' : `data/treatments_${lang}.json`;
+        // Handle dialects: ms-kd -> treatments_kd.json, ms-kl -> treatments_kl.json
+        let treatmentFile;
+        if (lang === 'en') {
+            treatmentFile = 'data/treatments.json';
+        } else if (lang === 'ms-kd') {
+            treatmentFile = 'data/treatments_kd.json';
+        } else if (lang === 'ms-kl') {
+            treatmentFile = 'data/treatments_kl.json';
+        } else if (lang === 'ms') {
+            treatmentFile = 'data/treatments_ms.json';
+        } else if (lang === 'ja') {
+            treatmentFile = 'data/treatments_ja.json';
+        } else {
+            treatmentFile = `data/treatments_${lang}.json`;
+        }
         
         const response = await fetch(treatmentFile);
         if (!response.ok) {
@@ -1201,14 +1233,18 @@ async function loadTreatments(disease, language = null) {
         // Store current treatments
         currentTreatments = {
             disease: disease,
-            data: diseaseTreatment
+            data: diseaseTreatment,
+            language: lang
         };
         
         return diseaseTreatment;
     } catch (error) {
         console.error('❌ Failed to load treatments:', error);
-        // Fallback to English
-        if (lang !== 'en') {
+        // Fallback logic: dialect -> base language -> English
+        if (lang.startsWith('ms-')) {
+            console.log('⚠️ Falling back to Bahasa Malaysia treatments');
+            return loadTreatments(disease, 'ms');
+        } else if (lang !== 'en') {
             console.log('⚠️ Falling back to English treatments');
             return loadTreatments(disease, 'en');
         }

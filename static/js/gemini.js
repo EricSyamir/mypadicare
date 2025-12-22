@@ -31,14 +31,22 @@ class GeminiAI {
     buildPrompt(diseaseName, severity, confidence, treatmentData, language = 'en') {
         const diseaseDisplay = diseaseName.replace(/_/g, ' ').toUpperCase();
         
-        // Language-specific instructions
+        // Language-specific instructions (including dialects)
         const languageInstructions = {
             en: 'ANSWER IN ENGLISH.',
             ms: 'ANSWER IN MALAY LANGUAGE (Bahasa Malaysia).',
+            'ms-kd': 'ANSWER IN KEDAHAN DIALECT (Loghat Kedah). Use Kedahan dialect words like "hang" instead of "awak", "mek" instead of "saya", "depa" instead of "mereka", "tak" instead of "tidak". Use local Kedahan expressions and terminology.',
+            'ms-kl': 'ANSWER IN KELANTANESE DIALECT (Loghat Kelantan). Use Kelantanese dialect words like "kito" instead of "kita", "dok" instead of "tidak", "gi" instead of "pergi", "doh" instead of "sudah". Use local Kelantanese expressions and terminology.',
             ja: 'ANSWER IN JAPANESE (日本語).'
         };
         
-        const languageInstruction = languageInstructions[language] || languageInstructions.en;
+        // Handle dialects: ms-kd and ms-kl
+        let languageInstruction = languageInstructions[language];
+        if (!languageInstruction && language.startsWith('ms-')) {
+            // Fallback to base Malay for dialects if not specifically defined
+            languageInstruction = languageInstructions['ms'];
+        }
+        languageInstruction = languageInstruction || languageInstructions.en;
         
         const prompt = `You are an expert agricultural advisor. Give a brief, practical recommendation for a farmer.
 

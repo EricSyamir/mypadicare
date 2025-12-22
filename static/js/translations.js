@@ -1,6 +1,6 @@
 /**
  * MyPadiCare - Multilingual Translation System
- * Supports: English, Malay (Bahasa Malaysia), Japanese
+ * Supports: English, Malay (Bahasa Malaysia), Japanese, Kedahan Dialect, Kelantanese Dialect
  */
 
 const translations = {
@@ -437,6 +437,232 @@ const translations = {
         
         tutorialStep4Title: "治療計画を表示",
         tutorialStep4Desc: "即時の対応、短期および長期の治療を参照してください。すべての推奨事項は、作物を救うのに役立つようにカスタマイズされています！"
+    },
+    
+    'ms-kd': {
+        // Kedahan Dialect (Loghat Kedah)
+        appName: "MyPadiCare",
+        appSubtitle: "Pengesanan Penyakit AI",
+        selectLanguage: "Pilih Bahasa",
+        diseaseDetection: "Pengesanan Penyakit",
+        uploadDescription: "Muat naik gambar daun padi hang dan dapatkan pengesanan penyakit berkuasa AI dengan cadangan rawatan segera.",
+        accuracy: "Ketepatan",
+        diseases: "Penyakit",
+        private: "Peribadi",
+        uploadLeafImage: "Muat Naik Gambar Daun",
+        tapToSelect: "Tekan untuk pilih atau ambil gambar",
+        selectFromGallery: "Pilih dari Galeri",
+        takePhoto: "Ambil Gambar",
+        analyzeImage: "Analisis Gambar",
+        changeImage: "Tukar Gambar",
+        analyzing: "Menganalisis...",
+        analyzingImage: "Menganalisis gambar...",
+        analyzedImage: "Gambar Dianalisis",
+        detectionResults: "Keputusan Pengesanan",
+        confidenceLevel: "Tahap Keyakinan",
+        whyThisHappens: "Kenapa Ni Boleh Jadi",
+        wasThisHelpful: "Ni membantu tak?",
+        viewTreatment: "Tengok Rawatan",
+        analyzeAnother: "Analisis Gambar Lain",
+        aiExpertAdvice: "Nasihat Pakar AI",
+        poweredBy: "Dikuasakan oleh Google Gemini",
+        loadingAI: "Memuatkan cadangan AI...",
+        immediate: "Segera",
+        shortTerm: "Jangka Pendek",
+        longTerm: "Jangka Panjang",
+        materials: "Bahan",
+        immediateActions: "Tindakan Segera",
+        warningSigns: "Tanda Amaran",
+        shortTermManagement: "Pengurusan Jangka Pendek",
+        organicOptions: "Pilihan Organik",
+        chemicalOptions: "Pilihan Kimia",
+        longTermPrevention: "Pencegahan Jangka Panjang",
+        culturalPractices: "Amalan Budaya",
+        materialsNeeded: "Bahan Diperlukan",
+        estimatedCost: "Anggaran Kos:",
+        expectedRecovery: "Jangkaan Pemulihan:",
+        backToResults: "Balik ke Keputusan",
+        howItWorks: "Cara Ia Berfungsi",
+        howItWorksDesc: "Sistem berkuasa AI kami mengesan penyakit padi dalam 4 langkah mudah:",
+        step1Title: "Ambil Gambar",
+        step1Desc: "Ambil gambar yang jelas pada daun padi yang terjejas",
+        step2Title: "Analisis AI",
+        step2Desc: "TensorFlow.js menganalisis gambar dengan ketepatan 90%",
+        step3Title: "Dapatkan Keputusan",
+        step3Desc: "Pengesanan penyakit segera dengan skor keyakinan",
+        step4Title: "Cadangan AI",
+        step4Desc: "Google Gemini AI menyediakan nasihat rawatan",
+        keyFeatures: "Ciri Utama",
+        feature1Title: "100% Peribadi",
+        feature1Desc: "Tiada data dimuat naik",
+        feature2Title: "Berfungsi Luar Talian",
+        feature2Desc: "Tak perlu internet",
+        feature3Title: "Utamakan Mudah Alih",
+        feature3Desc: "Dioptimumkan untuk telefon",
+        feature4Title: "Keputusan Segera",
+        feature4Desc: "Analisis masa nyata",
+        healthyLeafDetection: "Pengesanan Daun Sihat",
+        about: "Perihal",
+        aboutMyPadiCare: "Perihal MyPadiCare",
+        aboutDescription: "MyPadiCare adalah sistem pengesanan penyakit AI 100% dari sisi pelanggan yang berjalan sepenuhnya di pelayar hang. Menggunakan TensorFlow.js dan Google Gemini AI, kami mencapai ketepatan 90% dalam mengesan 10 penyakit padi biasa. Gambar hang tak akan meninggalkan peranti hang.",
+        privacyFirst: "Privasi Utama",
+        privacyDescription: "Semua pemprosesan berlaku di pelayar hang. Gambar hang tak pernah dimuat naik ke mana-mana pelayan.",
+        detectedDiseases: "Penyakit Yang Dikesan",
+        technologyStack: "Susunan Teknologi",
+        tensorFlowDesc: "ML sisi pelanggan",
+        geminiDesc: "Cadangan AI",
+        home: "Utama",
+        feedbackThanks: "Terima kasih atas maklum balas hang!",
+        feedbackAppreciate: "Kami menghargai maklum balas hang",
+        noFileSelected: "Tiada fail dipilih.",
+        fileTooLarge: "Fail terlalu besar. Saiz maksimum ialah 10MB.",
+        unsupportedFileType: "Jenis fail tak disokong. Sila pilih JPG, PNG, atau WEBP.",
+        invalidFileExtension: "Sambungan fail tak sah. Sila pilih fail .jpg, .png, atau .webp.",
+        analysisFailed: "Analisis gagal",
+        pleaseUploadFirst: "Sila muat naik gambar dulu.",
+        bacterial_leaf_blight: "Hawar Daun Bakteria",
+        bacterial_leaf_streak: "Jalur Daun Bakteria",
+        bacterial_panicle_blight: "Hawar Malai Bakteria",
+        blast: "Penyakit Blast",
+        brown_spot: "Bintik Coklat",
+        dead_heart: "Jantung Mati",
+        downy_mildew: "Kudis Bulu",
+        hispa: "Hispa",
+        tungro: "Tungro",
+        normal: "Daun Sihat",
+        healthy: "Sihat",
+        high: "Tinggi",
+        moderate: "Sederhana",
+        low: "Rendah",
+        tutorialWelcome: "Selamat datang ke MyPadiCare!",
+        tutorialQuestion: "Ni kali pertama hang guna aplikasi ni ke?",
+        tutorialYes: "Ya, tunjukkan saya",
+        tutorialNo: "Tak, saya nak mula",
+        tutorialSkip: "Langkau Tutorial",
+        tutorialNext: "Seterusnya",
+        tutorialPrevious: "Sebelumnya",
+        tutorialFinish: "Mulakan",
+        tutorialStep1Title: "Pilih Bahasa Hang",
+        tutorialStep1Desc: "Pilih bahasa pilihan hang dari butang bahasa di penjuru kanan atas. MyPadiCare menyokong Bahasa Inggeris, Bahasa Malaysia, Bahasa Jepun, Loghat Kedah, dan Loghat Kelantan.",
+        tutorialStep2Title: "Muat Naik Gambar",
+        tutorialStep2Desc: "Ambil gambar yang jelas pada daun padi hang atau pilih satu dari galeri hang. Pastikan daun ada pencahayaan yang baik dan gejala boleh nampak dengan jelas.",
+        tutorialStep3Title: "Dapatkan Keputusan Segera",
+        tutorialStep3Desc: "AI kami akan menganalisis gambar hang dan kenal pasti sebarang penyakit. Hang akan nampak nama penyakit, tahap keyakinan, dan cadangan rawatan terperinci dikuasakan oleh Google Gemini AI.",
+        tutorialStep4Title: "Tengok Pelan Rawatan",
+        tutorialStep4Desc: "Semak tindakan segera, rawatan jangka pendek dan jangka panjang. Semua cadangan disesuaikan untuk membantu hang selamatkan tanaman hang!"
+    },
+    
+    'ms-kl': {
+        // Kelantanese Dialect (Loghat Kelantan)
+        appName: "MyPadiCare",
+        appSubtitle: "Pengesanan Penyakit AI",
+        selectLanguage: "Pilih Bahasa",
+        diseaseDetection: "Pengesanan Penyakit",
+        uploadDescription: "Muat naik gambar daun padi kito dan dapatkan pengesanan penyakit berkuasa AI dengan cadangan rawatan segera.",
+        accuracy: "Ketepatan",
+        diseases: "Penyakit",
+        private: "Peribadi",
+        uploadLeafImage: "Muat Naik Gambar Daun",
+        tapToSelect: "Tekan untuk pilih atau ambil gambar",
+        selectFromGallery: "Pilih dari Galeri",
+        takePhoto: "Ambil Gambar",
+        analyzeImage: "Analisis Gambar",
+        changeImage: "Tukar Gambar",
+        analyzing: "Menganalisis...",
+        analyzingImage: "Menganalisis gambar...",
+        analyzedImage: "Gambar Dianalisis",
+        detectionResults: "Keputusan Pengesanan",
+        confidenceLevel: "Tahap Keyakinan",
+        whyThisHappens: "Kenapa Ni Boleh Jadi",
+        wasThisHelpful: "Ni membantu dok?",
+        viewTreatment: "Tengok Rawatan",
+        analyzeAnother: "Analisis Gambar Lain",
+        aiExpertAdvice: "Nasihat Pakar AI",
+        poweredBy: "Dikuasakan oleh Google Gemini",
+        loadingAI: "Memuatkan cadangan AI...",
+        immediate: "Segera",
+        shortTerm: "Jangka Pendek",
+        longTerm: "Jangka Panjang",
+        materials: "Bahan",
+        immediateActions: "Tindakan Segera",
+        warningSigns: "Tanda Amaran",
+        shortTermManagement: "Pengurusan Jangka Pendek",
+        organicOptions: "Pilihan Organik",
+        chemicalOptions: "Pilihan Kimia",
+        longTermPrevention: "Pencegahan Jangka Panjang",
+        culturalPractices: "Amalan Budaya",
+        materialsNeeded: "Bahan Diperlukan",
+        estimatedCost: "Anggaran Kos:",
+        expectedRecovery: "Jangkaan Pemulihan:",
+        backToResults: "Balik ke Keputusan",
+        howItWorks: "Cara Ia Berfungsi",
+        howItWorksDesc: "Sistem berkuasa AI kami mengesan penyakit padi dalam 4 langkah mudah:",
+        step1Title: "Ambil Gambar",
+        step1Desc: "Ambil gambar yang jelas pada daun padi yang terjejas",
+        step2Title: "Analisis AI",
+        step2Desc: "TensorFlow.js menganalisis gambar dengan ketepatan 90%",
+        step3Title: "Dapatkan Keputusan",
+        step3Desc: "Pengesanan penyakit segera dengan skor keyakinan",
+        step4Title: "Cadangan AI",
+        step4Desc: "Google Gemini AI menyediakan nasihat rawatan",
+        keyFeatures: "Ciri Utama",
+        feature1Title: "100% Peribadi",
+        feature1Desc: "Dok ada data dimuat naik",
+        feature2Title: "Berfungsi Luar Talian",
+        feature2Desc: "Dok perlu internet",
+        feature3Title: "Utamakan Mudah Alih",
+        feature3Desc: "Dioptimumkan untuk telefon",
+        feature4Title: "Keputusan Segera",
+        feature4Desc: "Analisis masa nyata",
+        healthyLeafDetection: "Pengesanan Daun Sihat",
+        about: "Perihal",
+        aboutMyPadiCare: "Perihal MyPadiCare",
+        aboutDescription: "MyPadiCare adalah sistem pengesanan penyakit AI 100% dari sisi pelanggan yang berjalan sepenuhnya di pelayar kito. Menggunakan TensorFlow.js dan Google Gemini AI, kami mencapai ketepatan 90% dalam mengesan 10 penyakit padi biasa. Gambar kito dok akan meninggalkan peranti kito.",
+        privacyFirst: "Privasi Utama",
+        privacyDescription: "Semua pemprosesan berlaku di pelayar kito. Gambar kito dok pernah dimuat naik ke mana-mana pelayan.",
+        detectedDiseases: "Penyakit Yang Dikesan",
+        technologyStack: "Susunan Teknologi",
+        tensorFlowDesc: "ML sisi pelanggan",
+        geminiDesc: "Cadangan AI",
+        home: "Utama",
+        feedbackThanks: "Terima kasih atas maklum balas kito!",
+        feedbackAppreciate: "Kami menghargai maklum balas kito",
+        noFileSelected: "Dok ada fail dipilih.",
+        fileTooLarge: "Fail terlalu besar. Saiz maksimum ialah 10MB.",
+        unsupportedFileType: "Jenis fail dok disokong. Sila pilih JPG, PNG, atau WEBP.",
+        invalidFileExtension: "Sambungan fail dok sah. Sila pilih fail .jpg, .png, atau .webp.",
+        analysisFailed: "Analisis gagal",
+        pleaseUploadFirst: "Sila muat naik gambar dulu.",
+        bacterial_leaf_blight: "Hawar Daun Bakteria",
+        bacterial_leaf_streak: "Jalur Daun Bakteria",
+        bacterial_panicle_blight: "Hawar Malai Bakteria",
+        blast: "Penyakit Blast",
+        brown_spot: "Bintik Coklat",
+        dead_heart: "Jantung Mati",
+        downy_mildew: "Kudis Bulu",
+        hispa: "Hispa",
+        tungro: "Tungro",
+        normal: "Daun Sihat",
+        healthy: "Sihat",
+        high: "Tinggi",
+        moderate: "Sederhana",
+        low: "Rendah",
+        tutorialWelcome: "Selamat datang ke MyPadiCare!",
+        tutorialQuestion: "Ni kali pertama kito guna aplikasi ni ke?",
+        tutorialYes: "Ya, tunjukkan saya",
+        tutorialNo: "Dok, saya nak mula",
+        tutorialSkip: "Langkau Tutorial",
+        tutorialNext: "Seterusnya",
+        tutorialPrevious: "Sebelumnya",
+        tutorialFinish: "Mulakan",
+        tutorialStep1Title: "Pilih Bahasa Kito",
+        tutorialStep1Desc: "Pilih bahasa pilihan kito dari butang bahasa di penjuru kanan atas. MyPadiCare menyokong Bahasa Inggeris, Bahasa Malaysia, Bahasa Jepun, Loghat Kedah, dan Loghat Kelantan.",
+        tutorialStep2Title: "Muat Naik Gambar",
+        tutorialStep2Desc: "Ambil gambar yang jelas pada daun padi kito atau pilih satu dari galeri kito. Pastikan daun ada pencahayaan yang baik dan gejala boleh nampak dengan jelas.",
+        tutorialStep3Title: "Dapatkan Keputusan Segera",
+        tutorialStep3Desc: "AI kami akan menganalisis gambar kito dan kenal pasti sebarang penyakit. Kito akan nampak nama penyakit, tahap keyakinan, dan cadangan rawatan terperinci dikuasakan oleh Google Gemini AI.",
+        tutorialStep4Title: "Tengok Pelan Rawatan",
+        tutorialStep4Desc: "Semak tindakan segera, rawatan jangka pendek dan jangka panjang. Semua cadangan disesuaikan untuk membantu kito selamatkan tanaman kito!"
     }
 };
 
@@ -447,17 +673,44 @@ let currentLanguage = 'en';
  * Get translation for a key
  */
 function t(key) {
-    return translations[currentLanguage][key] || translations['en'][key] || key;
+    // Support dialects: if dialect not found, fallback to base language, then English
+    if (translations[currentLanguage] && translations[currentLanguage][key]) {
+        return translations[currentLanguage][key];
+    }
+    
+    // Fallback to base language for dialects (ms-kd -> ms, ms-kl -> ms)
+    if (currentLanguage.startsWith('ms-')) {
+        const baseLang = 'ms';
+        if (translations[baseLang] && translations[baseLang][key]) {
+            return translations[baseLang][key];
+        }
+    }
+    
+    // Final fallback to English
+    return translations['en'][key] || key;
 }
 
 /**
  * Set current language
  */
 function setLanguage(lang) {
+    // Support dialects: ms-kd, ms-kl, or base languages: en, ms, ja
     if (translations[lang]) {
         currentLanguage = lang;
         localStorage.setItem('mypadicare_language', lang);
         updatePageTranslations();
+        
+        // Reload treatments if results are displayed
+        if (typeof currentTreatments !== 'undefined' && currentTreatments && currentTreatments.disease) {
+            if (typeof loadTreatments === 'function') {
+                loadTreatments(currentTreatments.disease, lang).then(treatments => {
+                    if (treatments && typeof displayTreatments === 'function') {
+                        displayTreatments(treatments);
+                    }
+                });
+            }
+        }
+        
         console.log(`✅ Language changed to: ${lang}`);
     } else {
         console.error(`❌ Language not supported: ${lang}`);

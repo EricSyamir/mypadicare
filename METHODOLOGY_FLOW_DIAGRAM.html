@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPadiCare Methodology Flow Diagram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .diagram-wrapper {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .diagram-container {
+            width: 100%;
+            min-height: 1400px;
+            position: relative;
+            background: #fafafa;
+        }
+        
+        /* CNN Section - Left Side (Light Blue/Green) */
+        .cnn-section {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 48%;
+            background: linear-gradient(135deg, #e3f2fd 0%, #c8e6c9 100%);
+            border: 4px solid #4caf50;
+            border-radius: 16px;
+            padding: 30px;
+        }
+        
+        .section-header {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #1b5e20;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4caf50;
+        }
+        
+        .flow-box {
+            background: white;
+            border: 3px solid #4caf50;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .flow-arrow {
+            position: absolute;
+            left: 50%;
+            top: -25px;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 20px solid #4caf50;
+        }
+        
+        .flow-box:first-child .flow-arrow {
+            display: none;
+        }
+        
+        .icon-large {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .box-label {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2e7d32;
+            text-align: center;
+        }
+        
+        .dataset-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .disk {
+            width: 120px;
+            height: 20px;
+            background: #66bb6a;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .gear-icon {
+            font-size: 4em;
+            color: #4caf50;
+            animation: rotate 3s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .metric-box {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: #856404;
+        }
+        
+        .diseases-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .disease-item {
+            background: #e8f5e9;
+            border: 2px solid #66bb6a;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #1b5e20;
+            font-weight: 600;
+        }
+        
+        /* LLM Section - Right Side (Dark Blue) */
+        .llm-section {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 48%;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            border: 4px solid #3f51b5;
+            border-radius: 16px;
+            padding: 30px;
+            color: white;
+        }
+        
+        .llm-section .section-header {
+            color: #e3f2fd;
+            border-bottom-color: #5c6bc0;
+        }
+        
+        .llm-subsection-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 3px solid #5c6bc0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .subsection-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #c5cae9;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #7986cb;
+        }
+        
+        .llm-flow-box {
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid #7986cb;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            position: relative;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .llm-flow-arrow {
+            position: absolute;
+            left: 50%;
+            top: -20px;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 18px solid #7986cb;
+        }
+        
+        .llm-flow-box:first-child .llm-flow-arrow {
+            display: none;
+        }
+        
+        .llm-box-label {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #e3f2fd;
+            text-align: center;
+        }
+        
+        .documents-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .document {
+            width: 100px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid #9fa8da;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .chunks-horizontal {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .chunk-bar {
+            width: 60px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid #9fa8da;
+            border-radius: 5px;
+        }
+        
+        .neural-network {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            justify-items: center;
+        }
+        
+        .neuron {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid #9fa8da;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .vector-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        }
+        
+        .vector-square {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #9fa8da;
+        }
+        
+        .vector-store-container {
+            background: rgba(255, 255, 255, 0.25);
+            border: 3px solid #7986cb;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .vector-nodes {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+        
+        .vector-node {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid #9fa8da;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .localization-box {
+            background: rgba(255, 193, 7, 0.25);
+            border: 3px solid #ffc107;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .dialects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .dialect-item {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            color: #fff9c4;
+        }
+        
+        /* Connection Arrow Between Sections */
+        .main-arrow {
+            position: absolute;
+            left: 49%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 80px;
+            height: 6px;
+            background: #ff9800;
+            z-index: 100;
+        }
+        
+        .main-arrow::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: -8px;
+            width: 0;
+            height: 0;
+            border-left: 22px solid #ff9800;
+            border-top: 11px solid transparent;
+            border-bottom: 11px solid transparent;
+        }
+        
+        .query-box {
+            background: rgba(33, 150, 243, 0.3);
+            border: 3px solid #2196f3;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .llm-box {
+            background: rgba(33, 150, 243, 0.4);
+            border: 3px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: white;
+        }
+        
+        .user-box {
+            background: rgba(76, 175, 80, 0.4);
+            border: 3px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagram-wrapper">
+        <div class="diagram-container">
+            <!-- CNN Section (Left) -->
+            <div class="cnn-section">
+                <div class="section-header">Convolutional Neural Networks</div>
+                
+                <!-- Image Acquisition -->
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div style="text-align: center;">
+                        <div class="icon-large">🌾</div>
+                        <div class="box-label">Rice Plants</div>
+                    </div>
+                </div>
+                
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div style="text-align: center;">
+                        <div class="icon-large">📷</div>
+                        <div class="box-label">Image Acquisition</div>
+                    </div>
+                </div>
+                
+                <!-- Data Preparation -->
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div class="dataset-stack">
+                        <div class="disk"></div>
+                        <div class="disk"></div>
+                        <div class="disk"></div>
+                        <div class="disk"></div>
+                        <div class="box-label" style="margin-top: 10px;">Leaf Disease Image Dataset</div>
+                    </div>
+                </div>
+                
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div style="text-align: center;">
+                        <div class="icon-large">⚙️</div>
+                        <div class="box-label">Image Pre-processing</div>
+                    </div>
+                </div>
+                
+                <!-- Dataset Splitting -->
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div style="display: flex; justify-content: space-around; width: 100%;">
+                        <div style="text-align: center;">
+                            <div class="disk" style="width: 80px;"></div>
+                            <div class="box-label" style="font-size: 0.9em; margin-top: 5px;">Test Set</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div class="disk" style="width: 80px;"></div>
+                            <div class="box-label" style="font-size: 0.9em; margin-top: 5px;">Training Set</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Model Training -->
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div style="text-align: center;">
+                        <div class="gear-icon">⚙️</div>
+                        <div class="box-label">Model Training</div>
+                    </div>
+                </div>
+                
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div class="documents-stack">
+                        <div class="document" style="width: 120px;"></div>
+                        <div class="document" style="width: 120px;"></div>
+                        <div class="document" style="width: 120px;"></div>
+                        <div class="box-label" style="margin-top: 10px; color: #2e7d32;">Training and Validation Datasets</div>
+                    </div>
+                </div>
+                
+                <!-- Performance Assessment -->
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div class="metrics-container">
+                        <div class="metric-box">Accuracy</div>
+                        <div class="metric-box">Precision</div>
+                        <div class="metric-box">Recall</div>
+                        <div class="metric-box">F Score</div>
+                    </div>
+                    <div class="box-label" style="margin-top: 10px;">Performance Assessment</div>
+                </div>
+                
+                <!-- Disease Classification -->
+                <div class="flow-box">
+                    <div class="flow-arrow"></div>
+                    <div>
+                        <div class="box-label" style="margin-bottom: 15px;">Leaf Disease Classification</div>
+                        <div class="diseases-grid">
+                            <div class="disease-item">Blast</div>
+                            <div class="disease-item">Brown Spot</div>
+                            <div class="disease-item">Leaf Blight</div>
+                            <div class="disease-item">Tungro</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Connection Arrow -->
+            <div class="main-arrow"></div>
+            
+            <!-- LLM Section (Right) -->
+            <div class="llm-section">
+                <div class="section-header">Large Language Model</div>
+                
+                <!-- Indexing Section -->
+                <div class="llm-subsection-box">
+                    <div class="subsection-title">Disease Treatment Recommendation Engine</div>
+                    
+                    <!-- Documents -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div class="documents-stack">
+                            <div class="document" style="background: rgba(255,255,255,0.5);"></div>
+                            <div class="document" style="background: rgba(255,255,255,0.5);"></div>
+                            <div class="document" style="background: rgba(255,255,255,0.5);"></div>
+                            <div class="llm-box-label" style="margin-top: 10px;">Documents</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chunking -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div>
+                            <div class="chunks-horizontal">
+                                <div class="chunk-bar"></div>
+                                <div class="chunk-bar"></div>
+                                <div class="chunk-bar"></div>
+                            </div>
+                            <div class="llm-box-label" style="margin-top: 10px;">Chunks</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Embedding Model -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div>
+                            <div class="neural-network">
+                                <div class="neuron"></div>
+                                <div class="neuron"></div>
+                                <div class="neuron"></div>
+                            </div>
+                            <div class="llm-box-label" style="margin-top: 10px;">Embedding Model</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vectorize -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div>
+                            <div class="vector-grid">
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                            </div>
+                            <div class="llm-box-label" style="margin-top: 10px;">Vectorize</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vector Store -->
+                    <div class="vector-store-container">
+                        <div class="llm-box-label" style="margin-bottom: 15px;">Vector Store</div>
+                        <div class="vector-nodes">
+                            <div class="vector-node">Node 1</div>
+                            <div class="vector-node">Node 2</div>
+                            <div class="vector-node">Node 3</div>
+                        </div>
+                        <div class="llm-box-label" style="margin-top: 15px;">Indexing</div>
+                    </div>
+                </div>
+                
+                <!-- Querying Section -->
+                <div class="llm-subsection-box">
+                    <div class="subsection-title">Personalised Treatment Recommendation</div>
+                    
+                    <!-- Query Input -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div class="query-box">
+                            Query
+                        </div>
+                    </div>
+                    
+                    <!-- Query Vectorization -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div>
+                            <div class="neural-network">
+                                <div class="neuron"></div>
+                                <div class="neuron"></div>
+                                <div class="neuron"></div>
+                            </div>
+                            <div class="llm-box-label" style="margin-top: 10px;">Embedding Model</div>
+                            <div class="vector-grid" style="margin-top: 10px; max-width: 150px; margin-left: auto; margin-right: auto;">
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                                <div class="vector-square"></div>
+                            </div>
+                            <div class="llm-box-label" style="margin-top: 5px;">Vectorize</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search & Retrieve -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div style="text-align: center;">
+                            <div class="llm-box-label">Search</div>
+                            <div class="vector-store-container" style="margin-top: 10px; padding: 10px;">
+                                <div class="llm-box-label" style="font-size: 0.9em;">Vector Store</div>
+                            </div>
+                            <div class="llm-box-label" style="margin-top: 10px;">Retrieve</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Relevant Contexts -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div style="text-align: center;">
+                            <div class="query-box" style="margin-bottom: 10px;">Query</div>
+                            <div class="llm-box-label">Relevant Contexts</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Localization -->
+                    <div class="localization-box">
+                        <div class="llm-box-label" style="color: #ffeb3b; margin-bottom: 15px;">Language & Dialect Localization</div>
+                        <div class="dialects-grid">
+                            <div class="dialect-item">🇬🇧 English</div>
+                            <div class="dialect-item">🇲🇾 Bahasa</div>
+                            <div class="dialect-item">📍 Kedahan</div>
+                            <div class="dialect-item">📍 Kelantanese</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Prompt Generation -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.8em; line-height: 1.4; color: #c5cae9;">
+                                ─────────────<br>
+                                ─────────────<br>
+                                ─────────────
+                            </div>
+                            <div class="llm-box-label" style="margin-top: 10px;">Prompt</div>
+                        </div>
+                    </div>
+                    
+                    <!-- LLM -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div class="llm-box">LLM</div>
+                    </div>
+                    
+                    <!-- Generate Response -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div class="llm-box-label">Generate Response</div>
+                    </div>
+                    
+                    <!-- User Output -->
+                    <div class="llm-flow-box">
+                        <div class="llm-flow-arrow"></div>
+                        <div class="user-box">User</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
