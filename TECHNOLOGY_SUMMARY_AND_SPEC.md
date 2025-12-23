@@ -1,24 +1,71 @@
 ## Summary of Technology
 
-MyPadiCare is an AI-powered digital agronomy assistant that helps rice farmers diagnose leaf diseases and receive localized treatment advice in real time. The system combines on-device image analysis with cloud LLM reasoning to deliver accurate, farmer-friendly guidance in English, Bahasa Malaysia, Kedahan, Kelantanese, and Japanese. Its **novelty and inventiveness** lie in fusing CNN-based paddy disease detection with dialect-aware large language models and localized treatment knowledge bases, packaged in a mobile-first web app that works directly in the browser without installing native apps. In terms of **usefulness and application**, the solution reduces guesswork in crop protection, shortens diagnosis time from days to seconds, and standardizes best-practice treatments for smallholders, cooperatives, and agritech service providers.
+Around 200 words mentioning on;
 
-The **market and commercial potential** is significant across Southeast Asia’s rice-growing regions, where millions of small farmers still rely on manual visual inspection and extension visits. MyPadiCare can be offered as a SaaS platform to agri-input companies, millers, insurers, and government agencies, or white‑labeled into existing farmer apps. Its **environmental friendliness** comes from recommending targeted, data-driven interventions that reduce overuse of agrochemicals, optimize water and fertilizer use, and encourage integrated pest management, thereby lowering runoff and improving soil health. The **commercialisation potential** includes subscription tiers (per farm, per hectare, or per agronomist account), API access for third parties, and premium analytics modules that aggregate anonymized field data for yield forecasting and disease surveillance.
+1. Novelty and Inventiveness (new, original creative, unique)  
+2. Usefulness and application (applicability, solving problem and contribution to industry)  
+3. Market and commercial potential (market spread, affordability, product market life span)  
+4. Environmental Friendliness (recyclable, reusable, renewable)  
+5. Commercialisation potential  
 
-**Value Proposition – Technology Uniqueness**  
-AI-powered, browser-based paddy disease detection and treatment advice that speaks the farmer’s dialect, reduces chemical waste, and plugs seamlessly into existing agricultural value chains.
+*Must be in commercial terms*
+
+---
+
+## Value Proposition
+
+Technology uniqueness
 
 ---
 
 ## Technical Specification
 
-MyPadiCare is built as a responsive, single-page web application optimized for mobile browsers, allowing farmers to use the system from low-cost Android devices without installing native apps. The frontend is implemented with HTML5, CSS, and vanilla JavaScript, orchestrated through a screen-based UI flow where users upload or capture a rice leaf image, trigger analysis, view detection results, and optionally request AI-generated treatment advice. A scroll-to-top behavior is implemented globally after major interactions to maintain usability on long mobile pages.
+Around 500 words mentioning on technical design, development, how it works, and procedures related to the requirements it outlines.
 
-For image-based disease classification, the system uses a pre-trained Convolutional Neural Network exported to TensorFlow.js for in-browser inference. The CNN accepts a normalized leaf image and outputs a probability distribution over disease classes such as bacterial leaf blight, blast, brown spot, tungro, and a healthy “normal” class. The top prediction, confidence score, and ranked alternatives are passed to the UI and to the recommendation engine. Running inference client-side reduces latency, preserves farmer privacy (images are not uploaded to a server), and minimizes backend infrastructure costs.
+---
 
-Localization is handled through a structured `translations.js` module that stores all UI strings, disease names, and severity labels for English, Bahasa Malaysia, Kedahan, Kelantanese, and Japanese. A lightweight i18n helper (`t(key)`) resolves translations with dialect-aware fallbacks (e.g., `ms-kd` → `ms` → `en`). Treatment protocols are maintained in language-specific JSON files (e.g., `treatments_ms.json`, `treatments_kd.json`, `treatments_kl.json`) keyed by disease identifier. Each entry contains immediate actions, short-term management, long-term prevention, organic and chemical options, cultural practices, materials needed, estimated cost, and expected recovery time. A dynamic loader selects the correct file based on the current language and falls back to base Malay or English if a dialect file is missing or incomplete.
+## Infographic – MyPadiCare
 
-For higher-level agronomic advice, MyPadiCare integrates Google Gemini 2.0 Flash through a dedicated `gemini.js` module. The app constructs a rich prompt containing the detected disease, severity (derived from the CNN confidence), localized disease name, relevant sections of the treatment JSON, and explicit instructions on response language and dialect. The LLM then returns a concise, structured recommendation aligned with three horizons: immediate, short-term, and long-term management. The Gemini integration is configured via `config.js`, which stores the API key and endpoint, and includes robust error handling, timeouts, and a rule-based multilingual fallback generator in case the API call fails.
+**Title**  
+INTELLIGENT PADDY DISEASE DETECTION WITH LLM ENHANCED TREATMENT RECOMMENDATION
 
-From an architectural perspective, the system is intentionally “thin backend, rich frontend.” Core logic—image handling, treatment loading, language switching, and UI rendering—resides entirely in client-side JavaScript, making the solution portable across hosting environments (local XAMPP, cloud platforms, or static hosting with a small proxy for Gemini). The codebase is modularized into separate files for configuration, translations, AI integration, and app logic, simplifying maintenance and future extension (e.g., adding new crops or languages). Security best practices include keeping the Gemini key abstracted in a config layer and avoiding persistent storage of sensitive images or farmer identifiers. Overall, the technical design prioritizes low friction deployment, offline-tolerant usage patterns, and an extensible architecture ready for commercialization and integration into broader agri-digital ecosystems.
+### Introduction
 
+- More than 50% of the world feeds on paddy, but diseases decreases yield crop.  
+- Able to give real-time disease detection and instant treatment guidance, helping farmers protect crops efficiently and sustainably.  
+- Scalable for Malaysia and ASEAN, supporting the National AI Strategy and SIRIM's mission in agricultural innovation.  
 
+### Objectives
+
+- Develop a CNN-based model for automated disease detection.  
+- Implement an LLM-driven system for personalized treatment recommendations.  
+- Deploy an accessible mobile application for farmers.  
+
+### Problem Statement
+
+- Lack of scalable solutions for real-time disease detection and treatment guidance while traditional detections are unreliable, slow and inaccurate.  
+
+### Solution Framework
+
+- Convolutional Neural Networks  
+- Large Language Model  
+
+### Value Propositions
+
+- High accuracy (90%) using cross-validation and real-world testing for fast disease classification from uploaded images.  
+- Farmer-friendly explanations with multi-language support, powered by Gemini API.  
+- Mobile/Web app with a simple upload feature, real-time results, and step-by-step treatment guides.  
+- Flexible business model: pay-per-use, subscription, and supply-chain integration.  
+
+### Impact & Benefits
+
+- Early intervention reduces crop losses and optimizes input use.  
+- Automated recommendations minimize pesticide misuse and environmental impact.  
+- Platform fosters data-driven, self-reliant farming communities.  
+- Can reduce yield losses by up to 70%.  
+
+### Researchers Involved
+
+1. MUHAMMAD ERIC SYAMIR SHAMSURIZAL  
+2. TS DR SHUIB BASRI  
+3. MR HUSAINI MAMMAN  
