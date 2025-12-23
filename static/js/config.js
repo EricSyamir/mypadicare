@@ -5,7 +5,7 @@
 
 const CONFIG = {
     // Google Gemini API Configuration
-    GEMINI_API_KEY: 'AIzaSyCOnJaGxm18KuXFBj7kJdo16mEcdmyJYzw',
+    GEMINI_API_KEY: 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g',
     GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
     
     // Health Detection Model Configuration
