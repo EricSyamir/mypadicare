@@ -7,27 +7,68 @@
 let uploadedImage = null;
 let detectionResults = null;
 
-// Disease descriptions database
+// Disease descriptions database (multilingual)
 const diseaseDescriptions = {
-    'bacterial_leaf_blight': 'This bacterial infection occurs due to high humidity, warm temperatures (25-30°C), and poor air circulation. It spreads through water splashing, contaminated tools, or infected plant debris. Excessive nitrogen fertilization and dense planting can worsen the condition.',
-    
-    'bacterial_leaf_streak': 'Caused by bacteria that thrive in warm, humid conditions with temperatures around 25-35°C. The disease spreads through wind-driven rain, irrigation water, and contaminated equipment. Poor drainage and overcrowding of plants increase susceptibility.',
-    
-    'bacterial_panicle_blight': 'This bacterial disease develops during the reproductive stage when humidity is high and temperatures range from 25-30°C. It spreads through rain splash, insects, and contaminated seeds. Stress from drought followed by wet conditions often triggers outbreaks.',
-    
-    'blast': 'Fungal disease caused by Magnaporthe oryzae, thriving in cool, wet conditions with high humidity. It spreads through airborne spores during cloudy, humid weather. Excessive nitrogen fertilization, dense planting, and temperature fluctuations (20-25°C) promote infection.',
-    
-    'brown_spot': 'This fungal infection occurs due to nutrient deficiency (especially potassium and silicon), water stress, and poor soil conditions. High humidity, warm temperatures (25-30°C), and weakened plants from environmental stress make rice susceptible to this disease.',
-    
-    'dead_heart': 'Caused by stem borer insects that lay eggs on rice plants. The larvae bore into stems, causing the central shoot to die. This happens more frequently in fields with poor water management, excessive nitrogen fertilization, and during the vegetative growth stage.',
-    
-    'downy_mildew': 'This fungal disease thrives in cool, humid conditions with temperatures around 15-25°C. It spreads through airborne spores and water splash. Poor air circulation, dense planting, overhead irrigation, and high relative humidity (above 85%) favor disease development.',
-    
-    'hispa': 'Caused by rice hispa beetles that feed on leaf tissue, creating characteristic scraping marks. These pests are more active during warm, humid weather and are attracted to lush, green foliage. Poor field sanitation and nearby grassy areas increase infestation risk.',
-    
-    'tungro': 'A viral disease transmitted by green leafhoppers. It occurs when infected leafhoppers feed on healthy plants, transferring the virus. The disease is more common during warm, humid seasons and in areas with high leafhopper populations. Poor weed control increases vector habitat.',
-    
-    'normal': 'Great job! Your rice plants look healthy and disease-free. This indicates proper field management, good nutrition, adequate water management, and effective pest control. Continue your excellent farming practices - regular monitoring, balanced fertilization, proper spacing, and maintaining field hygiene.'
+    en: {
+        'bacterial_leaf_blight': 'This bacterial infection occurs due to high humidity, warm temperatures (25-30°C), and poor air circulation. It spreads through water splashing, contaminated tools, or infected plant debris. Excessive nitrogen fertilization and dense planting can worsen the condition.',
+        'bacterial_leaf_streak': 'Caused by bacteria that thrive in warm, humid conditions with temperatures around 25-35°C. The disease spreads through wind-driven rain, irrigation water, and contaminated equipment. Poor drainage and overcrowding of plants increase susceptibility.',
+        'bacterial_panicle_blight': 'This bacterial disease develops during the reproductive stage when humidity is high and temperatures range from 25-30°C. It spreads through rain splash, insects, and contaminated seeds. Stress from drought followed by wet conditions often triggers outbreaks.',
+        'blast': 'Fungal disease caused by Magnaporthe oryzae, thriving in cool, wet conditions with high humidity. It spreads through airborne spores during cloudy, humid weather. Excessive nitrogen fertilization, dense planting, and temperature fluctuations (20-25°C) promote infection.',
+        'brown_spot': 'This fungal infection occurs due to nutrient deficiency (especially potassium and silicon), water stress, and poor soil conditions. High humidity, warm temperatures (25-30°C), and weakened plants from environmental stress make rice susceptible to this disease.',
+        'dead_heart': 'Caused by stem borer insects that lay eggs on rice plants. The larvae bore into stems, causing the central shoot to die. This happens more frequently in fields with poor water management, excessive nitrogen fertilization, and during the vegetative growth stage.',
+        'downy_mildew': 'This fungal disease thrives in cool, humid conditions with temperatures around 15-25°C. It spreads through airborne spores and water splash. Poor air circulation, dense planting, overhead irrigation, and high relative humidity (above 85%) favor disease development.',
+        'hispa': 'Caused by rice hispa beetles that feed on leaf tissue, creating characteristic scraping marks. These pests are more active during warm, humid weather and are attracted to lush, green foliage. Poor field sanitation and nearby grassy areas increase infestation risk.',
+        'tungro': 'A viral disease transmitted by green leafhoppers. It occurs when infected leafhoppers feed on healthy plants, transferring the virus. The disease is more common during warm, humid seasons and in areas with high leafhopper populations. Poor weed control increases vector habitat.',
+        'normal': 'Great job! Your rice plants look healthy and disease-free. This indicates proper field management, good nutrition, adequate water management, and effective pest control. Continue your excellent farming practices - regular monitoring, balanced fertilization, proper spacing, and maintaining field hygiene.'
+    },
+    ms: {
+        'bacterial_leaf_blight': 'Jangkitan bakteria ini berlaku disebabkan kelembapan tinggi, suhu panas (25-30°C), dan peredaran udara yang lemah. Ia merebak melalui percikan air, alatan yang tercemar, atau sisa tanaman yang dijangkiti. Pembajaan nitrogen berlebihan dan penanaman padat boleh memburukkan keadaan.',
+        'bacterial_leaf_streak': 'Disebabkan oleh bakteria yang membiak dalam keadaan lembap dan panas dengan suhu sekitar 25-35°C. Penyakit ini merebak melalui hujan yang dibawa angin, air pengairan, dan peralatan yang tercemar. Saliran yang lemah dan tanaman yang terlalu rapat meningkatkan kerentanan.',
+        'bacterial_panicle_blight': 'Penyakit bakteria ini berkembang semasa peringkat pembiakan apabila kelembapan tinggi dan suhu antara 25-30°C. Ia merebak melalui percikan hujan, serangga, dan benih yang tercemar. Tekanan dari kemarau diikuti keadaan lembap sering mencetuskan wabak.',
+        'blast': 'Penyakit kulat disebabkan oleh Magnaporthe oryzae, yang membiak dalam keadaan sejuk dan lembap dengan kelembapan tinggi. Ia merebak melalui spora bawaan udara semasa cuaca mendung dan lembap. Pembajaan nitrogen berlebihan, penanaman padat, dan turun naik suhu (20-25°C) menggalakkan jangkitan.',
+        'brown_spot': 'Jangkitan kulat ini berlaku disebabkan kekurangan nutrien (terutamanya kalium dan silikon), tekanan air, dan keadaan tanah yang lemah. Kelembapan tinggi, suhu panas (25-30°C), dan tanaman yang lemah akibat tekanan persekitaran menjadikan padi terdedah kepada penyakit ini.',
+        'dead_heart': 'Disebabkan oleh serangga penggerek batang yang bertelur pada tanaman padi. Larva mengorek masuk ke dalam batang, menyebabkan pucuk tengah mati. Ini berlaku lebih kerap di ladang dengan pengurusan air yang lemah, pembajaan nitrogen berlebihan, dan semasa peringkat pertumbuhan vegetatif.',
+        'downy_mildew': 'Penyakit kulat ini membiak dalam keadaan sejuk dan lembap dengan suhu sekitar 15-25°C. Ia merebak melalui spora bawaan udara dan percikan air. Peredaran udara yang lemah, penanaman padat, pengairan atas, dan kelembapan relatif tinggi (melebihi 85%) menggalakkan perkembangan penyakit.',
+        'hispa': 'Disebabkan oleh kumbang hispa padi yang memakan tisu daun, mencipta kesan calar yang khas. Perosak ini lebih aktif semasa cuaca panas dan lembap dan tertarik kepada dedaunan hijau subur. Sanitasi ladang yang lemah dan kawasan berumput berdekatan meningkatkan risiko serangan.',
+        'tungro': 'Penyakit virus yang disebarkan oleh wereng hijau. Ia berlaku apabila wereng yang dijangkiti memakan tanaman sihat, memindahkan virus. Penyakit ini lebih biasa semasa musim panas dan lembap dan di kawasan dengan populasi wereng yang tinggi. Kawalan rumpai yang lemah meningkatkan habitat vektor.',
+        'normal': 'Tahniah! Tanaman padi anda kelihatan sihat dan bebas penyakit. Ini menunjukkan pengurusan ladang yang baik, pemakanan yang baik, pengurusan air yang mencukupi, dan kawalan perosak yang berkesan. Teruskan amalan pertanian yang cemerlang - pemantauan berkala, pembajaan seimbang, jarak yang sesuai, dan menjaga kebersihan ladang.'
+    },
+    'ms-kd': {
+        'bacterial_leaf_blight': 'Jangkitan bakteria ni jadi sebab kelembapan tinggi, suhu panas (25-30°C), dan peredaran udara yang lemah. Dia merebak melalui percikan air, alatan yang tercemar, atau sisa tanaman yang dijangkiti. Baja nitrogen berlebihan dan penanaman padat boleh memburukkan keadaan.',
+        'bacterial_leaf_streak': 'Disebabkan oleh bakteria yang membiak dalam keadaan lembap dan panas dengan suhu sekitar 25-35°C. Penyakit ni merebak melalui hujan yang dibawa angin, air pengairan, dan peralatan yang tercemar. Saliran yang lemah dan tanaman yang terlalu rapat meningkatkan kerentanan.',
+        'bacterial_panicle_blight': 'Penyakit bakteria ni berkembang masa peringkat pembiakan bila kelembapan tinggi dan suhu antara 25-30°C. Dia merebak melalui percikan hujan, serangga, dan benih yang tercemar. Tekanan dari kemarau diikuti keadaan lembap sering mencetuskan wabak.',
+        'blast': 'Penyakit kulat disebabkan oleh Magnaporthe oryzae, yang membiak dalam keadaan sejuk dan lembap dengan kelembapan tinggi. Dia merebak melalui spora bawaan udara masa cuaca mendung dan lembap. Baja nitrogen berlebihan, penanaman padat, dan turun naik suhu (20-25°C) menggalakkan jangkitan.',
+        'brown_spot': 'Jangkitan kulat ni jadi sebab kekurangan nutrien (terutama kalium dan silikon), tekanan air, dan keadaan tanah yang lemah. Kelembapan tinggi, suhu panas (25-30°C), dan tanaman yang lemah akibat tekanan persekitaran jadikan padi terdedah pada penyakit ni.',
+        'dead_heart': 'Disebabkan oleh serangga penggerek batang yang bertelur pada tanaman padi. Larva dia korek masuk ke dalam batang, buat pucuk tengah mati. Ni jadi lebih kerap kat ladang dengan pengurusan air yang lemah, baja nitrogen berlebihan, dan masa peringkat pertumbuhan vegetatif.',
+        'downy_mildew': 'Penyakit kulat ni membiak dalam keadaan sejuk dan lembap dengan suhu sekitar 15-25°C. Dia merebak melalui spora bawaan udara dan percikan air. Peredaran udara yang lemah, penanaman padat, pengairan atas, dan kelembapan relatif tinggi (lebih 85%) galakkan perkembangan penyakit.',
+        'hispa': 'Disebabkan oleh kumbang hispa padi yang makan tisu daun, cipta kesan calar yang khas. Perosak ni lebih aktif masa cuaca panas dan lembap dan tertarik pada dedaunan hijau subur. Sanitasi ladang yang lemah dan kawasan berumput dekat ni tingkatkan risiko serangan.',
+        'tungro': 'Penyakit virus yang disebarkan oleh wereng hijau. Dia jadi bila wereng yang dijangkiti makan tanaman sihat, pindah virus. Penyakit ni lebih biasa masa musim panas dan lembap dan kat kawasan dengan populasi wereng yang tinggi. Kawalan rumpai yang lemah tingkatkan habitat vektor.',
+        'normal': 'Tahniah! Tanaman padi hang nampak sihat dan bebas penyakit. Ni tunjukkan pengurusan ladang yang baik, pemakanan yang baik, pengurusan air yang cukup, dan kawalan perosak yang berkesan. Teruskan amalan pertanian yang cemerlang hang - pantau berkala, baja seimbang, jarak yang sesuai, dan jaga kebersihan ladang.'
+    },
+    'ms-kl': {
+        'bacterial_leaf_blight': 'Jangkitan bakteria ni jadi sebab kelembapan tinggi, suhu panas (25-30°C), dan peredaran udara yang lemah. Dia merebak melalui percikan air, alatan yang tercemar, atau sisa tanaman yang dijangkiti. Baja nitrogen berlebihan dan penanaman padat boleh memburukkan keadaan.',
+        'bacterial_leaf_streak': 'Disebabkan oleh bakteria yang membiak dalam keadaan lembap dan panas dengan suhu sekitar 25-35°C. Penyakit ni merebak melalui hujan yang dibawa angin, air pengairan, dan peralatan yang tercemar. Saliran yang lemah dan tanaman yang terlalu rapat meningkatkan kerentanan.',
+        'bacterial_panicle_blight': 'Penyakit bakteria ni berkembang masa peringkat pembiakan bila kelembapan tinggi dan suhu antara 25-30°C. Dia merebak melalui percikan hujan, serangga, dan benih yang tercemar. Tekanan dari kemarau diikuti keadaan lembap sering mencetuskan wabak.',
+        'blast': 'Penyakit kulat disebabkan oleh Magnaporthe oryzae, yang membiak dalam keadaan sejuk dan lembap dengan kelembapan tinggi. Dia merebak melalui spora bawaan udara masa cuaca mendung dan lembap. Baja nitrogen berlebihan, penanaman padat, dan turun naik suhu (20-25°C) menggalakkan jangkitan.',
+        'brown_spot': 'Jangkitan kulat ni jadi sebab kekurangan nutrien (terutama kalium dan silikon), tekanan air, dan keadaan tanah yang lemah. Kelembapan tinggi, suhu panas (25-30°C), dan tanaman yang lemah akibat tekanan persekitaran jadikan padi terdedah pada penyakit ni.',
+        'dead_heart': 'Disebabkan oleh serangga penggerek batang yang bertelur pada tanaman padi. Larva dia korek masuk ke dalam batang, buat pucuk tengah mati. Ni jadi lebih kerap kat ladang dengan pengurusan air yang lemah, baja nitrogen berlebihan, dan masa peringkat pertumbuhan vegetatif.',
+        'downy_mildew': 'Penyakit kulat ni membiak dalam keadaan sejuk dan lembap dengan suhu sekitar 15-25°C. Dia merebak melalui spora bawaan udara dan percikan air. Peredaran udara yang lemah, penanaman padat, pengairan atas, dan kelembapan relatif tinggi (lebih 85%) galakkan perkembangan penyakit.',
+        'hispa': 'Disebabkan oleh kumbang hispa padi yang makan tisu daun, cipta kesan calar yang khas. Perosak ni lebih aktif masa cuaca panas dan lembap dan tertarik pada dedaunan hijau subur. Sanitasi ladang yang lemah dan kawasan berumput dekat ni tingkatkan risiko serangan.',
+        'tungro': 'Penyakit virus yang disebarkan oleh wereng hijau. Dia jadi bila wereng yang dijangkiti makan tanaman sihat, pindah virus. Penyakit ni lebih biasa masa musim panas dan lembap dan kat kawasan dengan populasi wereng yang tinggi. Kawalan rumpai yang lemah tingkatkan habitat vektor.',
+        'normal': 'Tahniah! Tanaman padi kito nampak sihat dan bebas penyakit. Ni tunjukkan pengurusan ladang yang baik, pemakanan yang baik, pengurusan air yang cukup, dan kawalan perosak yang berkesan. Teruskan amalan pertanian yang cemerlang kito - pantau berkala, baja seimbang, jarak yang sesuai, dan jaga kebersihan ladang.'
+    },
+    ja: {
+        'bacterial_leaf_blight': '高湿度、高温(25-30°C)、換気不良により発生する細菌感染症です。水の跳ね返り、汚染された道具、感染した植物残渣を通じて広がります。過剰な窒素施肥と密植は状況を悪化させる可能性があります。',
+        'bacterial_leaf_streak': '温暖で湿潤な条件(25-35°C)で繁殖する細菌によって引き起こされます。風雨、灌漑水、汚染された機器を通じて広がります。排水不良と植物の過密は感受性を高めます。',
+        'bacterial_panicle_blight': '湿度が高く、温度が25-30°Cの生殖段階で発症する細菌性病害です。雨の跳ね返り、昆虫、汚染された種子を通じて広がります。干ばつの後に湿潤条件が続くストレスが発生の引き金になることがよくあります。',
+        'blast': 'Magnaporthe oryzaeによって引き起こされる真菌病で、湿度の高い涼しく湿潤な条件で繁殖します。曇りで湿潤な天候時に空気中の胞子を通じて広がります。過剰な窒素施肥、密植、温度変動(20-25°C)が感染を促進します。',
+        'brown_spot': '栄養欠乏(特にカリウムとシリコン)、水ストレス、土壌条件不良により発生する真菌感染症です。高湿度、高温(25-30°C)、環境ストレスで弱った植物は、この病気に対して脆弱になります。',
+        'dead_heart': '稲に産卵する茎穿孔虫によって引き起こされます。幼虫が茎に穴を開け、中心の芽が枯れます。水管理不良、過剰な窒素施肥、栄養成長段階でより頻繁に発生します。',
+        'downy_mildew': '涼しく湿潤な条件(15-25°C)で繁殖する真菌病です。空気中の胞子と水の跳ね返りを通じて広がります。換気不良、密植、頭上灌漑、高相対湿度(85%以上)が病気の発生を促します。',
+        'hispa': '葉の組織を食べるイネヒメハモグリバエによって引き起こされ、特徴的な削り跡を作ります。これらの害虫は温暖で湿潤な天候時により活発で、青々とした葉に引き寄せられます。圃場の衛生管理不良と近くの草地が発生リスクを高めます。',
+        'tungro': 'ツマグロヨコバイによって伝播されるウイルス病です。感染したヨコバイが健康な植物を食べ、ウイルスを移します。温暖で湿潤な季節やヨコバイの個体数が多い地域でより一般的です。雑草管理不良がベクターの生息地を増やします。',
+        'normal': '素晴らしい！稲は健康で病気がありません。これは適切な圃場管理、良好な栄養、十分な水管理、効果的な害虫防除を示しています。優れた農業実践を続けてください - 定期的な監視、バランスの取れた施肥、適切な間隔、圃場衛生の維持。'
+    }
 };
 
 // DOM Elements
@@ -536,9 +577,9 @@ function displayResults(results) {
     const severityBadge = document.getElementById('severityBadge');
     const analyzedImage = document.getElementById('analyzedImage');
     
-    // Format disease name
+    // Format disease name - use translated name from translations
     const disease = results.top_prediction;
-    const diseaseDisplayName = disease.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    const diseaseDisplayName = t(disease) || disease.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     
     // Update elements
     if (diseaseName) diseaseName.textContent = diseaseDisplayName;
@@ -644,15 +685,26 @@ function displayDiseaseDescription(disease, healthStatus) {
     const descriptionElement = document.getElementById('diseaseDescriptionText');
     if (!descriptionElement) return;
     
-    // Get the appropriate description
-    let description = '';
+    // Get current language
+    const lang = getCurrentLanguage();
     
-    // For healthy plants, use the 'normal' description
-    if (healthStatus === 'healthy' || disease === 'normal') {
-        description = diseaseDescriptions['normal'] || 'Great job! Your rice plants look healthy and disease-free. Continue your excellent farming practices!';
-    } else {
-        // For diseased plants, get the specific disease description
-        description = diseaseDescriptions[disease] || 'This condition may be caused by various environmental factors, poor field management, or pathogen infection. Consult with agricultural experts for proper diagnosis and treatment recommendations.';
+    // Get language-specific descriptions with fallback
+    let langDescriptions = diseaseDescriptions[lang];
+    if (!langDescriptions && lang.startsWith('ms-')) {
+        // Fallback to base Malay for dialects
+        langDescriptions = diseaseDescriptions['ms'];
+    }
+    if (!langDescriptions) {
+        // Final fallback to English
+        langDescriptions = diseaseDescriptions['en'];
+    }
+    
+    // Get the appropriate description
+    let description = langDescriptions[disease] || diseaseDescriptions['en'][disease] || '';
+    
+    // Fallback for missing descriptions
+    if (!description) {
+        description = 'This condition may be caused by various environmental factors, poor field management, or pathogen infection. Consult with agricultural experts for proper diagnosis and treatment recommendations.';
     }
     
     // Update the description text

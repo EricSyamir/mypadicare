@@ -4,19 +4,19 @@
     "immediate_actions": [
       "Buang dan musnahkan bahagian tanaman yang dijangkiti dalam masa 24 jam",
       "Sapukan bakterisid berasaskan kuprum (Kuprum hidroksida pada 2g/L)",
-      "Salirkan air berlebihan dari ladang",
-      "Hentikan penggunaan baja nitrogen buat sementara waktu"
+      "Salirkan air berlebihan dari ladang kito",
+      "Hentikan guna baja nitrogen dulu"
     ],
     "short_term_management": [
-      "Sembur bakterisid pada selang 7 hari selama 2-3 minggu",
-      "Kekalkan saliran ladang yang baik",
+      "Sembur bakterisid tiap-tiap 7 hari selama 2-3 minggu",
+      "Kekalkan saliran ladang kito yang baik",
       "Sapukan baja seimbang (kurangkan nitrogen, tingkatkan kalium)",
-      "Pantau ladang setiap hari untuk jangkitan baru"
+      "Pantau ladang tiap-tiap hari untuk jangkitan baru"
     ],
     "long_term_prevention": [
-      "Gunakan varieti tahan (contohnya, IR20, TN1)",
+      "Guna varieti tahan (contohnya, IR20, TN1)",
       "Amalkan putaran tanaman dengan tanaman bukan hos",
-      "Gunakan benih dan anak benih bebas penyakit",
+      "Guna benih dan anak benih yang dok ada penyakit",
       "Kekalkan jarak tanaman yang sesuai (20cm x 20cm)"
     ],
     "organic_options": [
@@ -29,7 +29,7 @@
       "Streptocycline (0.5g/L) + Kuprum oxychloride (2.5g/L)"
     ],
     "cultural_practices": [
-      "Pastikan perataan ladang yang sesuai",
+      "Pastikan perataan ladang kito yang sesuai",
       "Amalkan pengairan berselang-seli",
       "Buang rumpai hos",
       "Kekalkan paras air 2-3 cm"
@@ -40,7 +40,7 @@
       "Sarung tangan dan pelitup pelindung"
     ],
     "estimated_cost": "$25-40 setiap ekar",
-    "expected_recovery": "7-14 hari dengan rawatan yang betul",
+    "expected_recovery": "7-14 hari kalau rawatan betul",
     "warning_signs": [
       "Lesi berair pada daun",
       "Margin daun kuning hingga putih",
@@ -269,7 +269,7 @@
     ],
     "cultural_practices": [
       "Penanaman serentak dalam tetingkap 2 minggu",
-      "Potong hujung daun 21 hari selepas pemindahan",
+      "Potong hujung daun 21 hari lepas pemindahan",
       "Buang hos alternatif (rumput)"
     ],
     "materials_needed": [
@@ -452,8 +452,8 @@
       "Semburan mikronutrien jika perlu"
     ],
     "cultural_practices": [
-      "Kekalkan kedalaman air 5-7cm semasa peringkat vegetatif",
-      "Pemeriksaan ladang berkala",
+      "Kekalkan kedalaman air 5-7cm masa peringkat vegetatif",
+      "Pemeriksaan ladang kito berkala",
       "Penyelenggaraan jarak yang sesuai"
     ],
     "materials_needed": [
@@ -461,7 +461,7 @@
       "Alat penyiangan"
     ],
     "estimated_cost": "$50-80 setiap ekar untuk musim lengkap",
-    "expected_recovery": "T/A - Kekalkan status sihat",
+    "expected_recovery": "T/A - Kekalkan status sihat kito",
     "warning_signs": [
       "Perhatikan sebarang bintik daun luar biasa",
       "Pantau aktiviti perosak",
