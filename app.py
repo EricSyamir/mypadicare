@@ -195,18 +195,18 @@ def gemini_proxy():
             }), 400
         
         prompt = data['prompt']
-        model = data.get('model', 'gemini-2.5-pro-exp-03-25')
+        model = data.get('model', 'gemini-2.0-flash')
         
         # Remove 'google/' prefix if present (API doesn't use it)
         model = model.replace('google/', '')
         
         # Get API key from request or environment
         import os
-        api_key = data.get('api_key') or os.getenv('GEMINI_API_KEY', 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g')
+        api_key = data.get('api_key') or os.getenv('GEMINI_API_KEY', 'AIzaSyDgE_uYte_mHyzgMEH3FRFGRCpNrSAr8WQ')
         
-        # Prepare request to Gemini API
+        # Prepare request to Gemini API (using header-based auth)
         import requests
-        gemini_url = f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}'
+        gemini_url = f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent'
         
         gemini_request = {
             'contents': [
@@ -226,12 +226,15 @@ def gemini_proxy():
             }
         }
         
-        # Make request to Gemini API
+        # Make request to Gemini API (using X-goog-api-key header)
         try:
             response = requests.post(
                 gemini_url,
                 json=gemini_request,
-                headers={'Content-Type': 'application/json'},
+                headers={
+                    'Content-Type': 'application/json',
+                    'X-goog-api-key': api_key
+                },
                 timeout=60
             )
             

@@ -7,7 +7,7 @@
 
 const LOCAL_CONFIG = {
     // Google Gemini API Configuration
-    GEMINI_API_KEY: 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g',
+    GEMINI_API_KEY: 'AIzaSyDgE_uYte_mHyzgMEH3FRFGRCpNrSAr8WQ',
     
     // ElevenLabs TTS API Configuration
     ELEVENLABS_API_KEY: 'sk_2591e16fb832de782bc532f77dda799de674b570833f8dd0'

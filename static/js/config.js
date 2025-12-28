@@ -13,8 +13,8 @@
 const CONFIG = {
     // Google Gemini API Configuration
     GEMINI_API_KEY: null, // Loaded from ENV or config.local.js
-    GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent',
-    GEMINI_MODEL: 'gemini-2.5-pro-exp-03-25',
+    GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+    GEMINI_MODEL: 'gemini-2.0-flash',
     
     // ElevenLabs TTS API Configuration
     ELEVENLABS_API_KEY: null, // Loaded from ENV or config.local.js

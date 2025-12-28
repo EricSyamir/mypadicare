@@ -60,14 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['action']) && $_GET['act
     }
     
     $prompt = $input['prompt'];
-    $apiKey = $input['api_key'] ?? getenv('GEMINI_API_KEY') ?: 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g';
-    $model = $input['model'] ?? 'gemini-2.5-pro-exp-03-25';
+    $apiKey = $input['api_key'] ?? getenv('GEMINI_API_KEY') ?: 'AIzaSyDgE_uYte_mHyzgMEH3FRFGRCpNrSAr8WQ';
+    $model = $input['model'] ?? 'gemini-2.0-flash';
     
     // Remove 'google/' prefix if present (API doesn't use it)
     $model = str_replace('google/', '', $model);
     
-    // Prepare request to Gemini API
-    $gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
+    // Prepare request to Gemini API (using header-based auth)
+    $gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent";
     
     $gemini_request = [
         'contents' => [
@@ -87,12 +87,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['action']) && $_GET['act
         ]
     ];
     
-    // Make request to Gemini API
+    // Make request to Gemini API (using X-goog-api-key header)
     $ch = curl_init($gemini_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($gemini_request));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'X-goog-api-key: ' . $apiKey
+    ]);
     curl_setopt($ch, CURLOPT_TIMEOUT, 60); // 60 second timeout
     
     $response = curl_exec($ch);
