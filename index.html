@@ -883,6 +883,226 @@
             }, 3000);
         }
         
+        // Admin Menu Functions
+        let step4ClickCount = 0;
+        let step4ClickTimer = null;
+        
+        function handleStep4Click(event) {
+            // Prevent default if clicking on the number
+            if (event.target.classList.contains('step-number-mobile')) {
+                step4ClickCount++;
+                
+                // Reset counter after 2 seconds
+                clearTimeout(step4ClickTimer);
+                step4ClickTimer = setTimeout(() => {
+                    step4ClickCount = 0;
+                }, 2000);
+                
+                // If clicked 4 times, open admin menu
+                if (step4ClickCount >= 4) {
+                    openAdminMenu();
+                    step4ClickCount = 0;
+                }
+            }
+        }
+        
+        function openAdminMenu() {
+            const adminMenu = document.getElementById('adminMenu');
+            if (adminMenu) {
+                adminMenu.style.display = 'flex';
+                // Load current status
+                updateAdminStatus();
+            }
+        }
+        
+        function closeAdminMenu() {
+            const adminMenu = document.getElementById('adminMenu');
+            if (adminMenu) {
+                adminMenu.style.display = 'none';
+            }
+        }
+        
+        function toggleMaintenanceMode() {
+            const maintenanceMode = document.getElementById('maintenanceMode').checked;
+            localStorage.setItem('mypadicare_maintenance_mode', maintenanceMode);
+            updateAdminStatus();
+            
+            if (maintenanceMode) {
+                showToast('Maintenance mode enabled', 'warning');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                showToast('Maintenance mode disabled', 'success');
+            }
+        }
+        
+        function toggleApiKey(apiName) {
+            const toggle = document.getElementById(apiName === 'gemini' ? 'geminiApiToggle' : 'elevenlabsApiToggle');
+            const status = document.getElementById(apiName === 'gemini' ? 'geminiStatus' : 'elevenlabsStatus');
+            const isEnabled = toggle.checked;
+            
+            // Store in localStorage
+            localStorage.setItem(`mypadicare_${apiName}_enabled`, isEnabled);
+            
+            // Update status
+            if (isEnabled) {
+                status.textContent = 'Active';
+                status.className = 'api-status active';
+                
+                // Re-enable API key in config
+                if (apiName === 'gemini' && typeof CONFIG !== 'undefined') {
+                    CONFIG.GEMINI_API_KEY = localStorage.getItem('mypadicare_gemini_key_backup') || window.ENV?.GEMINI_API_KEY || LOCAL_CONFIG?.GEMINI_API_KEY || null;
+                } else if (apiName === 'elevenlabs' && typeof CONFIG !== 'undefined') {
+                    CONFIG.ELEVENLABS_API_KEY = localStorage.getItem('mypadicare_elevenlabs_key_backup') || window.ENV?.ELEVENLABS_API_KEY || LOCAL_CONFIG?.ELEVENLABS_API_KEY || null;
+                    // Reload speech manager
+                    if (typeof speechManager !== 'undefined' && speechManager) {
+                        speechManager.loadConfig();
+                    }
+                }
+                
+                showToast(`${apiName === 'gemini' ? 'Gemini' : 'ElevenLabs'} API enabled`, 'success');
+            } else {
+                status.textContent = 'Disabled';
+                status.className = 'api-status disabled';
+                
+                // Backup and disable API key
+                if (apiName === 'gemini' && typeof CONFIG !== 'undefined') {
+                    localStorage.setItem('mypadicare_gemini_key_backup', CONFIG.GEMINI_API_KEY || '');
+                    CONFIG.GEMINI_API_KEY = null;
+                } else if (apiName === 'elevenlabs' && typeof CONFIG !== 'undefined') {
+                    localStorage.setItem('mypadicare_elevenlabs_key_backup', CONFIG.ELEVENLABS_API_KEY || '');
+                    CONFIG.ELEVENLABS_API_KEY = null;
+                    // Reload speech manager
+                    if (typeof speechManager !== 'undefined' && speechManager) {
+                        speechManager.loadConfig();
+                    }
+                }
+                
+                showToast(`${apiName === 'gemini' ? 'Gemini' : 'ElevenLabs'} API disabled`, 'warning');
+            }
+            
+            updateAdminStatus();
+        }
+        
+        function updateAdminStatus() {
+            const maintenanceMode = localStorage.getItem('mypadicare_maintenance_mode') === 'true';
+            const geminiEnabled = localStorage.getItem('mypadicare_gemini_enabled') !== 'false';
+            const elevenlabsEnabled = localStorage.getItem('mypadicare_elevenlabs_enabled') !== 'false';
+            
+            // Update toggles
+            const maintenanceToggle = document.getElementById('maintenanceMode');
+            const geminiToggle = document.getElementById('geminiApiToggle');
+            const elevenlabsToggle = document.getElementById('elevenlabsApiToggle');
+            
+            if (maintenanceToggle) maintenanceToggle.checked = maintenanceMode;
+            if (geminiToggle) geminiToggle.checked = geminiEnabled;
+            if (elevenlabsToggle) elevenlabsToggle.checked = elevenlabsEnabled;
+            
+            // Update status indicators
+            const geminiStatus = document.getElementById('geminiStatus');
+            const elevenlabsStatus = document.getElementById('elevenlabsStatus');
+            
+            if (geminiStatus) {
+                if (geminiEnabled) {
+                    geminiStatus.textContent = 'Active';
+                    geminiStatus.className = 'api-status active';
+                } else {
+                    geminiStatus.textContent = 'Disabled';
+                    geminiStatus.className = 'api-status disabled';
+                }
+            }
+            
+            if (elevenlabsStatus) {
+                if (elevenlabsEnabled) {
+                    elevenlabsStatus.textContent = 'Active';
+                    elevenlabsStatus.className = 'api-status active';
+                } else {
+                    elevenlabsStatus.textContent = 'Disabled';
+                    elevenlabsStatus.className = 'api-status disabled';
+                }
+            }
+            
+            // Update status message
+            const statusDiv = document.getElementById('adminStatus');
+            if (statusDiv) {
+                if (maintenanceMode) {
+                    statusDiv.innerHTML = '<p style="color: #F39C12;"><i class="fas fa-exclamation-triangle"></i> Maintenance mode is active</p>';
+                } else if (!geminiEnabled || !elevenlabsEnabled) {
+                    const disabled = [];
+                    if (!geminiEnabled) disabled.push('Gemini');
+                    if (!elevenlabsEnabled) disabled.push('ElevenLabs');
+                    statusDiv.innerHTML = `<p style="color: #E74C3C;"><i class="fas fa-exclamation-circle"></i> ${disabled.join(' and ')} API disabled</p>`;
+                } else {
+                    statusDiv.innerHTML = '<p style="color: #27AE60;"><i class="fas fa-check-circle"></i> All systems operational</p>';
+                }
+            }
+        }
+        
+        // Check maintenance mode on load
+        function checkMaintenanceMode() {
+            const maintenanceMode = localStorage.getItem('mypadicare_maintenance_mode') === 'true';
+            if (maintenanceMode) {
+                const overlay = document.createElement('div');
+                overlay.id = 'maintenanceOverlay';
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.9);
+                    z-index: 99999;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    text-align: center;
+                    padding: 20px;
+                `;
+                overlay.innerHTML = `
+                    <div>
+                        <h1 style="font-size: 2rem; margin-bottom: 1rem;"><i class="fas fa-tools"></i> Maintenance Mode</h1>
+                        <p style="font-size: 1.2rem;">The application is currently under maintenance.</p>
+                        <p style="font-size: 1rem; margin-top: 1rem; opacity: 0.8;">Please check back later.</p>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+            }
+        }
+        
+        // Initialize admin menu on load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkMaintenanceMode();
+            
+            // Load saved API key states
+            const geminiEnabled = localStorage.getItem('mypadicare_gemini_enabled') !== 'false';
+            const elevenlabsEnabled = localStorage.getItem('mypadicare_elevenlabs_enabled') !== 'false';
+            
+            // Wait for CONFIG to load
+            setTimeout(() => {
+                if (typeof CONFIG !== 'undefined') {
+                    if (!geminiEnabled) {
+                        localStorage.setItem('mypadicare_gemini_key_backup', CONFIG.GEMINI_API_KEY || '');
+                        CONFIG.GEMINI_API_KEY = null;
+                    }
+                    
+                    if (!elevenlabsEnabled) {
+                        localStorage.setItem('mypadicare_elevenlabs_key_backup', CONFIG.ELEVENLABS_API_KEY || '');
+                        CONFIG.ELEVENLABS_API_KEY = null;
+                        // Reload speech manager after a delay
+                        setTimeout(() => {
+                            if (typeof speechManager !== 'undefined' && speechManager) {
+                                speechManager.loadConfig();
+                            }
+                        }, 500);
+                    }
+                }
+                
+                updateAdminStatus();
+            }, 1000);
+        });
+        
         // View Treatment and start speaking
         function viewTreatmentAndSpeak() {
             // Show treatment screen
