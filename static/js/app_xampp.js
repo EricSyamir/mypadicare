@@ -1089,6 +1089,17 @@ async function getGeminiRecommendation(results) {
         return;
     }
     
+    // Check if Gemini API is disabled in admin settings
+    const geminiEnabled = localStorage.getItem('mypadicare_gemini_enabled') !== 'false';
+    if (!geminiEnabled) {
+        console.warn('⚠️ Gemini API is disabled - using fallback recommendation');
+        hideLoadingScreen();
+        const confidencePercent = Math.round(results.confidence * 100);
+        const fallbackMessage = `Based on the detection of ${results.top_prediction.replace(/_/g, ' ')}, follow the treatment recommendations below. The confidence level is ${confidencePercent}%, indicating ${confidencePercent >= 85 ? 'high' : confidencePercent >= 65 ? 'moderate' : 'low'} certainty in this diagnosis.`;
+        expertAdviceText.textContent = fallbackMessage;
+        return;
+    }
+    
     // Show loading screen with specific message for AI
     showLoadingScreen();
     updateLoadingText(t('loadingAI') || 'Getting AI recommendation...');

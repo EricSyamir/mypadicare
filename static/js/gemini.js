@@ -77,6 +77,13 @@ Provide your recommendation:`;
      */
     async getRecommendation(diseaseName, severity, confidence, treatmentData, language = 'en') {
         try {
+            // Check if Gemini API is disabled in admin settings
+            const geminiEnabled = localStorage.getItem('mypadicare_gemini_enabled') !== 'false';
+            if (!geminiEnabled) {
+                console.warn('⚠️ Gemini API is disabled in admin settings');
+                throw new Error('Gemini API is disabled');
+            }
+            
             console.log('🤖 Requesting AI recommendation from Gemini...');
             console.log('📊 Parameters:', { diseaseName, severity, confidence: Math.round(confidence * 100) + '%', language });
             

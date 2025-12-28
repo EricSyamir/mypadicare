@@ -95,6 +95,14 @@ class SpeechManager {
      * @param {Object} options - Additional options
      */
     async speak(text, langCode = 'en', options = {}) {
+        // Check if ElevenLabs API is disabled in admin settings
+        const elevenlabsEnabled = localStorage.getItem('mypadicare_elevenlabs_enabled') !== 'false';
+        if (!elevenlabsEnabled) {
+            console.warn('⚠️ ElevenLabs API is disabled in admin settings');
+            this.updateUI('stopped');
+            return false;
+        }
+        
         // Check if API key is configured
         if (!this.apiKey) {
             console.error('❌ ElevenLabs API key not configured');
