@@ -1,48 +1,60 @@
 /**
- * Google Gemini AI Integration
+ * Ollama AI Integration (Local Gemini-like Model)
  * Generates personalized treatment recommendations
- * Uses @google/generative-ai SDK
+ * Uses Ollama local API - No external API keys needed!
  */
 
 class GeminiAI {
     constructor() {
-        // Check if Google Generative AI SDK is available
-        if (typeof google === 'undefined' || !google.generativeai) {
-            console.error('❌ Google Generative AI SDK not loaded');
-            this.genAI = null;
-            this.model = null;
-            return;
-        }
+        // Ollama configuration
+        // Default: localhost:11434 (standard Ollama port)
+        this.ollamaUrl = CONFIG?.OLLAMA_URL || 'http://localhost:11434';
         
-        // Check if CONFIG is available
-        if (typeof CONFIG === 'undefined') {
-            console.error('❌ CONFIG not loaded when initializing Gemini AI');
-            this.genAI = null;
-            this.model = null;
-            return;
-        }
+        // Model name - Using Gemma (Google's open model, similar to Gemini)
+        // Alternatives: llama3, mistral, gemma:2b, gemma:7b
+        this.modelName = CONFIG?.OLLAMA_MODEL || 'gemma:2b';
         
-        // Get API key from config
-        const apiKey = CONFIG.GEMINI_API_KEY;
+        // Check if Ollama is available
+        this.isAvailable = false;
+        this.checkOllamaAvailability();
         
-        if (!apiKey) {
-            console.warn('⚠️ Gemini API key not configured');
-            this.genAI = null;
-            this.model = null;
-            return;
-        }
-        
+        console.log('✅ Ollama AI initialized');
+        console.log(`📡 Ollama URL: ${this.ollamaUrl}`);
+        console.log(`🤖 Model: ${this.modelName}`);
+    }
+    
+    /**
+     * Check if Ollama server is available
+     */
+    async checkOllamaAvailability() {
         try {
-            // Initialize Google Generative AI client
-            const { GoogleGenerativeAI } = google.generativeai;
-            this.genAI = new GoogleGenerativeAI(apiKey);
-            this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+            const response = await fetch(`${this.ollamaUrl}/api/tags`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             
-            console.log('✅ Google Generative AI SDK initialized');
+            if (response.ok) {
+                this.isAvailable = true;
+                const data = await response.json();
+                console.log('✅ Ollama server is running');
+                console.log('📦 Available models:', data.models?.map(m => m.name) || []);
+                
+                // Check if our model is available
+                const modelExists = data.models?.some(m => m.name.includes(this.modelName.split(':')[0]));
+                if (!modelExists) {
+                    console.warn(`⚠️ Model "${this.modelName}" not found. Available models:`, data.models?.map(m => m.name) || []);
+                    console.warn(`⚠️ You may need to run: ollama pull ${this.modelName}`);
+                }
+            } else {
+                this.isAvailable = false;
+                console.warn('⚠️ Ollama server not responding');
+            }
         } catch (error) {
-            console.error('❌ Failed to initialize Google Generative AI:', error);
-            this.genAI = null;
-            this.model = null;
+            this.isAvailable = false;
+            console.warn('⚠️ Ollama server not available:', error.message);
+            console.warn('⚠️ Make sure Ollama is installed and running on', this.ollamaUrl);
         }
     }
 
@@ -94,51 +106,69 @@ Provide your recommendation:`;
     }
 
     /**
-     * Call Gemini API for recommendations using @google/generative-ai SDK
+     * Call Ollama API for recommendations (local, no external API needed)
      */
     async getRecommendation(diseaseName, severity, confidence, treatmentData, language = 'en') {
         try {
-            // Check if Gemini API is disabled in admin settings
+            // Check if Gemini/Ollama API is disabled in admin settings
             const geminiEnabled = localStorage.getItem('mypadicare_gemini_enabled') !== 'false';
             if (!geminiEnabled) {
-                console.warn('⚠️ Gemini API is disabled in admin settings');
-                throw new Error('Gemini API is disabled');
+                console.warn('⚠️ Ollama API is disabled in admin settings');
+                throw new Error('Ollama API is disabled');
             }
             
-            console.log('🤖 Requesting AI recommendation from Gemini...');
+            console.log('🤖 Requesting AI recommendation from Ollama (local)...');
             console.log('📊 Parameters:', { diseaseName, severity, confidence: Math.round(confidence * 100) + '%', language });
             
-            // Check if SDK is initialized
-            if (!this.genAI) {
-                throw new Error('Google Generative AI SDK not initialized');
+            // Check if Ollama is available
+            if (!this.isAvailable) {
+                await this.checkOllamaAvailability();
+                if (!this.isAvailable) {
+                    throw new Error('Ollama server is not available. Make sure Ollama is installed and running.');
+                }
             }
             
             // Build prompt with language support
             const prompt = this.buildPrompt(diseaseName, severity, confidence, treatmentData, language);
             
-            // Generate content using SDK (correct format)
-            const result = await this.model.generateContent(prompt, {
-                generationConfig: {
-                    temperature: 0.5,
-                    maxOutputTokens: 150,
-                    topP: 0.9,
-                    topK: 20
-                }
+            // Call Ollama API
+            const response = await fetch(`${this.ollamaUrl}/api/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: this.modelName,
+                    prompt: prompt,
+                    stream: false,
+                    options: {
+                        temperature: 0.5,
+                        top_p: 0.9,
+                        top_k: 20,
+                        num_predict: 150 // Max tokens
+                    }
+                })
             });
             
-            // Extract response text
-            const response = await result.response;
-            const generatedText = response.text();
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Ollama API error: ${response.status} - ${errorText}`);
+            }
+            
+            const data = await response.json();
+            
+            // Extract generated text
+            const generatedText = data.response || data.text || '';
             
             if (generatedText) {
-                console.log('✅ Gemini recommendation received:', generatedText.substring(0, 100) + '...');
+                console.log('✅ Ollama recommendation received:', generatedText.substring(0, 100) + '...');
                 return generatedText.trim();
             } else {
-                throw new Error('No response from Gemini AI');
+                throw new Error('No response from Ollama');
             }
             
         } catch (err) {
-            console.error('❌ Gemini API error:', err);
+            console.error('❌ Ollama API error:', err);
             
             // Fallback to rule-based recommendation
             console.log('⚠️ Using fallback rule-based recommendation');

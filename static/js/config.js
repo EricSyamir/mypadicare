@@ -11,9 +11,13 @@
 
 // Default configuration (without API keys)
 const CONFIG = {
-    // Google Gemini API Configuration
-    GEMINI_API_KEY: null, // Loaded from ENV or config.local.js
-    GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+    // Ollama Configuration (Local AI - No API keys needed!)
+    OLLAMA_URL: 'http://localhost:11434', // Default Ollama server URL
+    OLLAMA_MODEL: 'gemma:2b', // Model to use: gemma:2b, gemma:7b, llama3, mistral, etc.
+    
+    // Legacy Gemini API (kept for compatibility, not used with Ollama)
+    GEMINI_API_KEY: null, // Not needed with Ollama
+    GEMINI_API_URL: null, // Not needed with Ollama
     
     // ElevenLabs TTS API Configuration
     ELEVENLABS_API_KEY: null, // Loaded from ENV or config.local.js
