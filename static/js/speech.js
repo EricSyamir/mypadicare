@@ -1,117 +1,88 @@
 /**
- * MyPadiCare - Web Speech API Integration
- * Text-to-Speech for AI recommendations and treatment advice
+ * MyPadiCare - ElevenLabs TTS Integration
+ * High-quality Text-to-Speech for AI recommendations and treatment advice
  * Supports: English, Malay, Japanese, Kedahan, Kelantanese dialects
  */
 
 class SpeechManager {
     constructor() {
-        this.synth = window.speechSynthesis;
-        this.utterance = null;
+        // ElevenLabs API configuration
+        this.apiKey = null;
+        this.apiUrl = 'https://api.elevenlabs.io/v1/text-to-speech';
+        
+        // Audio player
+        this.audio = null;
         this.isPlaying = false;
         this.isPaused = false;
-        this.voices = [];
         this.currentLanguage = 'en';
         
-        // Language to voice mapping
+        // Language to voice ID mapping (ElevenLabs voices)
+        // These are multilingual voices that support all languages
         this.languageVoiceMap = {
-            'en': ['en-US', 'en-GB', 'en-AU', 'en'],
-            'ms': ['ms-MY', 'ms', 'id-ID', 'id'], // Malay, fallback to Indonesian
-            'ms-kd': ['ms-MY', 'ms', 'id-ID', 'id'], // Kedahan dialect uses Malay voice
-            'ms-kl': ['ms-MY', 'ms', 'id-ID', 'id'], // Kelantanese dialect uses Malay voice
-            'ja': ['ja-JP', 'ja']
+            'en': 'EXAVITQu4vr4xnSDxMaL', // Sarah - English (US) - warm, friendly female
+            'ms': 'pNInz6obpgDQGcFmaJgB', // Adam - Multilingual male
+            'ms-kd': 'pNInz6obpgDQGcFmaJgB', // Adam - for Kedahan dialect
+            'ms-kl': 'pNInz6obpgDQGcFmaJgB', // Adam - for Kelantanese dialect
+            'ja': 'pNInz6obpgDQGcFmaJgB' // Adam - multilingual supports Japanese
         };
         
-        // Initialize voices
-        this.loadVoices();
-        
-        // Chrome requires voices to be loaded asynchronously
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = () => this.loadVoices();
-        }
-        
-        console.log('🔊 Speech Manager initialized');
-    }
-    
-    /**
-     * Load available voices
-     */
-    loadVoices() {
-        this.voices = this.synth.getVoices();
-        console.log(`🔊 Loaded ${this.voices.length} voices`);
-        
-        // Log available voices for debugging
-        if (this.voices.length > 0) {
-            console.log('🔊 Available voices:', this.voices.map(v => `${v.name} (${v.lang})`).slice(0, 10));
-        }
-    }
-    
-    /**
-     * Get best voice for a language
-     */
-    getBestVoice(langCode) {
-        const preferredLangs = this.languageVoiceMap[langCode] || this.languageVoiceMap['en'];
-        
-        // Try to find a voice matching preferred languages
-        for (const lang of preferredLangs) {
-            const voice = this.voices.find(v => 
-                v.lang.toLowerCase().startsWith(lang.toLowerCase()) ||
-                v.lang.toLowerCase() === lang.toLowerCase()
-            );
-            if (voice) {
-                console.log(`🔊 Selected voice: ${voice.name} (${voice.lang}) for language: ${langCode}`);
-                return voice;
-            }
-        }
-        
-        // Fallback: try to find any voice that matches the base language
-        const baseLang = langCode.split('-')[0];
-        const fallbackVoice = this.voices.find(v => 
-            v.lang.toLowerCase().startsWith(baseLang.toLowerCase())
-        );
-        
-        if (fallbackVoice) {
-            console.log(`🔊 Using fallback voice: ${fallbackVoice.name} (${fallbackVoice.lang})`);
-            return fallbackVoice;
-        }
-        
-        // Final fallback: use default voice
-        console.log('🔊 Using default system voice');
-        return this.voices[0] || null;
-    }
-    
-    /**
-     * Get speech rate based on language
-     */
-    getSpeechRate(langCode) {
-        // Adjust rate for different languages
-        const rates = {
-            'en': 0.9,
-            'ms': 0.85,
-            'ms-kd': 0.85,
-            'ms-kl': 0.85,
-            'ja': 0.8
+        // Voice settings
+        this.voiceSettings = {
+            stability: 0.5,
+            similarity_boost: 0.75,
+            style: 0.0,
+            use_speaker_boost: true
         };
-        return rates[langCode] || 0.9;
+        
+        // Load API key from config
+        this.loadConfig();
+        
+        console.log('🔊 ElevenLabs Speech Manager initialized');
     }
     
     /**
-     * Get pitch based on language
+     * Load configuration
      */
-    getSpeechPitch(langCode) {
-        return 1.0; // Default pitch for all languages
+    loadConfig() {
+        if (typeof CONFIG !== 'undefined' && CONFIG.ELEVENLABS_API_KEY) {
+            this.apiKey = CONFIG.ELEVENLABS_API_KEY;
+            console.log('✅ ElevenLabs API key loaded');
+        } else {
+            console.warn('⚠️ ElevenLabs API key not found in config');
+        }
     }
     
     /**
-     * Speak text
+     * Get voice ID for language
+     */
+    getVoiceId(langCode) {
+        return this.languageVoiceMap[langCode] || this.languageVoiceMap['en'];
+    }
+    
+    /**
+     * Get language code for ElevenLabs
+     */
+    getLanguageCode(langCode) {
+        const langMap = {
+            'en': 'en',
+            'ms': 'ms',
+            'ms-kd': 'ms',
+            'ms-kl': 'ms',
+            'ja': 'ja'
+        };
+        return langMap[langCode] || 'en';
+    }
+    
+    /**
+     * Speak text using ElevenLabs
      * @param {string} text - Text to speak
      * @param {string} langCode - Language code (en, ms, ms-kd, ms-kl, ja)
      * @param {Object} options - Additional options
      */
-    speak(text, langCode = 'en', options = {}) {
-        // Check if speech synthesis is supported
-        if (!this.synth) {
-            console.error('❌ Speech synthesis not supported');
+    async speak(text, langCode = 'en', options = {}) {
+        // Check if API key is configured
+        if (!this.apiKey) {
+            console.error('❌ ElevenLabs API key not configured');
             this.showNotSupported();
             return false;
         }
@@ -127,76 +98,101 @@ class SpeechManager {
             return false;
         }
         
-        // Create new utterance
-        this.utterance = new SpeechSynthesisUtterance(cleanedText);
-        
-        // Set voice
-        const voice = this.getBestVoice(langCode);
-        if (voice) {
-            this.utterance.voice = voice;
+        try {
+            // Update UI to show loading
+            this.updateUI('loading');
+            
+            // Get voice ID for language
+            const voiceId = this.getVoiceId(langCode);
+            
+            // Prepare request
+            const requestBody = {
+                text: cleanedText,
+                model_id: 'eleven_multilingual_v2',
+                voice_settings: {
+                    stability: options.stability || this.voiceSettings.stability,
+                    similarity_boost: options.similarity_boost || this.voiceSettings.similarity_boost,
+                    style: options.style || this.voiceSettings.style,
+                    use_speaker_boost: options.use_speaker_boost !== undefined ? options.use_speaker_boost : this.voiceSettings.use_speaker_boost
+                }
+            };
+            
+            console.log(`🔊 Requesting TTS from ElevenLabs (voice: ${voiceId}, lang: ${langCode})...`);
+            
+            // Call ElevenLabs API
+            const response = await fetch(`${this.apiUrl}/${voiceId}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'audio/mpeg',
+                    'Content-Type': 'application/json',
+                    'xi-api-key': this.apiKey
+                },
+                body: JSON.stringify(requestBody)
+            });
+            
+            if (!response.ok) {
+                const error = await response.text();
+                throw new Error(`ElevenLabs API error: ${response.status} - ${error}`);
+            }
+            
+            // Get audio blob
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            
+            // Create audio element
+            this.audio = new Audio(audioUrl);
+            
+            // Set up event handlers
+            this.audio.onplay = () => {
+                this.isPlaying = true;
+                this.isPaused = false;
+                this.updateUI('playing');
+                console.log('🔊 Started speaking');
+            };
+            
+            this.audio.onended = () => {
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.updateUI('stopped');
+                URL.revokeObjectURL(audioUrl);
+                console.log('🔊 Finished speaking');
+            };
+            
+            this.audio.onerror = (event) => {
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.updateUI('stopped');
+                URL.revokeObjectURL(audioUrl);
+                console.error('❌ Audio playback error:', event);
+            };
+            
+            this.audio.onpause = () => {
+                this.isPaused = true;
+                this.updateUI('paused');
+                console.log('🔊 Speech paused');
+            };
+            
+            // Play audio
+            this.currentLanguage = langCode;
+            await this.audio.play();
+            
+            return true;
+            
+        } catch (error) {
+            console.error('❌ ElevenLabs TTS error:', error);
+            this.updateUI('stopped');
+            
+            // Show error to user
+            if (error.message.includes('401') || error.message.includes('403')) {
+                this.showError('Invalid ElevenLabs API key. Please check your configuration.');
+            } else if (error.message.includes('quota')) {
+                this.showError('ElevenLabs quota exceeded. Please upgrade your plan or try again later.');
+            } else {
+                this.showError('Text-to-speech failed. Please try again.');
+            }
+            
+            return false;
         }
-        
-        // Set language
-        this.utterance.lang = this.getUtteranceLang(langCode);
-        
-        // Set rate and pitch
-        this.utterance.rate = options.rate || this.getSpeechRate(langCode);
-        this.utterance.pitch = options.pitch || this.getSpeechPitch(langCode);
-        this.utterance.volume = options.volume || 1.0;
-        
-        // Event handlers
-        this.utterance.onstart = () => {
-            this.isPlaying = true;
-            this.isPaused = false;
-            this.updateUI('playing');
-            console.log('🔊 Started speaking');
-        };
-        
-        this.utterance.onend = () => {
-            this.isPlaying = false;
-            this.isPaused = false;
-            this.updateUI('stopped');
-            console.log('🔊 Finished speaking');
-        };
-        
-        this.utterance.onerror = (event) => {
-            this.isPlaying = false;
-            this.isPaused = false;
-            this.updateUI('stopped');
-            console.error('❌ Speech error:', event.error);
-        };
-        
-        this.utterance.onpause = () => {
-            this.isPaused = true;
-            this.updateUI('paused');
-            console.log('🔊 Speech paused');
-        };
-        
-        this.utterance.onresume = () => {
-            this.isPaused = false;
-            this.updateUI('playing');
-            console.log('🔊 Speech resumed');
-        };
-        
-        // Start speaking
-        this.currentLanguage = langCode;
-        this.synth.speak(this.utterance);
-        
-        return true;
-    }
-    
-    /**
-     * Get utterance language code
-     */
-    getUtteranceLang(langCode) {
-        const langMap = {
-            'en': 'en-US',
-            'ms': 'ms-MY',
-            'ms-kd': 'ms-MY',
-            'ms-kl': 'ms-MY',
-            'ja': 'ja-JP'
-        };
-        return langMap[langCode] || 'en-US';
     }
     
     /**
@@ -226,8 +222,8 @@ class SpeechManager {
      * Pause speech
      */
     pause() {
-        if (this.synth && this.isPlaying && !this.isPaused) {
-            this.synth.pause();
+        if (this.audio && this.isPlaying && !this.isPaused) {
+            this.audio.pause();
             this.isPaused = true;
             this.updateUI('paused');
             console.log('🔊 Speech paused');
@@ -238,8 +234,8 @@ class SpeechManager {
      * Resume speech
      */
     resume() {
-        if (this.synth && this.isPaused) {
-            this.synth.resume();
+        if (this.audio && this.isPaused) {
+            this.audio.play();
             this.isPaused = false;
             this.updateUI('playing');
             console.log('🔊 Speech resumed');
@@ -250,8 +246,9 @@ class SpeechManager {
      * Stop speech
      */
     stop() {
-        if (this.synth) {
-            this.synth.cancel();
+        if (this.audio) {
+            this.audio.pause();
+            this.audio.currentTime = 0;
             this.isPlaying = false;
             this.isPaused = false;
             this.updateUI('stopped');
@@ -289,12 +286,23 @@ class SpeechManager {
         const speechStatusText = document.getElementById('speechStatusText');
         
         switch (state) {
+            case 'loading':
+                if (speakBtn) {
+                    speakBtn.classList.add('loading');
+                    speakBtn.disabled = true;
+                    if (speechIcon) speechIcon.className = 'fas fa-spinner fa-spin';
+                }
+                if (speechStatusText) speechStatusText.textContent = 'Loading...';
+                break;
+                
             case 'playing':
                 if (playBtn) playBtn.classList.add('hidden');
                 if (pauseBtn) pauseBtn.classList.remove('hidden');
                 if (stopBtn) stopBtn.classList.remove('hidden');
                 if (speakBtn) {
+                    speakBtn.classList.remove('loading');
                     speakBtn.classList.add('playing');
+                    speakBtn.disabled = false;
                     if (speechIcon) speechIcon.className = 'fas fa-pause';
                 }
                 if (speechStatusText) speechStatusText.textContent = this.getStatusText('playing');
@@ -306,7 +314,8 @@ class SpeechManager {
                 if (stopBtn) stopBtn.classList.remove('hidden');
                 if (speakBtn) {
                     speakBtn.classList.add('paused');
-                    speakBtn.classList.remove('playing');
+                    speakBtn.classList.remove('playing', 'loading');
+                    speakBtn.disabled = false;
                     if (speechIcon) speechIcon.className = 'fas fa-play';
                 }
                 if (speechStatusText) speechStatusText.textContent = this.getStatusText('paused');
@@ -318,7 +327,8 @@ class SpeechManager {
                 if (pauseBtn) pauseBtn.classList.add('hidden');
                 if (stopBtn) stopBtn.classList.add('hidden');
                 if (speakBtn) {
-                    speakBtn.classList.remove('playing', 'paused');
+                    speakBtn.classList.remove('playing', 'paused', 'loading');
+                    speakBtn.disabled = false;
                     if (speechIcon) speechIcon.className = 'fas fa-volume-up';
                 }
                 if (speechStatusText) speechStatusText.textContent = this.getStatusText('stopped');
@@ -371,7 +381,50 @@ class SpeechManager {
         if (speakBtn) {
             speakBtn.style.display = 'none';
         }
-        console.warn('⚠️ Speech synthesis not supported in this browser');
+        console.warn('⚠️ ElevenLabs API key not configured');
+    }
+    
+    /**
+     * Show error message
+     */
+    showError(message) {
+        // Create simple error notification
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-notification';
+        errorDiv.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #f44336;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10000;
+            max-width: 400px;
+            font-size: 14px;
+            line-height: 1.4;
+        `;
+        
+        errorDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" 
+                        style="background: none; border: none; color: white; font-size: 18px; cursor: pointer; margin-left: auto;">
+                    &times;
+                </button>
+            </div>
+        `;
+        
+        document.body.appendChild(errorDiv);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (errorDiv.parentNode) {
+                errorDiv.parentNode.removeChild(errorDiv);
+            }
+        }, 5000);
     }
     
     /**
@@ -441,10 +494,10 @@ class SpeechManager {
     }
     
     /**
-     * Check if Web Speech API is supported
+     * Check if ElevenLabs is configured
      */
     isSupported() {
-        return 'speechSynthesis' in window;
+        return this.apiKey !== null && this.apiKey !== '';
     }
 }
 
@@ -453,15 +506,11 @@ let speechManager = null;
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    if ('speechSynthesis' in window) {
-        speechManager = new SpeechManager();
-        console.log('✅ Speech Manager ready');
-        
-        // Setup event listeners for speech buttons
-        setupSpeechEventListeners();
-    } else {
-        console.warn('⚠️ Web Speech API not supported');
-    }
+    speechManager = new SpeechManager();
+    console.log('✅ ElevenLabs Speech Manager ready');
+    
+    // Setup event listeners for speech buttons
+    setupSpeechEventListeners();
 });
 
 /**

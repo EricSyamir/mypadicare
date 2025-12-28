@@ -8,6 +8,9 @@ const CONFIG = {
     GEMINI_API_KEY: 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g',
     GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
     
+    // ElevenLabs TTS API Configuration
+    ELEVENLABS_API_KEY: 'YOUR_ELEVENLABS_API_KEY_HERE', // Replace with your ElevenLabs API key
+    
     // Health Detection Model Configuration
     MODEL_PATH: 'static/models/model.json',
     MODEL_INPUT_SIZE: 256,
