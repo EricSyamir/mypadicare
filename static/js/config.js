@@ -11,13 +11,10 @@
 
 // Default configuration (without API keys)
 const CONFIG = {
-    // Ollama Configuration (Local AI - No API keys needed!)
-    OLLAMA_URL: 'http://localhost:11434', // Default Ollama server URL
-    OLLAMA_MODEL: 'gemma:2b', // Model to use: gemma:2b, gemma:7b, llama3, mistral, etc.
-    
-    // Legacy Gemini API (kept for compatibility, not used with Ollama)
-    GEMINI_API_KEY: null, // Not needed with Ollama
-    GEMINI_API_URL: null, // Not needed with Ollama
+    // Google Gemini API Configuration
+    GEMINI_API_KEY: null, // Loaded from ENV or config.local.js
+    GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/google/gemini-2.5-pro-exp-03-25:generateContent',
+    GEMINI_MODEL: 'google/gemini-2.5-pro-exp-03-25',
     
     // ElevenLabs TTS API Configuration
     ELEVENLABS_API_KEY: null, // Loaded from ENV or config.local.js
@@ -74,31 +71,25 @@ const CONFIG = {
 try {
     // Priority 1: Environment variables (for Render/production)
     // These are injected by Render at runtime via window.ENV (from env-config.js)
-    if (typeof window !== 'undefined' && window.ENV && window.ENV.ELEVENLABS_API_KEY) {
+    if (typeof window !== 'undefined' && window.ENV) {
         CONFIG.GEMINI_API_KEY = window.ENV.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
         CONFIG.ELEVENLABS_API_KEY = window.ENV.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
-        console.log('✅ API keys loaded from environment variables (Render/env-config.js)');
+        if (CONFIG.GEMINI_API_KEY || CONFIG.ELEVENLABS_API_KEY) {
+            console.log('✅ API keys loaded from environment variables (Render/env-config.js)');
+        }
     }
     // Priority 2: Local config file (for local development)
-    else if (typeof LOCAL_CONFIG !== 'undefined' && LOCAL_CONFIG.ELEVENLABS_API_KEY) {
+    if (typeof LOCAL_CONFIG !== 'undefined') {
         CONFIG.GEMINI_API_KEY = LOCAL_CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
         CONFIG.ELEVENLABS_API_KEY = LOCAL_CONFIG.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
-        console.log('✅ API keys loaded from config.local.js (local development)');
-    } 
-    // Fallback: Try to load from window.ENV even if it exists but keys might be empty
-    else if (typeof window !== 'undefined' && window.ENV) {
-        CONFIG.GEMINI_API_KEY = window.ENV.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
-        CONFIG.ELEVENLABS_API_KEY = window.ENV.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
-        if (CONFIG.ELEVENLABS_API_KEY) {
-            console.log('✅ API keys loaded from window.ENV');
+        if (CONFIG.GEMINI_API_KEY || CONFIG.ELEVENLABS_API_KEY) {
+            console.log('✅ API keys loaded from config.local.js (local development)');
         }
     }
     
     // Final check - if still no keys, log warning
     if (!CONFIG.ELEVENLABS_API_KEY && !CONFIG.GEMINI_API_KEY) {
         console.warn('⚠️ No API keys found. Check environment variables or config.local.js');
-        console.warn('⚠️ window.ENV:', typeof window !== 'undefined' ? window.ENV : 'undefined');
-        console.warn('⚠️ LOCAL_CONFIG:', typeof LOCAL_CONFIG !== 'undefined' ? LOCAL_CONFIG : 'undefined');
     }
 } catch (error) {
     console.warn('⚠️ Could not load API keys:', error);

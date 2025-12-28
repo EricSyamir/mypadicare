@@ -15,6 +15,78 @@ The system is divided into two main components:
 
 ---
 
+## Program Flowchart
+
+```mermaid
+flowchart TD
+    Start([START]) --> UserAction[User Opens Application]
+    UserAction --> SelectLang{Select Language/<br/>Dialect?}
+    SelectLang -->|Yes| SetLang[Set Language Preference<br/>EN/MS/JA/MS-KD/MS-KL]
+    SelectLang -->|No| DefaultLang[Use Default: English]
+    SetLang --> UploadImage
+    DefaultLang --> UploadImage
+    
+    UploadImage[User Uploads/Captures<br/>Paddy Leaf Image] --> CheckFormat{Check Image Format}
+    CheckFormat -->|Invalid Format| Error1[Display Error:<br/>Invalid Format<br/>Accept: JPG/JPEG/PNG/WEBP]
+    CheckFormat -->|Valid Format| CheckSize{Check File Size}
+    
+    CheckSize -->|> 10MB| Error2[Display Error:<br/>File Too Large<br/>Max: 10MB]
+    CheckSize -->|<= 10MB| Preprocess[Pre-process Image:<br/>1. Resize to 256x256 pixels<br/>2. Normalize: divide by 255.0<br/>3. Convert to RGB format]
+    
+    Preprocess --> LoadModel[Load CNN Model<br/>TensorFlow.js<br/>model.json]
+    LoadModel --> ModelReady{Model<br/>Loaded?}
+    ModelReady -->|No| Error3[Display Error:<br/>Model Not Found]
+    ModelReady -->|Yes| Classify[Run CNN Classification<br/>Input: 256x256x3 array<br/>Output: 10 disease probabilities]
+    
+    Classify --> GetResult[Get Classification Result:<br/>- Disease Name<br/>- Confidence Score<br/>- Top 3 Predictions]
+    GetResult --> CheckConfidence{Confidence<br/>Score?}
+    
+    CheckConfidence -->|< 65%| LowConf[Display Warning:<br/>Low Confidence<br/>Suggest Retake Image]
+    CheckConfidence -->|>= 65%| DetermineSeverity[Determine Severity Level:<br/>High: >= 85%<br/>Moderate: 65-84%<br/>Low: < 65%]
+    
+    LowConf --> DisplayResult
+    DetermineSeverity --> DisplayResult[Display Disease Result:<br/>- Disease Name<br/>- Confidence %<br/>- Severity Level]
+    
+    DisplayResult --> LoadTreatment[Load Treatment Knowledge Base<br/>treatments.json<br/>Based on Language]
+    LoadTreatment --> GetTreatmentData[Retrieve Treatment Data<br/>for Identified Disease]
+    GetTreatmentData --> TreatmentFound{Treatment<br/>Found?}
+    
+    TreatmentFound -->|No| Error4[Display Error:<br/>Treatment Not Available]
+    TreatmentFound -->|Yes| ConstructQuery[Construct LLM Query:<br/>- Disease Name<br/>- Confidence Score<br/>- Severity Level<br/>- Language/Dialect<br/>- Treatment Contexts]
+    
+    ConstructQuery --> CallGemini[Call Google Gemini API<br/>Model: gemini-2.0-flash<br/>Temperature: 0.5<br/>Max Tokens: 150]
+    CallGemini --> APISuccess{API Call<br/>Successful?}
+    
+    APISuccess -->|No| Error5[Display Error:<br/>API Error<br/>Show Static Treatment]
+    APISuccess -->|Yes| GetResponse[Get AI Response<br/>80-120 words<br/>Personalized Recommendation]
+    
+    GetResponse --> FormatOutput[Format Output:<br/>1. AI Expert Advice Summary<br/>2. Immediate Actions Tab<br/>3. Short-term Management Tab<br/>4. Long-term Prevention Tab<br/>5. Materials Needed Tab<br/>6. Cost & Recovery Time]
+    
+    FormatOutput --> DisplayFinal[Display Complete Treatment Plan<br/>in Selected Language/Dialect]
+    DisplayFinal --> UserReview[User Reviews Results]
+    
+    UserReview --> AnotherImage{Analyze Another<br/>Image?}
+    AnotherImage -->|Yes| UploadImage
+    AnotherImage -->|No| End([END])
+    
+    Error1 --> End
+    Error2 --> End
+    Error3 --> End
+    Error4 --> End
+    Error5 --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Error1 fill:#FF6B6B
+    style Error2 fill:#FF6B6B
+    style Error3 fill:#FF6B6B
+    style Error4 fill:#FF6B6B
+    style Error5 fill:#FF6B6B
+    style LowConf fill:#FFD93D
+```
+
+---
+
 ## 1. Convolutional Neural Networks (CNNs) Section
 
 ### 1.1 Image Acquisition

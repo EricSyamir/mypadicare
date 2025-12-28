@@ -10,7 +10,6 @@ The **market and commercial potential** is substantial across Southeast Asia's 1
 
 **Commercialisation potential** includes multiple revenue streams: direct-to-farmer SaaS subscriptions, B2B licensing to agri-input manufacturers (fertilizer, pesticide companies), white-label solutions for agricultural cooperatives, API access for third-party agritech platforms, and premium analytics modules offering yield forecasting and disease surveillance dashboards. The scalable architecture allows rapid deployment across ASEAN markets, with projected revenue of $2-5 million within 3 years through strategic partnerships with government agencies, SIRIM certification, and integration into national agricultural digitalization initiatives.
 
-*Must be in commercial terms*
 
 ---
 

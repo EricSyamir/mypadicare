@@ -1,49 +1,33 @@
 /**
- * Ollama AI Integration (Local Gemini-like Model)
+ * Google Gemini AI Integration
  * Generates personalized treatment recommendations
- * Uses Ollama local API - No external API keys needed!
+ * Uses Google Gemini API
  */
 
 class GeminiAI {
     constructor() {
-        // Ollama configuration - Uses server-side proxy (integrated into website)
-        // The proxy endpoint handles Ollama requests server-side
-        this.proxyUrl = 'predict_api.php?action=ollama'; // PHP proxy
-        this.proxyUrlPython = '/api/ollama'; // Python proxy (alternative)
-        
-        // Model name - Using Gemma (Google's open model, similar to Gemini)
-        // Alternatives: llama3, mistral, gemma:2b, gemma:7b
-        this.modelName = CONFIG?.OLLAMA_MODEL || 'gemma:2b';
-        
-        // Try to detect which backend is available
-        this.usePythonProxy = false;
-        this.checkBackend();
-        
-        console.log('✅ Ollama AI initialized (server-side proxy)');
-        console.log(`🤖 Model: ${this.modelName}`);
-    }
-    
-    /**
-     * Check which backend proxy is available
-     */
-    async checkBackend() {
-        // Try Python proxy first (if using Flask)
-        try {
-            const response = await fetch(this.proxyUrlPython, {
-                method: 'OPTIONS'
-            });
-            if (response.ok) {
-                this.usePythonProxy = true;
-                console.log('✅ Using Python/Flask proxy');
-                return;
-            }
-        } catch (e) {
-            // Python proxy not available, use PHP
+        // Check if CONFIG is available
+        if (typeof CONFIG === 'undefined') {
+            console.error('❌ CONFIG not loaded when initializing Gemini AI');
+            this.apiKey = null;
+            this.apiUrl = null;
+            return;
         }
         
-        // Use PHP proxy (default)
-        this.usePythonProxy = false;
-        console.log('✅ Using PHP proxy');
+        this.apiKey = CONFIG.GEMINI_API_KEY;
+        this.apiUrl = CONFIG.GEMINI_API_URL;
+        this.modelName = CONFIG.GEMINI_MODEL || 'google/gemini-2.5-pro-exp-03-25';
+        
+        // Validate configuration
+        if (!this.apiKey) {
+            console.warn('⚠️ Gemini API key not configured');
+        }
+        if (!this.apiUrl) {
+            console.warn('⚠️ Gemini API URL not configured');
+        }
+        
+        console.log('✅ Google Gemini AI initialized');
+        console.log(`🤖 Model: ${this.modelName}`);
     }
 
     /**
@@ -94,61 +78,74 @@ Provide your recommendation:`;
     }
 
     /**
-     * Call Ollama API for recommendations (local, no external API needed)
+     * Call Gemini API for recommendations
      */
     async getRecommendation(diseaseName, severity, confidence, treatmentData, language = 'en') {
         try {
-            // Check if Gemini/Ollama API is disabled in admin settings
+            // Check if Gemini API is disabled in admin settings
             const geminiEnabled = localStorage.getItem('mypadicare_gemini_enabled') !== 'false';
             if (!geminiEnabled) {
-                console.warn('⚠️ Ollama API is disabled in admin settings');
-                throw new Error('Ollama API is disabled');
+                console.warn('⚠️ Gemini API is disabled in admin settings');
+                throw new Error('Gemini API is disabled');
             }
             
-            console.log('🤖 Requesting AI recommendation from Ollama (via server proxy)...');
+            console.log('🤖 Requesting AI recommendation from Gemini...');
             console.log('📊 Parameters:', { diseaseName, severity, confidence: Math.round(confidence * 100) + '%', language });
+            
+            // Check if API is configured
+            if (!this.apiKey || !this.apiUrl) {
+                throw new Error('Gemini API not properly configured');
+            }
             
             // Build prompt with language support
             const prompt = this.buildPrompt(diseaseName, severity, confidence, treatmentData, language);
             
-            // Use server-side proxy (PHP or Python)
-            const proxyUrl = this.usePythonProxy ? this.proxyUrlPython : this.proxyUrl;
+            // Prepare request body
+            const requestBody = {
+                contents: [
+                    {
+                        parts: [
+                            {
+                                text: prompt
+                            }
+                        ]
+                    }
+                ],
+                generationConfig: {
+                    temperature: 0.5,
+                    maxOutputTokens: 150,
+                    topP: 0.9,
+                    topK: 20
+                }
+            };
             
-            // Call server proxy which handles Ollama
-            const response = await fetch(proxyUrl, {
+            // Make API call to Gemini
+            const response = await fetch(`${this.apiUrl}?key=${this.apiKey}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    prompt: prompt,
-                    model: this.modelName
-                })
+                body: JSON.stringify(requestBody)
             });
             
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Ollama proxy error: ${response.status} - ${errorText}`);
+                throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
             }
             
             const data = await response.json();
             
-            if (!data.success) {
-                throw new Error(data.error || 'Ollama request failed');
-            }
-            
             // Extract generated text
-            const generatedText = data.text || '';
-            
-            if (generatedText) {
-                console.log('✅ Ollama recommendation received:', generatedText.substring(0, 100) + '...');
+            if (data.candidates && data.candidates.length > 0) {
+                const generatedText = data.candidates[0].content.parts[0].text;
+                console.log('✅ Gemini recommendation received:', generatedText.substring(0, 100) + '...');
                 return generatedText.trim();
             } else {
-                throw new Error('No response from Ollama');
+                console.error('❌ No candidates in Gemini response:', data);
+                throw new Error('No response from Gemini AI');
             }
             
         } catch (err) {
-            console.error('❌ Ollama API error:', err);
+            console.error('❌ Gemini API error:', err);
             
             // Fallback to rule-based recommendation
             console.log('⚠️ Using fallback rule-based recommendation');
