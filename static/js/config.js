@@ -69,19 +69,32 @@ const CONFIG = {
 // Load API keys from environment variables (Render/production) or local config (development)
 try {
     // Priority 1: Environment variables (for Render/production)
-    // These are injected by Render at runtime via window.ENV
-    if (typeof window !== 'undefined' && window.ENV) {
+    // These are injected by Render at runtime via window.ENV (from env-config.js)
+    if (typeof window !== 'undefined' && window.ENV && window.ENV.ELEVENLABS_API_KEY) {
         CONFIG.GEMINI_API_KEY = window.ENV.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
         CONFIG.ELEVENLABS_API_KEY = window.ENV.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
-        console.log('✅ API keys loaded from environment variables (Render)');
+        console.log('✅ API keys loaded from environment variables (Render/env-config.js)');
     }
     // Priority 2: Local config file (for local development)
-    else if (typeof LOCAL_CONFIG !== 'undefined') {
+    else if (typeof LOCAL_CONFIG !== 'undefined' && LOCAL_CONFIG.ELEVENLABS_API_KEY) {
         CONFIG.GEMINI_API_KEY = LOCAL_CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
         CONFIG.ELEVENLABS_API_KEY = LOCAL_CONFIG.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
         console.log('✅ API keys loaded from config.local.js (local development)');
-    } else {
+    } 
+    // Fallback: Try to load from window.ENV even if it exists but keys might be empty
+    else if (typeof window !== 'undefined' && window.ENV) {
+        CONFIG.GEMINI_API_KEY = window.ENV.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
+        CONFIG.ELEVENLABS_API_KEY = window.ENV.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
+        if (CONFIG.ELEVENLABS_API_KEY) {
+            console.log('✅ API keys loaded from window.ENV');
+        }
+    }
+    
+    // Final check - if still no keys, log warning
+    if (!CONFIG.ELEVENLABS_API_KEY && !CONFIG.GEMINI_API_KEY) {
         console.warn('⚠️ No API keys found. Check environment variables or config.local.js');
+        console.warn('⚠️ window.ENV:', typeof window !== 'undefined' ? window.ENV : 'undefined');
+        console.warn('⚠️ LOCAL_CONFIG:', typeof LOCAL_CONFIG !== 'undefined' ? LOCAL_CONFIG : 'undefined');
     }
 } catch (error) {
     console.warn('⚠️ Could not load API keys:', error);

@@ -44,11 +44,26 @@ class SpeechManager {
      * Load configuration
      */
     loadConfig() {
-        if (typeof CONFIG !== 'undefined' && CONFIG.ELEVENLABS_API_KEY) {
-            this.apiKey = CONFIG.ELEVENLABS_API_KEY;
-            console.log('✅ ElevenLabs API key loaded');
+        // Wait a bit for config to load if needed
+        if (typeof CONFIG !== 'undefined') {
+            if (CONFIG.ELEVENLABS_API_KEY) {
+                this.apiKey = CONFIG.ELEVENLABS_API_KEY;
+                console.log('✅ ElevenLabs API key loaded:', this.apiKey.substring(0, 10) + '...');
+            } else {
+                console.warn('⚠️ ElevenLabs API key not found in CONFIG');
+                console.warn('⚠️ CONFIG.ELEVENLABS_API_KEY:', CONFIG.ELEVENLABS_API_KEY);
+                console.warn('⚠️ window.ENV:', typeof window !== 'undefined' ? window.ENV : 'undefined');
+                console.warn('⚠️ LOCAL_CONFIG:', typeof LOCAL_CONFIG !== 'undefined' ? LOCAL_CONFIG : 'undefined');
+            }
         } else {
-            console.warn('⚠️ ElevenLabs API key not found in config');
+            console.error('❌ CONFIG object not found!');
+            // Try to reload after a delay
+            setTimeout(() => {
+                if (typeof CONFIG !== 'undefined' && CONFIG.ELEVENLABS_API_KEY) {
+                    this.apiKey = CONFIG.ELEVENLABS_API_KEY;
+                    console.log('✅ ElevenLabs API key loaded (delayed)');
+                }
+            }, 500);
         }
     }
     
