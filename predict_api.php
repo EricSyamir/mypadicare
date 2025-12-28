@@ -48,6 +48,85 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['acti
 }
 
 /**
+ * Ollama AI Proxy Endpoint
+ * Handles AI recommendation requests through Ollama server
+ */
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['action']) && $_GET['action'] == 'ollama') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    
+    if (!isset($input['prompt'])) {
+        echo json_encode(['success' => false, 'error' => 'No prompt provided']);
+        exit;
+    }
+    
+    $prompt = $input['prompt'];
+    $model = $input['model'] ?? 'gemma:2b';
+    
+    // Ollama server URL (can be configured)
+    $ollama_url = getenv('OLLAMA_URL') ?: 'http://localhost:11434';
+    
+    // Prepare request to Ollama
+    $ollama_request = [
+        'model' => $model,
+        'prompt' => $prompt,
+        'stream' => false,
+        'options' => [
+            'temperature' => 0.5,
+            'top_p' => 0.9,
+            'top_k' => 20,
+            'num_predict' => 150
+        ]
+    ];
+    
+    // Make request to Ollama
+    $ch = curl_init($ollama_url . '/api/generate');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ollama_request));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 60); // 60 second timeout
+    
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_error = curl_error($ch);
+    curl_close($ch);
+    
+    if ($curl_error) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Ollama connection failed: ' . $curl_error
+        ]);
+        exit;
+    }
+    
+    if ($http_code !== 200) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Ollama API error: HTTP ' . $http_code,
+            'response' => $response
+        ]);
+        exit;
+    }
+    
+    $ollama_data = json_decode($response, true);
+    
+    if (isset($ollama_data['response'])) {
+        echo json_encode([
+            'success' => true,
+            'text' => trim($ollama_data['response'])
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Invalid response from Ollama',
+            'response' => $ollama_data
+        ]);
+    }
+    
+    exit;
+}
+
+/**
  * Handle disease prediction
  */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
