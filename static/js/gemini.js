@@ -116,9 +116,8 @@ Provide your recommendation:`;
             // Build prompt with language support
             const prompt = this.buildPrompt(diseaseName, severity, confidence, treatmentData, language);
             
-            // Generate content using SDK
-            const result = await this.genAI.generateContent({
-                contents: prompt,
+            // Generate content using SDK (correct format)
+            const result = await this.model.generateContent(prompt, {
                 generationConfig: {
                     temperature: 0.5,
                     maxOutputTokens: 150,
