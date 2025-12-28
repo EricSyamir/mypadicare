@@ -44,27 +44,29 @@ class SpeechManager {
      * Load configuration
      */
     loadConfig() {
-        // Wait a bit for config to load if needed
-        if (typeof CONFIG !== 'undefined') {
-            if (CONFIG.ELEVENLABS_API_KEY) {
-                this.apiKey = CONFIG.ELEVENLABS_API_KEY;
-                console.log('✅ ElevenLabs API key loaded:', this.apiKey.substring(0, 10) + '...');
-            } else {
-                console.warn('⚠️ ElevenLabs API key not found in CONFIG');
-                console.warn('⚠️ CONFIG.ELEVENLABS_API_KEY:', CONFIG.ELEVENLABS_API_KEY);
-                console.warn('⚠️ window.ENV:', typeof window !== 'undefined' ? window.ENV : 'undefined');
-                console.warn('⚠️ LOCAL_CONFIG:', typeof LOCAL_CONFIG !== 'undefined' ? LOCAL_CONFIG : 'undefined');
-            }
-        } else {
-            console.error('❌ CONFIG object not found!');
-            // Try to reload after a delay
-            setTimeout(() => {
-                if (typeof CONFIG !== 'undefined' && CONFIG.ELEVENLABS_API_KEY) {
-                    this.apiKey = CONFIG.ELEVENLABS_API_KEY;
-                    console.log('✅ ElevenLabs API key loaded (delayed)');
-                }
-            }, 500);
+        // Priority 1: Try CONFIG (which should be loaded from config.js)
+        if (typeof CONFIG !== 'undefined' && CONFIG.ELEVENLABS_API_KEY) {
+            this.apiKey = CONFIG.ELEVENLABS_API_KEY;
+            console.log('✅ ElevenLabs API key loaded from CONFIG');
+            return;
         }
+        
+        // Priority 2: Try window.ENV (from env-config.js - Render/production)
+        if (typeof window !== 'undefined' && window.ENV && window.ENV.ELEVENLABS_API_KEY) {
+            this.apiKey = window.ENV.ELEVENLABS_API_KEY;
+            console.log('✅ ElevenLabs API key loaded from window.ENV');
+            return;
+        }
+        
+        // Priority 3: Try LOCAL_CONFIG (from config.local.js - local development)
+        if (typeof LOCAL_CONFIG !== 'undefined' && LOCAL_CONFIG.ELEVENLABS_API_KEY) {
+            this.apiKey = LOCAL_CONFIG.ELEVENLABS_API_KEY;
+            console.log('✅ ElevenLabs API key loaded from LOCAL_CONFIG');
+            return;
+        }
+        
+        // If still not found, log warning
+        console.warn('⚠️ ElevenLabs API key not found. Make sure config.js is loaded before speech.js');
     }
     
     /**
