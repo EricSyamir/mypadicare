@@ -177,6 +177,95 @@ def predict_api():
             'error': f'Server error: {str(e)}'
         }), 500
 
+@app.route('/api/gemini', methods=['POST', 'OPTIONS'])
+def gemini_proxy():
+    """Gemini AI Proxy Endpoint - Handles AI recommendation requests (server-side to avoid CORS)"""
+    
+    # Handle OPTIONS preflight
+    if request.method == 'OPTIONS':
+        return '', 200
+    
+    try:
+        data = request.get_json()
+        
+        if not data or 'prompt' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'No prompt provided'
+            }), 400
+        
+        prompt = data['prompt']
+        model = data.get('model', 'google/gemini-2.5-pro-exp-03-25')
+        
+        # Get API key from request or environment
+        import os
+        api_key = data.get('api_key') or os.getenv('GEMINI_API_KEY', 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g')
+        
+        # Prepare request to Gemini API
+        import requests
+        gemini_url = f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}'
+        
+        gemini_request = {
+            'contents': [
+                {
+                    'parts': [
+                        {
+                            'text': prompt
+                        }
+                    ]
+                }
+            ],
+            'generationConfig': {
+                'temperature': 0.5,
+                'maxOutputTokens': 150,
+                'topP': 0.9,
+                'topK': 20
+            }
+        }
+        
+        # Make request to Gemini API
+        try:
+            response = requests.post(
+                gemini_url,
+                json=gemini_request,
+                headers={'Content-Type': 'application/json'},
+                timeout=60
+            )
+            
+            if response.status_code != 200:
+                return jsonify({
+                    'success': False,
+                    'error': f'Gemini API error: HTTP {response.status_code}',
+                    'response': response.text
+                }), 500
+            
+            gemini_data = response.json()
+            
+            if 'candidates' in gemini_data and len(gemini_data['candidates']) > 0:
+                text = gemini_data['candidates'][0]['content']['parts'][0]['text']
+                return jsonify({
+                    'success': True,
+                    'text': text.strip()
+                })
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': 'Invalid response from Gemini API',
+                    'response': gemini_data
+                }), 500
+                
+        except requests.exceptions.RequestException as e:
+            return jsonify({
+                'success': False,
+                'error': f'Gemini API connection failed: {str(e)}'
+            }), 500
+            
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Server error: {str(e)}'
+        }), 500
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)

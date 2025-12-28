@@ -48,6 +48,91 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['acti
 }
 
 /**
+ * Gemini AI Proxy Endpoint
+ * Handles AI recommendation requests through Gemini API (server-side to avoid CORS)
+ */
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['action']) && $_GET['action'] == 'gemini') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    
+    if (!isset($input['prompt'])) {
+        echo json_encode(['success' => false, 'error' => 'No prompt provided']);
+        exit;
+    }
+    
+    $prompt = $input['prompt'];
+    $apiKey = $input['api_key'] ?? getenv('GEMINI_API_KEY') ?: 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g';
+    $model = $input['model'] ?? 'google/gemini-2.5-pro-exp-03-25';
+    
+    // Prepare request to Gemini API
+    $gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
+    
+    $gemini_request = [
+        'contents' => [
+            [
+                'parts' => [
+                    [
+                        'text' => $prompt
+                    ]
+                ]
+            ]
+        ],
+        'generationConfig' => [
+            'temperature' => 0.5,
+            'maxOutputTokens' => 150,
+            'topP' => 0.9,
+            'topK' => 20
+        ]
+    ];
+    
+    // Make request to Gemini API
+    $ch = curl_init($gemini_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($gemini_request));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 60); // 60 second timeout
+    
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_error = curl_error($ch);
+    curl_close($ch);
+    
+    if ($curl_error) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Gemini API connection failed: ' . $curl_error
+        ]);
+        exit;
+    }
+    
+    if ($http_code !== 200) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Gemini API error: HTTP ' . $http_code,
+            'response' => $response
+        ]);
+        exit;
+    }
+    
+    $gemini_data = json_decode($response, true);
+    
+    if (isset($gemini_data['candidates'][0]['content']['parts'][0]['text'])) {
+        echo json_encode([
+            'success' => true,
+            'text' => trim($gemini_data['candidates'][0]['content']['parts'][0]['text'])
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Invalid response from Gemini API',
+            'response' => $gemini_data
+        ]);
+    }
+    
+    exit;
+}
+
+/**
  * Handle disease prediction
  */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

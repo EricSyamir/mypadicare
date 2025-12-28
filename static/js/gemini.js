@@ -100,47 +100,58 @@ Provide your recommendation:`;
             // Build prompt with language support
             const prompt = this.buildPrompt(diseaseName, severity, confidence, treatmentData, language);
             
-            // Prepare request body
-            const requestBody = {
-                contents: [
-                    {
-                        parts: [
-                            {
-                                text: prompt
-                            }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    temperature: 0.5,
-                    maxOutputTokens: 150,
-                    topP: 0.9,
-                    topK: 20
-                }
-            };
+            // Use server-side proxy to avoid CORS issues
+            // Try PHP proxy first, then Python proxy
+            const phpProxyUrl = 'predict_api.php?action=gemini';
+            const pythonProxyUrl = '/api/gemini';
             
-            // Make API call to Gemini
-            const response = await fetch(`${this.apiUrl}?key=${this.apiKey}`, {
+            let proxyUrl = phpProxyUrl;
+            let usePython = false;
+            
+            // Try to detect which backend is available
+            try {
+                const testResponse = await fetch(pythonProxyUrl, {
+                    method: 'OPTIONS'
+                });
+                if (testResponse.ok) {
+                    usePython = true;
+                    proxyUrl = pythonProxyUrl;
+                }
+            } catch (e) {
+                // Python proxy not available, use PHP
+            }
+            
+            // Call server proxy which handles Gemini API (avoids CORS)
+            const response = await fetch(proxyUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify({
+                    prompt: prompt,
+                    api_key: this.apiKey,
+                    model: this.modelName
+                })
             });
             
             if (!response.ok) {
-                throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
+                const errorText = await response.text();
+                throw new Error(`Gemini proxy error: ${response.status} - ${errorText}`);
             }
             
             const data = await response.json();
             
+            if (!data.success) {
+                throw new Error(data.error || 'Gemini request failed');
+            }
+            
             // Extract generated text
-            if (data.candidates && data.candidates.length > 0) {
-                const generatedText = data.candidates[0].content.parts[0].text;
+            const generatedText = data.text || '';
+            
+            if (generatedText) {
                 console.log('✅ Gemini recommendation received:', generatedText.substring(0, 100) + '...');
                 return generatedText.trim();
             } else {
-                console.error('❌ No candidates in Gemini response:', data);
                 throw new Error('No response from Gemini AI');
             }
             
