@@ -347,7 +347,7 @@
                             <p class="step-desc-mobile" data-translate="step3Desc">Instant disease detection with confidence score</p>
                         </div>
                     </div>
-                    <div class="step-item">
+                    <div class="step-item" id="step4Item" style="cursor: pointer;" onclick="handleStep4Click(event)">
                         <div class="step-number-mobile">4</div>
                         <div>
                             <h4 class="step-title-mobile"><i class="fas fa-robot"></i> <span data-translate="step4Title">AI Recommendations</span></h4>
@@ -382,6 +382,69 @@
                             <i class="fas fa-bolt"></i>
                             <div class="feature-title" data-translate="feature4Title">Instant Results</div>
                             <div class="feature-desc" data-translate="feature4Desc">Real-time analysis</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Maintenance Menu (Hidden) -->
+            <div id="adminMenu" class="admin-menu" style="display: none;">
+                <div class="admin-menu-content">
+                    <div class="admin-menu-header">
+                        <h3><i class="fas fa-cog"></i> Admin Panel</h3>
+                        <button class="admin-close-btn" onclick="closeAdminMenu()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h4><i class="fas fa-wrench"></i> Maintenance Mode</h4>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="maintenanceMode" onchange="toggleMaintenanceMode()">
+                            <label for="maintenanceMode">
+                                <span class="toggle-label">Enable Maintenance Mode</span>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <p class="admin-description">When enabled, the app will show a maintenance message to users.</p>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h4><i class="fas fa-key"></i> API Keys Control</h4>
+                        
+                        <div class="api-toggle-item">
+                            <div class="api-toggle-header">
+                                <span><i class="fas fa-brain"></i> Google Gemini API</span>
+                                <span id="geminiStatus" class="api-status">Active</span>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="geminiApiToggle" checked onchange="toggleApiKey('gemini')">
+                                <label for="geminiApiToggle">
+                                    <span class="toggle-label">Enable Gemini API</span>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="api-toggle-item">
+                            <div class="api-toggle-header">
+                                <span><i class="fas fa-volume-up"></i> ElevenLabs TTS API</span>
+                                <span id="elevenlabsStatus" class="api-status">Active</span>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="elevenlabsApiToggle" checked onchange="toggleApiKey('elevenlabs')">
+                                <label for="elevenlabsApiToggle">
+                                    <span class="toggle-label">Enable ElevenLabs API</span>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h4><i class="fas fa-info-circle"></i> Status</h4>
+                        <div id="adminStatus" class="admin-status">
+                            <p>All systems operational</p>
                         </div>
                     </div>
                 </div>
