@@ -477,32 +477,21 @@ class SpeechManager {
     }
     
     /**
-     * Speak full recommendation (advice + immediate actions)
+     * Speak full recommendation (Gemini AI advice only)
      */
     speakFullRecommendation() {
         const adviceText = document.getElementById('expertAdviceText');
-        const immediateActions = document.getElementById('immediateActions');
-        
-        let fullText = '';
         
         if (adviceText && adviceText.textContent) {
-            fullText += adviceText.textContent + '. ';
-        }
-        
-        if (immediateActions) {
-            const items = Array.from(immediateActions.querySelectorAll('li')).map(li => li.textContent);
-            if (items.length > 0) {
-                const lang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
-                const prefix = lang === 'en' ? 'Immediate actions: ' : 
-                              lang === 'ja' ? '即時の対応: ' : 
-                              'Tindakan segera: ';
-                fullText += prefix + items.join('. ');
+            // Check if loading message
+            const loadingTexts = ['Loading AI recommendations...', 'Memuatkan cadangan AI...', 'AI推奨事項を読み込み中...'];
+            if (loadingTexts.some(t => adviceText.textContent.includes(t))) {
+                console.log('⚠️ Still loading, cannot speak yet');
+                return false;
             }
-        }
-        
-        if (fullText) {
+            
             const lang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
-            return this.speak(fullText, lang);
+            return this.speak(adviceText.textContent, lang);
         }
         
         return false;
