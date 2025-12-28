@@ -634,14 +634,8 @@
     </div>
 
     <!-- JavaScript Configuration -->
-    <!-- Inject environment variables from Render (production) -->
-    <script>
-        // Inject Render environment variables into window.ENV
-        // This is populated by Render at runtime
-        window.ENV = window.ENV || {};
-        // Render will inject these via server-side rendering or build process
-        // For static sites, use Render's environment variable injection feature
-    </script>
+    <!-- Load environment variables from Render build (production) -->
+    <script src="static/js/env-config.js?v=1" onerror="console.log('env-config.js not found - checking local config')"></script>
     <!-- Load local config for development (gitignored, optional) -->
     <script src="static/js/config.local.js?v=1" onerror="console.log('Local config not found - using ENV vars')"></script>
     <!-- Load main config (reads from ENV or LOCAL_CONFIG) -->
