@@ -9,7 +9,7 @@ const CONFIG = {
     GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
     
     // ElevenLabs TTS API Configuration
-    ELEVENLABS_API_KEY: 'YOUR_ELEVENLABS_API_KEY_HERE', // Replace with your ElevenLabs API key
+    ELEVENLABS_API_KEY: 'sk_2591e16fb832de782bc532f77dda799de674b570833f8dd0',
     
     // Health Detection Model Configuration
     MODEL_PATH: 'static/models/model.json',
