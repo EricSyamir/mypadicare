@@ -384,6 +384,11 @@ function resetUpload() {
     uploadedImage = null;
     detectionResults = null;
     
+    // Stop any ongoing speech
+    if (typeof speechManager !== 'undefined' && speechManager) {
+        speechManager.stop();
+    }
+    
     if (uploadBox) uploadBox.style.display = 'block';
     if (imagePreview) imagePreview.style.display = 'none';
     if (analyzeBtn) analyzeBtn.style.display = 'none';

@@ -191,7 +191,7 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <button class="app-btn" onclick="showScreen('treatmentScreen'); setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 100);">
+                <button class="app-btn" onclick="viewTreatmentAndSpeak();">
                     <i class="fas fa-prescription"></i> <span data-translate="viewTreatment">View Treatment</span>
                 </button>
                 <button class="app-btn secondary" onclick="showScreen('homeScreen'); resetUpload(); setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 100);">
@@ -207,11 +207,24 @@
                         <i class="fas fa-brain"></i>
                         <h3 data-translate="aiExpertAdvice">AI Expert Advice</h3>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                        <span style="font-size: 32px;">🤖</span>
-                        <span style="font-weight: 600; color: #1A2F1A;" data-translate="poweredBy">Powered by Google Gemini</span>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 32px;">🤖</span>
+                            <span style="font-weight: 600; color: #1A2F1A;" data-translate="poweredBy">Powered by Google Gemini</span>
+                        </div>
                     </div>
                     <p id="expertAdviceText" style="margin: 0; color: #1A2F1A; line-height: 1.6;" data-translate="loadingAI">Loading AI recommendations...</p>
+                    
+                    <!-- Text-to-Speech Controls -->
+                    <div class="speech-controls" id="speechControls">
+                        <button class="speech-btn" id="speakAdviceBtn" title="Listen to advice">
+                            <i class="fas fa-volume-up" id="speechIcon"></i>
+                            <span id="speechStatusText" data-translate="listenToAdvice">Listen to advice</span>
+                        </button>
+                        <button class="speech-btn stop-btn hidden" id="speechStopBtn" title="Stop">
+                            <i class="fas fa-stop"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Treatment Tabs -->
@@ -626,6 +639,7 @@
     <!-- JavaScript Modules -->
     <script src="static/js/translations.js?v=4"></script>
     <script src="static/js/gemini.js?v=4"></script>
+    <script src="static/js/speech.js?v=1"></script>
     <script src="static/js/app_xampp.js?v=4"></script>
 
     <!-- Mobile App JavaScript -->
@@ -658,6 +672,11 @@
         
         // Screen navigation function
         function showScreen(screenId) {
+            // Stop any ongoing speech when changing screens
+            if (typeof speechManager !== 'undefined' && speechManager) {
+                speechManager.stop();
+            }
+            
             // Hide all screens
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
@@ -794,6 +813,28 @@
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
+        }
+        
+        // View Treatment and start speaking
+        function viewTreatmentAndSpeak() {
+            // Show treatment screen
+            showScreen('treatmentScreen');
+            
+            // Auto-scroll to top
+            setTimeout(() => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }, 100);
+            
+            // Start speaking the recommendation after a short delay
+            setTimeout(() => {
+                if (typeof speechManager !== 'undefined' && speechManager) {
+                    speechManager.speakFullRecommendation();
+                    console.log('🔊 Speaking recommendation');
+                }
+            }, 300);
         }
     </script>
 

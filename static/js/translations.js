@@ -126,6 +126,12 @@ const translations = {
         moderate: "Moderate",
         low: "Low",
         
+        // Speech
+        listenToAdvice: "Listen to advice",
+        speaking: "Speaking...",
+        paused: "Paused",
+        stopSpeaking: "Stop",
+        
         // Tutorial
         tutorialWelcome: "Welcome to MyPadiCare!",
         tutorialQuestion: "Is this your first time using this app?",
@@ -270,6 +276,12 @@ const translations = {
         high: "Tinggi",
         moderate: "Sederhana",
         low: "Rendah",
+        
+        // Speech
+        listenToAdvice: "Dengar nasihat",
+        speaking: "Bercakap...",
+        paused: "Dijeda",
+        stopSpeaking: "Berhenti",
         
         // Tutorial
         tutorialWelcome: "Selamat datang ke MyPadiCare!",
@@ -416,6 +428,12 @@ const translations = {
         moderate: "中",
         low: "低",
         
+        // Speech
+        listenToAdvice: "アドバイスを聞く",
+        speaking: "話しています...",
+        paused: "一時停止",
+        stopSpeaking: "停止",
+        
         // Tutorial
         tutorialWelcome: "MyPadiCareへようこそ！",
         tutorialQuestion: "このアプリを初めて使用しますか？",
@@ -534,6 +552,10 @@ const translations = {
         high: "Tinggi",
         moderate: "Sederhana",
         low: "Rendah",
+        listenToAdvice: "Dengar nasihat",
+        speaking: "Bercakap...",
+        paused: "Dijeda",
+        stopSpeaking: "Berhenti",
         tutorialWelcome: "Selamat datang ke MyPadiCare!",
         tutorialQuestion: "Ni kali pertama hang guna aplikasi ni ke?",
         tutorialYes: "Ya, tunjukkan saya",
@@ -647,6 +669,10 @@ const translations = {
         high: "Tinggi",
         moderate: "Sederhana",
         low: "Rendah",
+        listenToAdvice: "Dengar nasihat",
+        speaking: "Bercakap...",
+        paused: "Dijeda",
+        stopSpeaking: "Berhenti",
         tutorialWelcome: "Selamat datang ke MyPadiCare!",
         tutorialQuestion: "Ni kali pertama kito guna aplikasi ni ke?",
         tutorialYes: "Ya, tunjukkan saya",
