@@ -6,56 +6,44 @@
 
 class GeminiAI {
     constructor() {
-        // Ollama configuration
-        // Default: localhost:11434 (standard Ollama port)
-        this.ollamaUrl = CONFIG?.OLLAMA_URL || 'http://localhost:11434';
+        // Ollama configuration - Uses server-side proxy (integrated into website)
+        // The proxy endpoint handles Ollama requests server-side
+        this.proxyUrl = 'predict_api.php?action=ollama'; // PHP proxy
+        this.proxyUrlPython = '/api/ollama'; // Python proxy (alternative)
         
         // Model name - Using Gemma (Google's open model, similar to Gemini)
         // Alternatives: llama3, mistral, gemma:2b, gemma:7b
         this.modelName = CONFIG?.OLLAMA_MODEL || 'gemma:2b';
         
-        // Check if Ollama is available
-        this.isAvailable = false;
-        this.checkOllamaAvailability();
+        // Try to detect which backend is available
+        this.usePythonProxy = false;
+        this.checkBackend();
         
-        console.log('✅ Ollama AI initialized');
-        console.log(`📡 Ollama URL: ${this.ollamaUrl}`);
+        console.log('✅ Ollama AI initialized (server-side proxy)');
         console.log(`🤖 Model: ${this.modelName}`);
     }
     
     /**
-     * Check if Ollama server is available
+     * Check which backend proxy is available
      */
-    async checkOllamaAvailability() {
+    async checkBackend() {
+        // Try Python proxy first (if using Flask)
         try {
-            const response = await fetch(`${this.ollamaUrl}/api/tags`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            const response = await fetch(this.proxyUrlPython, {
+                method: 'OPTIONS'
             });
-            
             if (response.ok) {
-                this.isAvailable = true;
-                const data = await response.json();
-                console.log('✅ Ollama server is running');
-                console.log('📦 Available models:', data.models?.map(m => m.name) || []);
-                
-                // Check if our model is available
-                const modelExists = data.models?.some(m => m.name.includes(this.modelName.split(':')[0]));
-                if (!modelExists) {
-                    console.warn(`⚠️ Model "${this.modelName}" not found. Available models:`, data.models?.map(m => m.name) || []);
-                    console.warn(`⚠️ You may need to run: ollama pull ${this.modelName}`);
-                }
-            } else {
-                this.isAvailable = false;
-                console.warn('⚠️ Ollama server not responding');
+                this.usePythonProxy = true;
+                console.log('✅ Using Python/Flask proxy');
+                return;
             }
-        } catch (error) {
-            this.isAvailable = false;
-            console.warn('⚠️ Ollama server not available:', error.message);
-            console.warn('⚠️ Make sure Ollama is installed and running on', this.ollamaUrl);
+        } catch (e) {
+            // Python proxy not available, use PHP
         }
+        
+        // Use PHP proxy (default)
+        this.usePythonProxy = false;
+        console.log('✅ Using PHP proxy');
     }
 
     /**
@@ -117,48 +105,40 @@ Provide your recommendation:`;
                 throw new Error('Ollama API is disabled');
             }
             
-            console.log('🤖 Requesting AI recommendation from Ollama (local)...');
+            console.log('🤖 Requesting AI recommendation from Ollama (via server proxy)...');
             console.log('📊 Parameters:', { diseaseName, severity, confidence: Math.round(confidence * 100) + '%', language });
-            
-            // Check if Ollama is available
-            if (!this.isAvailable) {
-                await this.checkOllamaAvailability();
-                if (!this.isAvailable) {
-                    throw new Error('Ollama server is not available. Make sure Ollama is installed and running.');
-                }
-            }
             
             // Build prompt with language support
             const prompt = this.buildPrompt(diseaseName, severity, confidence, treatmentData, language);
             
-            // Call Ollama API
-            const response = await fetch(`${this.ollamaUrl}/api/generate`, {
+            // Use server-side proxy (PHP or Python)
+            const proxyUrl = this.usePythonProxy ? this.proxyUrlPython : this.proxyUrl;
+            
+            // Call server proxy which handles Ollama
+            const response = await fetch(proxyUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: this.modelName,
                     prompt: prompt,
-                    stream: false,
-                    options: {
-                        temperature: 0.5,
-                        top_p: 0.9,
-                        top_k: 20,
-                        num_predict: 150 // Max tokens
-                    }
+                    model: this.modelName
                 })
             });
             
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(`Ollama API error: ${response.status} - ${errorText}`);
+                throw new Error(`Ollama proxy error: ${response.status} - ${errorText}`);
             }
             
             const data = await response.json();
             
+            if (!data.success) {
+                throw new Error(data.error || 'Ollama request failed');
+            }
+            
             // Extract generated text
-            const generatedText = data.response || data.text || '';
+            const generatedText = data.text || '';
             
             if (generatedText) {
                 console.log('✅ Ollama recommendation received:', generatedText.substring(0, 100) + '...');
