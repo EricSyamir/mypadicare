@@ -32,6 +32,10 @@ Thumbs.db
 .env
 .env.local
 
+# API Keys - Keep these files local and never commit them!
+static/js/config.local.js
+config.local.js
+
 # Model files (if too large, use Git LFS)
 # results/model.hdf5
 

@@ -1,15 +1,19 @@
 /**
  * Configuration for MyPadiCare
  * Clean and optimized configuration
+ * 
+ * IMPORTANT: API keys are loaded from config.local.js (gitignored)
+ * Create config.local.js from config.local.js.template
  */
 
+// Default configuration (without API keys)
 const CONFIG = {
     // Google Gemini API Configuration
-    GEMINI_API_KEY: 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g',
+    GEMINI_API_KEY: null, // Loaded from config.local.js
     GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
     
     // ElevenLabs TTS API Configuration
-    ELEVENLABS_API_KEY: 'sk_2591e16fb832de782bc532f77dda799de674b570833f8dd0',
+    ELEVENLABS_API_KEY: null, // Loaded from config.local.js
     
     // Health Detection Model Configuration
     MODEL_PATH: 'static/models/model.json',
@@ -58,5 +62,29 @@ const CONFIG = {
     DEBUG: true,
     TESTING_MODE: false // Set to true for testing without backend
 };
+
+// Load API keys from config.local.js if it exists
+// This file is gitignored and contains your actual API keys
+try {
+    // Try to load local config (this will be handled by script tag in HTML)
+    if (typeof LOCAL_CONFIG !== 'undefined') {
+        CONFIG.GEMINI_API_KEY = LOCAL_CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
+        CONFIG.ELEVENLABS_API_KEY = LOCAL_CONFIG.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
+        console.log('✅ API keys loaded from config.local.js');
+    } else {
+        console.warn('⚠️ config.local.js not found. API keys not loaded.');
+        console.warn('⚠️ Create static/js/config.local.js from config.local.js.template');
+    }
+} catch (error) {
+    console.warn('⚠️ Could not load local config:', error);
+}
+
+// Validate API keys
+if (!CONFIG.GEMINI_API_KEY) {
+    console.warn('⚠️ GEMINI_API_KEY not configured');
+}
+if (!CONFIG.ELEVENLABS_API_KEY) {
+    console.warn('⚠️ ELEVENLABS_API_KEY not configured');
+}
 
 console.log('⚙️ MyPadiCare configuration loaded');

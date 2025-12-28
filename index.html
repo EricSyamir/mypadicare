@@ -634,7 +634,10 @@
     </div>
 
     <!-- JavaScript Configuration -->
-    <script src="static/js/config.js?v=4"></script>
+    <!-- Load local config first (gitignored, contains API keys) -->
+    <script src="static/js/config.local.js?v=1" onerror="console.warn('config.local.js not found - using defaults')"></script>
+    <!-- Load main config (public, no API keys) -->
+    <script src="static/js/config.js?v=5"></script>
     
     <!-- JavaScript Modules -->
     <script src="static/js/translations.js?v=4"></script>
