@@ -1,11 +1,11 @@
 services:
   - type: web
     name: mypadicare
-    env: python
-    pythonVersion: "3.12.7"
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
-    startCommand: python app.py
+    env: static
+    buildCommand: ""
+    staticPublishPath: .
     envVars:
-      - key: PORT
-        value: 5000
-
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false

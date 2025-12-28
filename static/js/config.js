@@ -2,18 +2,21 @@
  * Configuration for MyPadiCare
  * Clean and optimized configuration
  * 
- * IMPORTANT: API keys are loaded from config.local.js (gitignored)
- * Create config.local.js from config.local.js.template
+ * API keys are loaded from:
+ * 1. Environment variables (for Render/production) - window.ENV
+ * 2. config.local.js (for local development) - LOCAL_CONFIG
+ * 
+ * Priority: ENV vars > Local config > null
  */
 
 // Default configuration (without API keys)
 const CONFIG = {
     // Google Gemini API Configuration
-    GEMINI_API_KEY: null, // Loaded from config.local.js
+    GEMINI_API_KEY: null, // Loaded from ENV or config.local.js
     GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
     
     // ElevenLabs TTS API Configuration
-    ELEVENLABS_API_KEY: null, // Loaded from config.local.js
+    ELEVENLABS_API_KEY: null, // Loaded from ENV or config.local.js
     
     // Health Detection Model Configuration
     MODEL_PATH: 'static/models/model.json',
@@ -63,20 +66,25 @@ const CONFIG = {
     TESTING_MODE: false // Set to true for testing without backend
 };
 
-// Load API keys from config.local.js if it exists
-// This file is gitignored and contains your actual API keys
+// Load API keys from environment variables (Render/production) or local config (development)
 try {
-    // Try to load local config (this will be handled by script tag in HTML)
-    if (typeof LOCAL_CONFIG !== 'undefined') {
+    // Priority 1: Environment variables (for Render/production)
+    // These are injected by Render at runtime via window.ENV
+    if (typeof window !== 'undefined' && window.ENV) {
+        CONFIG.GEMINI_API_KEY = window.ENV.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
+        CONFIG.ELEVENLABS_API_KEY = window.ENV.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
+        console.log('✅ API keys loaded from environment variables (Render)');
+    }
+    // Priority 2: Local config file (for local development)
+    else if (typeof LOCAL_CONFIG !== 'undefined') {
         CONFIG.GEMINI_API_KEY = LOCAL_CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY;
         CONFIG.ELEVENLABS_API_KEY = LOCAL_CONFIG.ELEVENLABS_API_KEY || CONFIG.ELEVENLABS_API_KEY;
-        console.log('✅ API keys loaded from config.local.js');
+        console.log('✅ API keys loaded from config.local.js (local development)');
     } else {
-        console.warn('⚠️ config.local.js not found. API keys not loaded.');
-        console.warn('⚠️ Create static/js/config.local.js from config.local.js.template');
+        console.warn('⚠️ No API keys found. Check environment variables or config.local.js');
     }
 } catch (error) {
-    console.warn('⚠️ Could not load local config:', error);
+    console.warn('⚠️ Could not load API keys:', error);
 }
 
 // Validate API keys
