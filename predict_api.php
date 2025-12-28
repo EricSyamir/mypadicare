@@ -61,7 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['action']) && $_GET['act
     
     $prompt = $input['prompt'];
     $apiKey = $input['api_key'] ?? getenv('GEMINI_API_KEY') ?: 'AIzaSyBIvJQ3ZLyXIehPpPO0O8thXTVBm50sW2g';
-    $model = $input['model'] ?? 'google/gemini-2.5-pro-exp-03-25';
+    $model = $input['model'] ?? 'gemini-2.5-pro-exp-03-25';
+    
+    // Remove 'google/' prefix if present (API doesn't use it)
+    $model = str_replace('google/', '', $model);
     
     // Prepare request to Gemini API
     $gemini_url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";

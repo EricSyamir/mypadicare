@@ -195,7 +195,10 @@ def gemini_proxy():
             }), 400
         
         prompt = data['prompt']
-        model = data.get('model', 'google/gemini-2.5-pro-exp-03-25')
+        model = data.get('model', 'gemini-2.5-pro-exp-03-25')
+        
+        # Remove 'google/' prefix if present (API doesn't use it)
+        model = model.replace('google/', '')
         
         # Get API key from request or environment
         import os
