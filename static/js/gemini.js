@@ -34,10 +34,9 @@ class GeminiAI {
         
         try {
             // Initialize Google Generative AI client
-            this.genAI = new google.generativeai.GenerativeModel({
-                apiKey: apiKey,
-                model: 'gemini-2.0-flash-exp' // Using flash model for faster responses
-            });
+            const { GoogleGenerativeAI } = google.generativeai;
+            this.genAI = new GoogleGenerativeAI(apiKey);
+            this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
             
             console.log('✅ Google Generative AI SDK initialized');
         } catch (error) {
