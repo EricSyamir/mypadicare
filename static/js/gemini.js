@@ -1,27 +1,49 @@
 /**
  * Google Gemini AI Integration
  * Generates personalized treatment recommendations
+ * Uses @google/generative-ai SDK
  */
 
 class GeminiAI {
     constructor() {
-        // Check if CONFIG is available
-        if (typeof CONFIG === 'undefined') {
-            console.error('❌ CONFIG not loaded when initializing Gemini AI');
-            this.apiKey = null;
-            this.apiUrl = null;
+        // Check if Google Generative AI SDK is available
+        if (typeof google === 'undefined' || !google.generativeai) {
+            console.error('❌ Google Generative AI SDK not loaded');
+            this.genAI = null;
+            this.model = null;
             return;
         }
         
-        this.apiKey = CONFIG.GEMINI_API_KEY;
-        this.apiUrl = CONFIG.GEMINI_API_URL;
-        
-        // Validate configuration
-        if (!this.apiKey) {
-            console.warn('⚠️ Gemini API key not configured');
+        // Check if CONFIG is available
+        if (typeof CONFIG === 'undefined') {
+            console.error('❌ CONFIG not loaded when initializing Gemini AI');
+            this.genAI = null;
+            this.model = null;
+            return;
         }
-        if (!this.apiUrl) {
-            console.warn('⚠️ Gemini API URL not configured');
+        
+        // Get API key from config
+        const apiKey = CONFIG.GEMINI_API_KEY;
+        
+        if (!apiKey) {
+            console.warn('⚠️ Gemini API key not configured');
+            this.genAI = null;
+            this.model = null;
+            return;
+        }
+        
+        try {
+            // Initialize Google Generative AI client
+            this.genAI = new google.generativeai.GenerativeModel({
+                apiKey: apiKey,
+                model: 'gemini-2.0-flash-exp' // Using flash model for faster responses
+            });
+            
+            console.log('✅ Google Generative AI SDK initialized');
+        } catch (error) {
+            console.error('❌ Failed to initialize Google Generative AI:', error);
+            this.genAI = null;
+            this.model = null;
         }
     }
 
@@ -73,7 +95,7 @@ Provide your recommendation:`;
     }
 
     /**
-     * Call Gemini API for recommendations
+     * Call Gemini API for recommendations using @google/generative-ai SDK
      */
     async getRecommendation(diseaseName, severity, confidence, treatmentData, language = 'en') {
         try {
@@ -87,55 +109,33 @@ Provide your recommendation:`;
             console.log('🤖 Requesting AI recommendation from Gemini...');
             console.log('📊 Parameters:', { diseaseName, severity, confidence: Math.round(confidence * 100) + '%', language });
             
-            // Check if API is configured
-            if (!this.apiKey || !this.apiUrl) {
-                throw new Error('Gemini API not properly configured');
+            // Check if SDK is initialized
+            if (!this.genAI) {
+                throw new Error('Google Generative AI SDK not initialized');
             }
             
             // Build prompt with language support
             const prompt = this.buildPrompt(diseaseName, severity, confidence, treatmentData, language);
             
-            // Prepare request body
-            const requestBody = {
-                contents: [
-                    {
-                        parts: [
-                            {
-                                text: prompt
-                            }
-                        ]
-                    }
-                ],
+            // Generate content using SDK
+            const result = await this.genAI.generateContent({
+                contents: prompt,
                 generationConfig: {
                     temperature: 0.5,
                     maxOutputTokens: 150,
                     topP: 0.9,
                     topK: 20
                 }
-            };
-            
-            // Make API call
-            const response = await fetch(`${this.apiUrl}?key=${this.apiKey}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestBody)
             });
             
-            if (!response.ok) {
-                throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
-            }
+            // Extract response text
+            const response = await result.response;
+            const generatedText = response.text();
             
-            const data = await response.json();
-            
-            // Extract generated text
-            if (data.candidates && data.candidates.length > 0) {
-                const generatedText = data.candidates[0].content.parts[0].text;
+            if (generatedText) {
                 console.log('✅ Gemini recommendation received:', generatedText.substring(0, 100) + '...');
                 return generatedText.trim();
             } else {
-                console.error('❌ No candidates in Gemini response:', data);
                 throw new Error('No response from Gemini AI');
             }
             

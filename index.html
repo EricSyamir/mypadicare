@@ -209,8 +209,8 @@
                     </div>
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                         <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="font-size: 32px;">🤖</span>
-                            <span style="font-weight: 600; color: #1A2F1A;" data-translate="poweredBy">Powered by Google Gemini</span>
+                        <span style="font-size: 32px;">🤖</span>
+                        <span style="font-weight: 600; color: #1A2F1A;" data-translate="poweredBy">Powered by Google Gemini</span>
                         </div>
                     </div>
                     <p id="expertAdviceText" style="margin: 0; color: #1A2F1A; line-height: 1.6;" data-translate="loadingAI">Loading AI recommendations...</p>
@@ -704,9 +704,12 @@
     <!-- Load main config (reads from ENV or LOCAL_CONFIG) -->
     <script src="static/js/config.js?v=6"></script>
     
+    <!-- Google Generative AI SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@google/generative-ai@0.21.0/dist/index.umd.js"></script>
+    
     <!-- JavaScript Modules -->
     <script src="static/js/translations.js?v=4"></script>
-    <script src="static/js/gemini.js?v=4"></script>
+    <script src="static/js/gemini.js?v=5"></script>
     <script src="static/js/speech.js?v=1"></script>
     <script src="static/js/app_xampp.js?v=4"></script>
 
